@@ -1,0 +1,13 @@
+#!/bin/bash
+set -e
+
+emerge --keep-going --update --backtrack=50 --deep -v world
+
+revdep-rebuild --ignore --pretend
+
+[ -x /usr/sbin/python-updater ] && -eall
+[ -x /usr/sbin/perl-cleaner ] && perl-cleaner --all
+
+eclean distfiles
+
+exit 0

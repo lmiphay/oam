@@ -1,0 +1,10 @@
+#!/bin/bash
+set -e
+
+oam-sync
+oam-fetch
+oam-update
+
+oam-qcheck
+
+exit 0

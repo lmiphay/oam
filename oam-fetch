@@ -1,0 +1,6 @@
+#!/bin/bash
+set -e
+
+emerge --fetchonly --update --backtrack=50 --deep -v world
+
+exit 0

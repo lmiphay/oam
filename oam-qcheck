@@ -1,0 +1,12 @@
+#!/bin/bash
+set -e
+
+dir=/var/log/qcheck
+
+[ ! -d "$dir" ] && mkdir -p $dir
+
+qcheck --all --badonly --nomtime --nocolor | \
+    egrep 'AKF|MD5-DIGEST' | \
+    sort > $dir/$(date +%Y%m%d).log
+
+exit 0

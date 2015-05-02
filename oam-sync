@@ -1,0 +1,18 @@
+#!/bin/bash
+set -e
+
+emaint --auto sync
+
+layman --sync=ALL
+
+eix-update
+
+eix-remote update1
+
+set +e
+eix-remote add1
+set -e
+
+eix-diff
+
+exit 0
