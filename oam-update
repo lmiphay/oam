@@ -5,8 +5,10 @@ emerge --keep-going --update --backtrack=50 --deep -v world
 
 revdep-rebuild --ignore --pretend
 
-[ -x /usr/sbin/python-updater ] && -eall
+[ -x /usr/sbin/python-updater ] && python-updater -eall
 [ -x /usr/sbin/perl-cleaner ] && perl-cleaner --all
+
+[ -n "$(portageq list_preserved_libs /)" ] && emerge --keep-going -v @preserved-rebuild
 
 eclean distfiles
 
