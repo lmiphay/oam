@@ -3,7 +3,7 @@ set -e
 
 emerge --keep-going --update --backtrack=50 --deep -v world
 
-revdep-rebuild --ignore --pretend
+revdep-rebuild --ignore
 
 [ -x /usr/sbin/python-updater ] && python-updater -eall
 [ -x /usr/sbin/perl-cleaner ] && perl-cleaner --all
