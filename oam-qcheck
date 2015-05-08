@@ -1,12 +1,21 @@
 #!/bin/bash
-set -e
 
-dir=/var/log/qcheck
+source /etc/gentoo-oam.conf
 
-[ ! -d "$dir" ] && mkdir -p $dir
+LOGPREFIX=$OAM_LOGDIR/$(date +%Y%m%d)
 
-qcheck --all --badonly --nomtime --nocolor | \
-    egrep 'AKF|MD5-DIGEST' | \
-    sort > $dir/$(date +%Y%m%d).log
+[[ ! -d "$LOGPREFIX" ]] && mkdir -p $LOGPREFIX
+[[ ! -d "$OAM_QCHECKDIR" ]] && mkdir -p $OAM_QCHECKDIR
+
+oam_log "qcheck start"
+
+(
+    qcheck --all --badonly --nomtime --nocolor | \
+	egrep 'AKF|MD5-DIGEST' | \
+	sort > $OAM_QCHECKDIR/$(date +%Y%m%d).log
+) \
+       2> >(oam_err "qcheck")
+
+oam_log "qcheck stop"
 
 exit 0

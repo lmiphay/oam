@@ -1,18 +1,37 @@
 #!/bin/bash
-set -e
 
-emaint --auto sync
+source /etc/gentoo-oam.conf
 
-layman --sync=ALL
+LOGPREFIX=$OAM_LOGDIR/$(date +%Y%m%d)
 
-eix-update
+[[ ! -d $LOGPREFIX ]] && mkdir -p $LOGPREFIX
 
-eix-remote update1
+oam_log "oam-sync start"
 
-set +e
-eix-remote add1
-set -e
+emaint --auto sync \
+       >>${LOGPREFIX}/sync.log \
+       2> >(oam_err "sync")
 
-eix-diff
+layman --sync=ALL --nocolor \
+       >>${LOGPREFIX}/layman.log \
+       2> >(oam_err "layman")
+
+eix-update --nocolor \
+       >>${LOGPREFIX}/eix-update.log \
+       2> >(oam_err "eix-update")
+	   
+eix-remote update1 \
+       >>${LOGPREFIX}/eix-remote-update1.log \
+       2> >(oam_err "eix-remote-update1")
+
+eix-remote add1 \
+       >>${LOGPREFIX}/eix-remote-add1.log \
+       2> >(oam_err "eix-remote-add1")
+       
+eix-diff --nocolor \
+       >>${LOGPREFIX}/eix-diff.log \
+       2> >(oam_err "eix-diff")
+
+oam_log "oam-sync stop"
 
 exit 0

@@ -1,15 +1,41 @@
 #!/bin/bash
-set -e
 
-emerge --keep-going --update --backtrack=50 --deep -v world
+source /etc/gentoo-oam.conf
 
-revdep-rebuild --ignore
+LOGPREFIX=$OAM_LOGDIR/$(date +%Y%m%d)
 
-[ -x /usr/sbin/python-updater ] && python-updater -eall
-[ -x /usr/sbin/perl-cleaner ] && perl-cleaner --all
+[[ ! -d $LOGPREFIX ]] && mkdir -p $LOGPREFIX
 
-[ -n "$(portageq list_preserved_libs /)" ] && emerge --keep-going -v @preserved-rebuild
+oam_log "oam-update start"
 
-eclean distfiles
+emerge --keep-going --update $OAM_EMERGE_OPTS world \
+       >>${LOGPREFIX}/update.log \
+       2> >(oam_err "update")
+
+revdep-rebuild --ignore \
+       >>${LOGPREFIX}/revdep.log \
+       2> >(oam_err "revdep")
+
+[ -x /usr/sbin/python-updater ] && \
+    python-updater -eall \
+       >>${LOGPREFIX}/python.log \
+       2> >(oam_err "python")
+
+[ -x /usr/sbin/perl-cleaner ] && \
+    perl-cleaner --all \
+       >>${LOGPREFIX}/perl.log \
+       2> >(oam_err "perl")
+
+[ -n "$(portageq list_preserved_libs /)" ] &&
+    emerge --keep-going -v @preserved-rebuild \
+       >>${LOGPREFIX}/preserved.log \
+       2> >(oam_err "preserved")
+
+[[ "$OAM_CLEAN_DISTFILES" = "1" ]] && \
+    eclean distfiles \
+       >>${LOGPREFIX}/eclean.log \
+       2> >(oam_err "eclean")
+
+oam_log "oam-update stop"
 
 exit 0

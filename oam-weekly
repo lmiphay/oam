@@ -1,10 +1,15 @@
 #!/bin/bash
-set -e
 
-oam-sync
-oam-fetch
-oam-update
+source /etc/gentoo-oam.conf
 
-oam-qcheck
+[[ ! -d $OAM_LOGDIR ]] && mkdir -p $OAM_LOGDIR
+
+oam_log "oam-weekly start"
+
+for op in $OAM_WEEKLY ; do
+    $op
+done
+
+oam_log "oam-weekly stop"
 
 exit 0

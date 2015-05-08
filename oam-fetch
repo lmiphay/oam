@@ -1,6 +1,17 @@
 #!/bin/bash
-set -e
 
-emerge --fetchonly --update --backtrack=50 --deep -v world
+source /etc/gentoo-oam.conf
+
+LOGPREFIX=$OAM_LOGDIR/$(date +%Y%m%d)
+
+[[ ! -d $LOGPREFIX ]] && mkdir -p $LOGPREFIX
+
+oam_log "oam-fetch start $*"
+
+emerge --fetchonly --update $OAM_EMERGE_OPTS $@ world \
+       >>${LOGPREFIX}/fetch.log \
+       2> >(oam_err "fetch")
+
+oam_log "oam-fetch stop"
 
 exit 0

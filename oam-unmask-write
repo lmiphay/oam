@@ -1,0 +1,11 @@
+#!/bin/bash
+
+source /etc/gentoo-oam.conf
+
+oam_log "oam-unmask-write start"
+
+oam-fetch --autounmask-write y
+
+oam_log "oam-unmask-write stop"
+
+exit 0
