@@ -14,6 +14,7 @@ install:
 	$(DESTDIR)/var/log/oam/
 	install gentoo-oam.conf $(DESTDIR)/etc
 	install oam-fetch $(DESTDIR)/usr/sbin
+	install oam-glsa $(DESTDIR)/usr/sbin
 	install oam-qcheck $(DESTDIR)/usr/sbin
 	install oam-sync $(DESTDIR)/usr/sbin
 	install oam-unmask-write $(DESTDIR)/usr/sbin

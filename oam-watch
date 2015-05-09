@@ -8,11 +8,12 @@ LOGPREFIX=$OAM_LOGDIR/$TODAY
 [[ ! -d $LOGPREFIX ]] && mkdir -p $LOGPREFIX
 
 cd $OAM_LOGDIR && \
-    multitail -x oam/$TODAY \
+    multitail -x $HOSTNAME/oam/$TODAY \
 	      -T --basename \
 	      -ts --mergeall -iw $TODAY/\*.log 2 \
 	      --no-mergeall \
 	      -wh 4 error.log \
+	      -wh 4 glsa.log \
 	      -wh 4 oam.log \
 
 exit 0

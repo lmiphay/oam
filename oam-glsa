@@ -1,0 +1,22 @@
+#!/bin/bash
+
+source /etc/gentoo-oam.conf
+
+LOGPREFIX=$OAM_LOGDIR
+
+[[ ! -d $LOGPREFIX ]] && mkdir -p $LOGPREFIX
+
+oam_log "oam-glsa start"
+
+glsa-check --test --verbose  --nocolor all \
+       >>${LOGPREFIX}/glsa.log \
+       2> >(oam_err "glsa")
+
+oam_log "oam-glsa complete"
+
+if [[ -s ${LOGPREFIX}/glsa.log ]] ; then
+    echo "Security issues have been found which may affect this server"
+    exit 1
+else
+    exit 0
+fi
