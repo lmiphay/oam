@@ -1,0 +1,15 @@
+#!/bin/bash
+
+source /etc/gentoo-oam.conf
+
+if [[ -d $OAM_QCHECKDIR ]] ; then
+    cd $OAM_QCHECKDIR && \
+    ls -1tr | head -n -$OAM_QCHECKKEEPLOGS | xargs -d '\n' rm -f
+fi
+
+if [[ -d $OAM_LOGDIR ]] ; then
+    cd $OAM_LOGDIR && \
+    ls -d1tr 2* | head -n -$OAM_KEEPLOGS | xargs -d '\n' rm -rf
+fi
+
+exit 0

@@ -1,0 +1,21 @@
+# logrotate script for gentoo-oam
+
+/var/log/oam/oam.log /var/log/oam/error.log {
+        monthtly
+        missingok
+        copytruncate
+        rotate 9
+        compress
+        notifempty
+        olddir /var/log/oam/old
+}
+
+/var/log/oam/.keep_app-portage_gentoo-oam {
+        monthtly
+        rotate 0
+        create
+        ifempty
+        lastaction
+		oam-expire
+        endscript
+}

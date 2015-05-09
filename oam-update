@@ -12,19 +12,19 @@ emerge --keep-going --update $OAM_EMERGE_OPTS world \
        >>${LOGPREFIX}/update.log \
        2> >(oam_err "update")
 
-revdep-rebuild --ignore \
+revdep-rebuild --nocolor --ignore \
        >>${LOGPREFIX}/revdep.log \
        2> >(oam_err "revdep")
 
 [ -x /usr/sbin/python-updater ] && \
     python-updater -eall \
        >>${LOGPREFIX}/python.log \
-       2> >(oam_err "python")
+       2> >(oam_stripansi | oam_err "python")
 
 [ -x /usr/sbin/perl-cleaner ] && \
     perl-cleaner --all \
        >>${LOGPREFIX}/perl.log \
-       2> >(oam_err "perl")
+       2> >(oam_stripansi | oam_err "perl")
 
 [ -n "$(portageq list_preserved_libs /)" ] &&
     emerge --keep-going -v @preserved-rebuild \
@@ -32,10 +32,10 @@ revdep-rebuild --ignore \
        2> >(oam_err "preserved")
 
 [[ "$OAM_CLEAN_DISTFILES" = "1" ]] && \
-    eclean distfiles \
+    eclean --nocolor distfiles \
        >>${LOGPREFIX}/eclean.log \
        2> >(oam_err "eclean")
 
-oam_log "oam-update stop"
+oam_log "oam-update complete"
 
 exit 0

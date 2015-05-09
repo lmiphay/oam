@@ -10,12 +10,12 @@ LOGPREFIX=$OAM_LOGDIR/$(date +%Y%m%d)
 oam_log "qcheck start"
 
 (
-    qcheck --all --badonly --nomtime --nocolor | \
+    qcheck --all --nomtime --nocolor | \
 	egrep 'AKF|MD5-DIGEST' | \
 	sort > $OAM_QCHECKDIR/$(date +%Y%m%d).log
 ) \
        2> >(oam_err "qcheck")
 
-oam_log "qcheck stop"
+oam_log "qcheck complete"
 
 exit 0

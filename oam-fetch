@@ -12,6 +12,6 @@ emerge --fetchonly --update $OAM_EMERGE_OPTS $@ world \
        >>${LOGPREFIX}/fetch.log \
        2> >(oam_err "fetch")
 
-oam_log "oam-fetch stop"
+oam_log "oam-fetch complete"
 
 exit 0

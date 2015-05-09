@@ -32,6 +32,6 @@ eix-diff --nocolor \
        >>${LOGPREFIX}/eix-diff.log \
        2> >(oam_err "eix-diff")
 
-oam_log "oam-sync stop"
+oam_log "oam-sync complete"
 
 exit 0

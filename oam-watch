@@ -1,0 +1,18 @@
+#!/bin/bash
+
+source /etc/gentoo-oam.conf
+
+TODAY=$(date +%Y%m%d)
+LOGPREFIX=$OAM_LOGDIR/$TODAY
+
+[[ ! -d $LOGPREFIX ]] && mkdir -p $LOGPREFIX
+
+cd $OAM_LOGDIR && \
+    multitail -x oam/$TODAY \
+	      -T --basename \
+	      -ts --mergeall -iw $TODAY/\*.log 2 \
+	      --no-mergeall \
+	      -wh 4 error.log \
+	      -wh 4 oam.log \
+
+exit 0
