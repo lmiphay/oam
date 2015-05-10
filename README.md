@@ -1,5 +1,3 @@
 # gentoo-oam
 
-Known Problems
-==============
-multitail will close a scrollback popup session when one the subprocess updates kick in (e.g. uptime).
+See man 8 gentoo-oam for details of this package.

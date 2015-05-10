@@ -1,0 +1,82 @@
+.\" Manpage for gentoo-oam
+.TH man 8 "10 May 2015" "1.0" "gentoo-oam man page"
+
+.SH NAME
+gentoo-oam \- workflow management for a gentoo server
+
+.SH SYNOPSIS
+oam-expire \- prune old log files produced by the gentoo-oam scripts
+
+oam-fetch \- fetch package sources prior to compilation/installation
+
+oam-genlop-current \- wrapper around genlop called by oam-watch
+
+oam-glsa \- wrapper around glsa-check
+
+oam-qcheck \- runs qcheck and produces a summary of files with potential problems
+
+oam-sync \- run a set of sync actions
+
+oam-unmask-write \- run an emerge update operation with --autounmask-write set to 'y'
+
+oam-update \- run a normal set of emerge update actions
+
+oam-version \- write the gentoo-oam version to the console
+
+oam-watch \- watch the various files and status of an update cycle using multitail(1)
+
+oam-weekly \- run sync and update actions (actions defined in /etc/gentoo-oam.conf)
+
+.SH DESCRIPTION
+The gentoo-oam package is a set of scripts built on portage utilities to
+collect up and ease the workflow for the system administrator.
+.P
+.IP \(bu
+Common tasks are automated (e.g. weekly update, overlays sync'd... etc)
+.IP \(bu
+Everything is logged (under /var/log/oam), and logrotate'd.
+.IP \(bu
+Central configuration from /etc/gentoo-oam.conf
+.P
+The default weekly action list (run by
+.B oam-weekly
+using OAM_WEEKLY setting in /etc/gentoo-oam.conf) is:
+.PP
+.RS 0
+        oam-sync
+.RS 0
+        oam-glsa
+.RS 0
+        oam-fetch
+.RS 0
+        oam-update
+.RS 0
+        oam-qcheck
+
+The
+.B oam-watch
+script can be used to watch a currently running operation.
+
+.SH FILES
+
+/etc/gentoo-oam.conf \- gentoo-oam system configuration
+
+/var/log/oam/oam.log \- log of oam operations started/stopped
+
+/var/log/oam/error.log \- central locations for error reports
+
+/var/log/oam/glsa.log \- results of a glsa-check(1) run following a sync
+
+.SH SEE ALSO
+emaint(1), emerge(1), eclean(1), glsa-check(1), qcheck(1), logrotate(8),
+eix(1), genlop(1), ts(1), multitail(1)
+
+.SH BUGS
+oam-watch (multitail) will close a scrollback popup session when one the
+subprocess updates kick in (e.g. uptime).
+
+.SH AUTHOR
+Paul Healy
+
+.SH COPYRIGHT
+GNU GENERAL PUBLIC LICENSE Version 2

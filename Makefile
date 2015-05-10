@@ -12,7 +12,8 @@ install:
 	install -d $(DESTDIR)/usr/sbin \
 	$(DESTDIR)/etc $(DESTDIR)/etc/logrotate.d \
 	$(DESTDIR)/usr/share/gentoo-oam \
-	$(DESTDIR)/var/log/oam/
+	$(DESTDIR)/var/log/oam/ \
+	$(DESTDIR)/usr/share/man/man8
 	install gentoo-oam.conf $(DESTDIR)/etc
 	install gentoo-oam-functions.sh $(DESTDIR)/usr/share/gentoo-oam
 	install oam-fetch $(DESTDIR)/usr/sbin
@@ -26,4 +27,5 @@ install:
 	install oam-watch $(DESTDIR)/usr/sbin
 	install oam-weekly $(DESTDIR)/usr/sbin
 	install gentoo-oam.logrotate $(DESTDIR)/etc/logrotate.d/gentoo-oam
+	install gentoo-oam.8 $(DESTDIR)/usr/share/man/man8/
 	touch $(DESTDIR)/var/log/oam/.keep_app-portage_gentoo-oam
