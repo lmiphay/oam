@@ -1,6 +1,7 @@
 #!/bin/bash
 
 source /etc/gentoo-oam.conf
+source /usr/share/gentoo-oam/gentoo-oam-functions.sh
 
 LOGPREFIX=$OAM_LOGDIR
 
@@ -8,9 +9,16 @@ LOGPREFIX=$OAM_LOGDIR
 
 oam_log "oam-glsa start"
 
+# glsa-dumps these lines to stderr, while the actual report goes
+# to stdout...
+# [A] means this GLSA was marked as applied (injected),
+# [U] means the system is not affected and
+# [N] indicates that the system might be affected.
+# This system is affected by the following GLSAs:
+
 glsa-check --test --verbose  --nocolor all \
        >>${LOGPREFIX}/glsa.log \
-       2> >(oam_err "glsa")
+       2>&1
 
 oam_log "oam-glsa complete"
 

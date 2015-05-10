@@ -11,8 +11,10 @@ check:
 install:
 	install -d $(DESTDIR)/usr/sbin \
 	$(DESTDIR)/etc $(DESTDIR)/etc/logrotate.d \
+	$(DESTDIR)/usr/share/gentoo-oam \
 	$(DESTDIR)/var/log/oam/
 	install gentoo-oam.conf $(DESTDIR)/etc
+	install gentoo-oam-functions.sh $(DESTDIR)/usr/share/gentoo-oam
 	install oam-fetch $(DESTDIR)/usr/sbin
 	install oam-glsa $(DESTDIR)/usr/sbin
 	install oam-qcheck $(DESTDIR)/usr/sbin

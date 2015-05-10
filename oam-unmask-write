@@ -1,6 +1,7 @@
 #!/bin/bash
 
 source /etc/gentoo-oam.conf
+source /usr/share/gentoo-oam/gentoo-oam-functions.sh
 
 oam_log "oam-unmask-write start"
 
