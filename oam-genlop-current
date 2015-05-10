@@ -1,0 +1,12 @@
+#!/bin/bash
+
+source /etc/gentoo-oam.conf || oam_die "/etc/gentoo-oam.conf missing - exiting"
+source /usr/share/gentoo-oam/gentoo-oam-functions.sh
+
+if [[ -z "$(pgrep sandbox)" ]] ; then
+    echo "$(oam_ts) No current merge (see man genlop / FEATURES if there is one)"
+else
+    genlop --nocolor --current
+fi
+
+exit 0

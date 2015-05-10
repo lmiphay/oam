@@ -18,6 +18,7 @@ install:
 	install oam-fetch $(DESTDIR)/usr/sbin
 	install oam-glsa $(DESTDIR)/usr/sbin
 	install oam-qcheck $(DESTDIR)/usr/sbin
+	install oam-genlop-current $(DESTDIR)/usr/sbin
 	install oam-sync $(DESTDIR)/usr/sbin
 	install oam-unmask-write $(DESTDIR)/usr/sbin
 	install oam-update $(DESTDIR)/usr/sbin
