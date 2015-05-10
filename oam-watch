@@ -25,7 +25,7 @@ multitail -x $HOSTNAME/oam/$LOGDATE \
 	  -wh 4 error.log \
 	  -wh 4 -ci red glsa.log \
 	  -wh 4 oam.log \
-	  -wh 6 -rc 60 -l oam-genlop-current \
-	  -wh 1 -r 30 -l uptime
+	  -wh 1 -r 30 -l uptime \
+	  -wh 6 -rc 60 -l oam-genlop-current
 
 exit 0
