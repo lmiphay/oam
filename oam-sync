@@ -7,34 +7,31 @@ LOGPREFIX=$OAM_LOGDIR/$(date +%Y%m%d)
 
 [[ ! -d $LOGPREFIX ]] && mkdir -p $LOGPREFIX
 
-oam_log "oam-sync start"
+oam_log "oam-sync start (gentoo-oam Version $(oam_version))"
 
 emaint --auto sync \
-       >>${LOGPREFIX}/sync.log \
+       > >(oam_logphase "sync" ${LOGPREFIX}/sync.log) \
        2> >(oam_err "sync")
 
-layman --sync=ALL --nocolor \
-       >>${LOGPREFIX}/layman.log \
-       2> >(oam_err "layman")
+[ -x /usr/bin/layman ] && \
+    layman --sync=ALL --nocolor \
+	   > >(oam_logphase "layman" ${LOGPREFIX}/sync.log) \
+	   2> >(oam_err "layman")
 
 eix-update --nocolor \
-       >>${LOGPREFIX}/eix-update.log \
+       > >(oam_logphase "eix-update" ${LOGPREFIX}/sync.log) \
        2> >(oam_err "eix-update")
 
 # eix-remote update1 spams the error log
 eix-remote update1 \
        >>${LOGPREFIX}/eix-remote-update1.log \
+       > >(oam_logphase "eix-remote-update1" ${LOGPREFIX}/sync.log) \
        2>&1
 
 # eix-remote add1 spams the error log
 eix-remote add1 \
-       >>${LOGPREFIX}/eix-remote-add1.log \
+       > >(oam_logphase "eix-remote-add1" ${LOGPREFIX}/sync.log) \
        2>&1
-
-# slightly useful as a record of changes - not sure/may remove
-eix-diff --nocolor \
-       >>${LOGPREFIX}/eix-diff.log \
-       2> >(oam_err "eix-diff")
 
 oam_log "oam-sync complete"
 

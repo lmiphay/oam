@@ -1,5 +1,16 @@
 # -*- sh -*-
 
+oam_die()
+{
+    if [[ $(id -u) -eq 0 ]] ; then
+	echo "$(oam_ts) $*" | tee -a $OAM_LOGDIR/error.log
+    else
+	echo "$(oam_ts) $*"
+    fi
+
+    exit 1
+}
+
 oam_err()
 {
     if [[ $(id -u) -eq 0 ]] ; then
@@ -18,23 +29,24 @@ oam_log()
     fi
 }
 
+oam_logphase()
+{
+    local tag=$1 logfile=$2
+    
+    sed "s/^/$tag /" | ts $OAM_TS >>$logfile
+}
+
 oam_stripansi()
 {
     perl -pe 's/\e\[?.*?[\@-~]//g'
 }
 
-oam_die()
-{
-    if [[ $(id -u) -eq 0 ]] ; then
-	echo "$(oam_ts) $*" | tee -a $OAM_LOGDIR/error.log
-    else
-	echo "$(oam_ts) $*"
-    fi
-	
-    exit 1
-}
-
 oam_ts()
 {
     date +$OAM_TS
+}
+
+oam_version()
+{
+    echo "1.0"
 }

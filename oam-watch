@@ -18,7 +18,7 @@ for f in $TOPLOGFILES ; do
     [[ ! -f ${f}.log ]] && touch ${f}.log
 done
 
-multitail -x $HOSTNAME/oam/$LOGDATE \
+multitail -x "$HOSTNAME/oam/$LOGDATE gentoo-oam Version $(oam_version)" \
 	  -T --basename \
 	  -ts --mergeall -iw $LOGDATE/\*.log 2 \
 	  --no-mergeall \

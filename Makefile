@@ -22,6 +22,7 @@ install:
 	install oam-sync $(DESTDIR)/usr/sbin
 	install oam-unmask-write $(DESTDIR)/usr/sbin
 	install oam-update $(DESTDIR)/usr/sbin
+	install oam-version $(DESTDIR)/usr/sbin
 	install oam-watch $(DESTDIR)/usr/sbin
 	install oam-weekly $(DESTDIR)/usr/sbin
 	install gentoo-oam.logrotate $(DESTDIR)/etc/logrotate.d/gentoo-oam
