@@ -13,25 +13,30 @@ emaint --auto sync \
        > >(oam_logphase "sync" ${LOGPREFIX}/sync.log) \
        2> >(oam_err "sync")
 
-[ -x /usr/bin/layman ] && \
+oam_log "layman start"
+# layman spams the error log
+[[ -x /usr/bin/layman ]] && \
     layman --sync=ALL --nocolor \
 	   > >(oam_logphase "layman" ${LOGPREFIX}/sync.log) \
-	   2> >(oam_err "layman")
+	   2>&1
 
+oam_log "eix-update start"
 eix-update --nocolor \
        > >(oam_logphase "eix-update" ${LOGPREFIX}/sync.log) \
        2> >(oam_err "eix-update")
 
-# eix-remote update1 spams the error log
-eix-remote update1 \
-       >>${LOGPREFIX}/eix-remote-update1.log \
-       > >(oam_logphase "eix-remote-update1" ${LOGPREFIX}/sync.log) \
-       2>&1
+if [[ -x /usr/bin/layman ]] ; then
+    # eix-remote update1 spams the error log
+    eix-remote update1 \
+	       >>${LOGPREFIX}/eix-remote-update1.log \
+	       > >(oam_logphase "eix-remote-update1" ${LOGPREFIX}/sync.log) \
+	       2>&1
 
-# eix-remote add1 spams the error log
-eix-remote add1 \
-       > >(oam_logphase "eix-remote-add1" ${LOGPREFIX}/sync.log) \
-       2>&1
+    # eix-remote add1 spams the error log
+    eix-remote add1 \
+	       > >(oam_logphase "eix-remote-add1" ${LOGPREFIX}/sync.log) \
+	       2>&1
+fi
 
 oam_log "oam-sync complete"
 
