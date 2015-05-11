@@ -23,9 +23,9 @@ multitail -x "$HOSTNAME/oam/$LOGDATE gentoo-oam Version $(oam_version)" \
 	  -T --basename \
 	  -sw 39,40 -sn 3,3 \
 	  \
-	  -wh 2 -r 30 -l uptime \
-	  -wh 8 oam.log \
-	  -rc 60 -l oam-genlop-current \
+	  -wh 8 -r 60 -l oam-uptime \
+	  -wh 12 oam.log \
+	  -r 60 -l oam-genlop-current \
 	  \
 	  -i $LOGDATE/sync.log \
 	  -I $LOGDATE/update.log \
