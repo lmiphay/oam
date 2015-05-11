@@ -13,7 +13,7 @@ if [[ -z "$LOGDATE" ]] ; then
 fi
 
 TOPLOGFILES="error glsa oam 
-	$LOGDATE/sync.log $LOGDATE/update.log $LOGDATE/blocks.log"
+	$LOGDATE/sync $LOGDATE/update $LOGDATE/blocks"
 
 for f in $TOPLOGFILES ; do
     [[ ! -f ${f}.log ]] && touch ${f}.log
