@@ -40,7 +40,7 @@ oam_log "eclean-distfiles start"
 [[ "$OAM_CLEAN_DISTFILES" = "1" ]] && \
     eclean --nocolor distfiles \
        > >(oam_logphase "eclean" ${LOGPREFIX}/update.log) \
-       2> >(oam_err "eclean")
+       2> >(oam_stripansi | oam_err "eclean")
 
 oam_log "oam-update complete"
 
