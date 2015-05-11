@@ -11,27 +11,32 @@ oam_log "oam-update start"
 
 emerge --keep-going --update $OAM_EMERGE_OPTS world \
        > >(oam_logphase "update" ${LOGPREFIX}/update.log) \
-       2> >(oam_err "update")
+       2> >(oam_logphase "update" ${LOGPREFIX}/blocks.log)
 
+oam_log "revdep-rebuild start"
 revdep-rebuild --nocolor --ignore \
        > >(oam_logphase "revdep" ${LOGPREFIX}/update.log) \
        2> >(oam_err "revdep")
 
+oam_log "python-updater start"
 [ -x /usr/sbin/python-updater ] && \
     python-updater -eall \
        > >(oam_logphase "python" ${LOGPREFIX}/update.log) \
        2> >(oam_stripansi | oam_err "python")
 
+oam_log "perl-cleaner start"
 [ -x /usr/sbin/perl-cleaner ] && \
     perl-cleaner --all \
-       > >(oam_logphase "perl" ${LOGPREFIX}/update.log) \
+       > >(oam_stripansi | oam_logphase "perl" ${LOGPREFIX}/update.log) \
        2> >(oam_stripansi | oam_err "perl")
 
+oam_log "preserved-rebuild start"
 [ -n "$(portageq list_preserved_libs /)" ] &&
     emerge --keep-going -v @preserved-rebuild \
        > >(oam_logphase "preserved" ${LOGPREFIX}/update.log) \
        2> >(oam_err "preserved")
 
+oam_log "eclean-distfiles start"
 [[ "$OAM_CLEAN_DISTFILES" = "1" ]] && \
     eclean --nocolor distfiles \
        > >(oam_logphase "eclean" ${LOGPREFIX}/update.log) \
