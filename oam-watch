@@ -12,7 +12,8 @@ if [[ -z "$LOGDATE" ]] ; then
     mkdir -p $LOGDATE
 fi
 
-TOPLOGFILES="error glsa oam"
+TOPLOGFILES="error glsa oam 
+	$LOGDATE/sync.log $LOGDATE/update.log $LOGDATE/blocks.log"
 
 for f in $TOPLOGFILES ; do
     [[ ! -f ${f}.log ]] && touch ${f}.log
@@ -20,12 +21,16 @@ done
 
 multitail -x "$HOSTNAME/oam/$LOGDATE gentoo-oam Version $(oam_version)" \
 	  -T --basename \
-	  -ts --mergeall -iw $LOGDATE/\*.log 2 \
-	  --no-mergeall \
+	  -sw 39,40 -sn 3,3 \
+	  \
+	  -wh 2 -r 30 -l uptime \
+	  -wh 8 oam.log \
+	  -rc 60 -l oam-genlop-current \
+	  \
+	  -i $LOGDATE/sync.log \
+	  -I $LOGDATE/update.log \
+	  -I $LOGDATE/blocks.log \
 	  -wh 4 error.log \
-	  -wh 4 -ci red glsa.log \
-	  -wh 4 oam.log \
-	  -wh 1 -r 30 -l uptime \
-	  -wh 6 -rc 60 -l oam-genlop-current
+	  -wh 4 -ci red glsa.log
 
 exit 0
