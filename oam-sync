@@ -7,7 +7,8 @@ LOGPREFIX=$OAM_LOGDIR/$(date +%Y%m%d)
 
 [[ ! -d $LOGPREFIX ]] && mkdir -p $LOGPREFIX
 
-oam_log "oam-sync start (gentoo-oam Version $(oam_version))"
+oam_log "gentoo-oam V$(oam_version)"
+oam_log "oam-sync start"
 
 emaint --auto sync \
        > >(oam_logphase "sync" ${LOGPREFIX}/sync.log) \
@@ -23,7 +24,7 @@ oam_log "layman start"
 oam_log "eix-update start"
 eix-update --nocolor \
        > >(oam_logphase "eix-update" ${LOGPREFIX}/sync.log) \
-       2> >(oam_err "eix-update")
+       2> >(oam_stripansi | oam_err "eix-update")
 
 if [[ -x /usr/bin/layman ]] ; then
     # eix-remote update1 spams the error log
