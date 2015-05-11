@@ -2,7 +2,7 @@
 .TH man 8 "10 May 2015" "1.0" "gentoo-oam man page"
 
 .SH NAME
-gentoo-oam \- workflow management for a gentoo server
+gentoo-oam \- workflow helpers for a gentoo server
 
 .SH SYNOPSIS
 oam-expire \- prune old log files produced by the gentoo-oam scripts
@@ -28,15 +28,21 @@ oam-watch \- watch the various files and status of an update cycle using multita
 oam-weekly \- run sync and update actions (actions defined in /etc/gentoo-oam.conf)
 
 .SH DESCRIPTION
-The gentoo-oam package is a set of scripts built on portage utilities to
-collect up and ease the workflow for the system administrator.
+The gentoo-oam scripts build on portage utilities to automate some common
+sys-admin tasks. They delegate most of the actual work to the normal
+portage tools.
 .P
 .IP \(bu
-Common tasks are automated (e.g. weekly update, overlays sync'd... etc)
+Common tasks are automated (e.g. weekly update, overlays sync... etc)
 .IP \(bu
 Everything is logged (under /var/log/oam), and logrotate'd.
 .IP \(bu
-Central configuration from /etc/gentoo-oam.conf
+Overview of actions provided by oam-watch (built on multitail(1) )
+.IP \(bu
+Central configuration is taken from /etc/gentoo-oam.conf
+.IP \(bu
+The package also acts as a meta package pulling in some very useful portage
+utilities (e.g. eix, glsa-check... etc)
 .P
 The default weekly action list (run by
 .B oam-weekly
@@ -52,10 +58,102 @@ using OAM_WEEKLY setting in /etc/gentoo-oam.conf) is:
         oam-update
 .RS 0
         oam-qcheck
-
+.P
+The
+.B oam-sync script runs these actions in sequence:
+.P
+.IP \(bu
+emaint --auto sync
+.IP \(bu
+layman --sync=ALL (only if layman is installed)
+.IP \(bu
+eix-update
+.IP \(bu
+eix-remote update1 (only if layman is installed)
+.IP \(bu
+eix-remote add1 (only if layman is installed)
+.P
 The
 .B oam-watch
-script can be used to watch a currently running operation.
+script can be used to watch a currently running operation. It provides a snapshot
+of the current sync/update... etc The UI is provided by multitail(1). To run this
+script as a non-root user, add that user to the portage group. Also add /usr/sbin
+to the PATH (required for genlop).
+.P
+The
+.B oam-glsa
+script simply runs glsa-check, logging the results to /var/log/oam/glsa.log. The
+script return 1 if that file is non-empty, 0 otherwise.
+.P
+The
+.B oam-fetch
+script simply runs emerge --fetchonly to pull down source packages prior to installation
+proper.
+.P
+The
+.B oam-update script runs these actions in sequence:
+.P
+.IP \(bu
+emerge world
+.IP \(bu
+revdep-rebuild
+.IP \(bu
+python-updater
+.IP \(bu
+perl-cleaner (if it is installed)
+.IP \(bu
+emerge @preserved-rebuild (if there are preserved libraries)
+.IP \(bu
+eclean distfiles (if the OAM_CLEAN_DISTFILES setting is 1)
+.P
+The
+.B oam-qcheck
+script runs qcheck(1), saving all AFK and MD5-DIGEST failures to a (daily) file under
+/var/log/oam/qcheck.
+
+The
+.B oam-expire
+script is called by the installed logrotate control settings. See the OAM_KEEPLOGS and
+OAM_QCHECKKEEPLOGS settings.
+
+The
+.B oam-unmask-write
+scripts runs with oam-fetch script with '--autounmask-write y' set.
+
+The
+.B oam-genlop-current
+script is a wrapper called by oam-watch to filter the output of 'genlop -c'.
+
+The
+.B oam-version
+simply prints the version of the gentoo-oam scripts to stdout.
+.P
+These settings control the operation of gentoo-oam and are set in /etc/gentoo-oam.conf:
+.TP
+.BI OAM_EMERGE_OPTS
+The parameters passed to emerge for update. Defaults to "--backtrack=50 --deep -v"
+.TP
+.BI OAM_CLEAN_DISTFILES
+Used to decide if eclean distfiles should be run (for example you may not want to
+run it if the /usr/portage/distfiles is nfs mounted from another server). Defaults to 1
+.TP
+.BI OAM_WEEKLY
+The actions to perform when the oam-weekly is run. Defaults to "oam-sync oam-glsa oam-fetch oam-update oam-qcheck "
+.TP
+.BI OAM_LOGDIR
+The location where gentoo-oam logs will be sent/stored. Defaults to /var/log/oam
+.TP
+.BI OAM_KEEPLOGS
+The number of sync/update log sets to keep. Defaults to 10
+.TP
+.BI OAM_QCHECKDIR
+The location where qcheck log summaries will be stored. Defaults to /var/log/oam/qcheck
+.TP
+.BI OAM_QCHECKKEEPLOGS
+The number of old qcheck logs to keep. Defaults to 10
+.TP
+.BI OAM_TS
+The date/time format used by gentoo-oam for logging. Defaults to "%Y%m%d:%H:%M:%S"
 
 .SH FILES
 
