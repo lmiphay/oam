@@ -168,6 +168,10 @@ The date/time format used by gentoo-oam for logging. Defaults to "%Y%m%d:%H:%M:%
 
 /var/log/oam/glsa.log \- results of a glsa-check(1) run following a sync
 
+.SH BUGS
+Some actions (e.g. emaint, emerge... etc) buffer output. As a result
+oam-watch may not show anything going on for long periods.
+
 .SH SEE ALSO
 emaint(1), emerge(1), eclean(1), glsa-check(1), qcheck(1), logrotate(8),
 eix(1), genlop(1), ts(1), multitail(1)
