@@ -12,7 +12,7 @@ oam_log "oam-sync start"
 
 emaint --auto sync \
        > >(oam_logphase "sync" ${LOGPREFIX}/sync.log) \
-       2> >(oam_err "sync")
+       2> >(oam_stripansi | oam_err "sync")
 
 oam_log "layman start"
 # layman spams the error log
