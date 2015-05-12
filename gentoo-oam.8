@@ -79,8 +79,8 @@ The
 .B oam-watch
 script can be used to watch a currently running operation. It provides a snapshot
 of the current sync/update... etc The UI is provided by multitail(1). To run this
-script as a non-root user, add that user to the portage group. Also add /usr/sbin
-to the PATH (required for genlop).
+script as a non-root user (recommended), add that user to the portage group. Also
+add /usr/sbin to the PATH (required for genlop).
 .P
 The
 .B oam-glsa
@@ -171,10 +171,6 @@ The date/time format used by gentoo-oam for logging. Defaults to "%Y%m%d:%H:%M:%
 .SH SEE ALSO
 emaint(1), emerge(1), eclean(1), glsa-check(1), qcheck(1), logrotate(8),
 eix(1), genlop(1), ts(1), multitail(1)
-
-.SH BUGS
-oam-watch (multitail) will close a scrollback popup session when one the
-subprocess updates kick in (e.g. uptime).
 
 .SH AUTHOR
 Paul Healy

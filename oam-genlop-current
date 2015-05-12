@@ -17,10 +17,12 @@ oam_genlop_filter()
 	sed -e 's/minutes/min/g;s/seconds./sec/g;s/hour/hr/g;s/ and / /g'
 }
 
-if [[ -z "$(pgrep sandbox)" ]] ; then
-    echo "$(oam_ts) No current merge"
-else
-    genlop --nocolor --current | oam_genlop_filter
-fi
+while /bin/true; do
+       oam-uptime
+       if [[ -n "$(pgrep sandbox)" ]] ; then
+               genlop --nocolor --current | oam_genlop_filter
+       fi
+       sleep 60
+done
 
 exit 0
