@@ -13,16 +13,20 @@ oam_genlop_filter()
     read current merge time runtime
     read eta estimatetime
 
-    echo -e "$(oam_ts) $num/$total pkgs\n  $package \n  Gone: $runtime \n  Left: $estimatetime" | \
-	sed -e 's/minutes/min/g;s/seconds./sec/g;s/hour/hr/g;s/ and / /g'
+    if [[ "$currently" = "Currently" ]] ; then
+	echo -e "$(oam_ts) $num/$total pkgs\n  $package \n  Gone: $runtime \n  Left: $estimatetime" | \
+	    sed -e 's/minutes/min/g;s/seconds./sec/g;s/hour/hr/g;s/ and / /g'
+    fi
 }
+
+trap "exit 0" SIGPIPE
 
 while /bin/true; do
        oam-uptime
        if [[ -n "$(pgrep sandbox)" ]] ; then
                genlop --nocolor --current | oam_genlop_filter
        fi
-       sleep 60
+       sleep $OAM_HEARTBEATSLEEP
 done
 
 exit 0

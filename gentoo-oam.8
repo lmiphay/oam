@@ -80,7 +80,8 @@ The
 script can be used to watch a currently running operation. It provides a snapshot
 of the current sync/update... etc The UI is provided by multitail(1). To run this
 script as a non-root user (recommended), add that user to the portage group. Also
-add /usr/sbin to the PATH (required for genlop).
+add /usr/sbin to the PATH (required for genlop). Hit 'b' to select a window and
+then browse the multitail(1) scrollback buffer.
 .P
 The
 .B oam-glsa
@@ -157,6 +158,9 @@ The number of old qcheck logs to keep. Defaults to 10
 .TP
 .BI OAM_TS
 The date/time format used by gentoo-oam for logging. Defaults to "%Y%m%d:%H:%M:%S"
+.TP
+.BI OAM_HEARTBEATSLEEP
+How long to sleep between printing out the load average and gelop(1) output. Defaults to 60 (seconds).
 
 .SH FILES
 
@@ -171,7 +175,9 @@ The date/time format used by gentoo-oam for logging. Defaults to "%Y%m%d:%H:%M:%
 .SH BUGS
 Some actions (e.g. emaint, emerge... etc) buffer output. As a result
 oam-watch may not show anything going on for long periods.
-
+.P
+The perl-cleaner stdout needs more ansi control character filtering.
+.P
 .SH SEE ALSO
 emaint(1), emerge(1), eclean(1), glsa-check(1), qcheck(1), logrotate(8),
 eix(1), genlop(1), ts(1), multitail(1)
