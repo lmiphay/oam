@@ -15,9 +15,11 @@ fi
 TOPLOGFILES="error glsa oam 
 	$LOGDATE/sync $LOGDATE/fetch $LOGDATE/update $LOGDATE/blocks"
 
-for f in $TOPLOGFILES ; do
-    [[ ! -f ${f}.log ]] && touch ${f}.log
-done
+if [[ $(id -u) -eq 0 ]] ; then
+    for f in $TOPLOGFILES ; do
+	[[ ! -f ${f}.log ]] && touch ${f}.log
+    done
+fi
 
 oam-genlop-current | \
 multitail -x "$HOSTNAME/oam/$LOGDATE gentoo-oam Version $(oam_version)" \
@@ -31,7 +33,7 @@ multitail -x "$HOSTNAME/oam/$LOGDATE gentoo-oam Version $(oam_version)" \
 	  -I $LOGDATE/fetch.log \
 	  -I $LOGDATE/update.log \
 	  -I $LOGDATE/blocks.log \
-	  -wh 4 error.log \
+	  -wh 8 error.log \
 	  -wh 4 -ci red glsa.log
 
 exit 0
