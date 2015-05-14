@@ -3,10 +3,7 @@
 source /etc/gentoo-oam.conf
 source /usr/share/gentoo-oam/gentoo-oam-functions.sh
 
-oam_log "oam-unmask-write start"
-
-oam-fetch --autounmask-write y
-
-oam_log "oam-unmask-write stop"
+OAM_TAG=fetch \
+       oam-merge --autounmask-write y --fetchonly --update $OAM_EMERGE_OPTS $@ world
 
 exit 0
