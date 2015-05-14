@@ -1,0 +1,20 @@
+#!/bin/bash
+
+source /etc/gentoo-oam.conf
+source /usr/share/gentoo-oam/gentoo-oam-functions.sh
+
+LOGPREFIX=$OAM_LOGDIR/$(date +%Y%m%d)
+
+[[ ! -d $LOGPREFIX ]] && mkdir -p $LOGPREFIX
+
+tag=${OAM_TAG:-"merge"}
+
+oam_log "oam ${tag} start $*"
+
+emerge $@ \
+       >>${LOGPREFIX}/merge.log \
+       2>>${LOGPREFIX}/blocks.log
+
+oam_log "oam ${tag} complete"
+
+exit 0
