@@ -1,0 +1,10 @@
+#!/bin/bash
+
+source /etc/gentoo-oam.conf
+source /usr/share/gentoo-oam/gentoo-oam-functions.sh
+
+OAM_TAG=emptytree \
+       I_KNOW_WHAT_I_AM_DOING=1 \
+       oam-merge --emptytree --verbose world
+
+exit 0
