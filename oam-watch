@@ -22,7 +22,8 @@ if [[ $(id -u) -eq 0 ]] ; then
 fi
 
 oam-genlop-current | \
-multitail -x "$HOSTNAME/oam/$LOGDATE gentoo-oam Version $(oam_version)" \
+    multitail -x "$HOSTNAME/oam/$LOGDATE gentoo-oam Version $(oam_version)" \
+	  --config /usr/share/gentoo-oam/gentoo-oam-multitail.conf \
 	  -T --basename \
 	  -sw 45,40 -sn 2,3 \
 	  \
@@ -30,8 +31,7 @@ multitail -x "$HOSTNAME/oam/$LOGDATE gentoo-oam Version $(oam_version)" \
 	  -j \
 	  \
 	  -i $LOGDATE/sync.log \
-	  -I $LOGDATE/fetch.log \
-	  -I $LOGDATE/update.log \
+	  -I $LOGDATE/merge.log \
 	  -I $LOGDATE/blocks.log \
 	  -wh 8 error.log \
 	  -wh 4 -ci red glsa.log
