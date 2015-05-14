@@ -11,31 +11,30 @@ oam_log "gentoo-oam V$(oam_version)"
 oam_log "oam-sync start"
 
 emaint --auto sync \
-       > >(oam_logphase "sync" ${LOGPREFIX}/sync.log) \
+       >>${LOGPREFIX}/sync.log \
        2> >(oam_stripansi | oam_err "sync")
 
-oam_log "layman start"
-# layman spams the error log
-[[ -x /usr/bin/layman ]] && \
+if [[ -x /usr/bin/layman ]] ; then
+    oam_log "layman start"
+    # layman spams the error log
     layman --sync=ALL --nocolor \
-	   > >(oam_logphase "layman" ${LOGPREFIX}/sync.log) \
+	   >>${LOGPREFIX}/sync.log \
 	   2>&1
+fi
 
 oam_log "eix-update start"
 eix-update --nocolor \
-       > >(oam_logphase "eix-update" ${LOGPREFIX}/sync.log) \
+       >>${LOGPREFIX}/sync.log \
        2> >(oam_stripansi | oam_err "eix-update")
 
 if [[ -x /usr/bin/layman ]] ; then
     # eix-remote update1 spams the error log
     eix-remote update1 \
-	       >>${LOGPREFIX}/eix-remote-update1.log \
-	       > >(oam_logphase "eix-remote-update1" ${LOGPREFIX}/sync.log) \
+	       >>${LOGPREFIX}/sync.log \
 	       2>&1
-
     # eix-remote add1 spams the error log
     eix-remote add1 \
-	       > >(oam_logphase "eix-remote-add1" ${LOGPREFIX}/sync.log) \
+	       >>${LOGPREFIX}/sync.log \
 	       2>&1
 fi
 
