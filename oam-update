@@ -7,40 +7,36 @@ LOGPREFIX=$OAM_LOGDIR/$(date +%Y%m%d)
 
 [[ ! -d $LOGPREFIX ]] && mkdir -p $LOGPREFIX
 
-oam_log "oam-update start"
-
-emerge --keep-going --update $OAM_EMERGE_OPTS world \
-       > >(oam_logphase "update" ${LOGPREFIX}/update.log) \
-       2> >(oam_logphase "update" ${LOGPREFIX}/blocks.log)
+OAM_TAG=update \
+       oam-merge --keep-going --update $OAM_EMERGE_OPTS world
 
 oam_log "revdep-rebuild start"
 revdep-rebuild --nocolor --ignore \
-       > >(oam_logphase "revdep" ${LOGPREFIX}/update.log) \
+       >>${LOGPREFIX}/merge.log \
        2> >(oam_err "revdep")
 
 oam_log "python-updater start"
 [ -x /usr/sbin/python-updater ] && \
     python-updater -eall \
-       > >(oam_logphase "python" ${LOGPREFIX}/update.log) \
+       >>${LOGPREFIX}/merge.log \
        2> >(oam_stripansi | oam_err "python")
 
 oam_log "perl-cleaner start"
-[ -x /usr/sbin/perl-cleaner ] && \
+[[ -x /usr/sbin/perl-cleaner ]] && \
     perl-cleaner --all \
-       > >(oam_stripansi | oam_logphase "perl" ${LOGPREFIX}/update.log) \
+       >>${LOGPREFIX}/merge.log \
        2> >(oam_stripansi | oam_err "perl")
 
-oam_log "preserved-rebuild start"
-[ -n "$(portageq list_preserved_libs /)" ] &&
-    emerge --keep-going -v @preserved-rebuild \
-       > >(oam_logphase "preserved" ${LOGPREFIX}/update.log) \
-       2> >(oam_err "preserved")
+[[ -n "$(portageq list_preserved_libs / )" ]] && \
+    OAM_TAG=preserved \
+	   oam-merge --keep-going --verbose @preserved-rebuild
 
-oam_log "eclean-distfiles start"
-[[ "$OAM_CLEAN_DISTFILES" = "1" ]] && \
+if [[ "$OAM_CLEAN_DISTFILES" = "1" ]] ; then
+    oam_log "eclean-distfiles start"
     eclean --nocolor distfiles \
-       > >(oam_logphase "eclean" ${LOGPREFIX}/update.log) \
+       > >(oam_logphase "eclean" ${LOGPREFIX}/merge.log) \
        2> >(oam_stripansi | oam_err "eclean")
+fi
 
 oam_log "oam-update complete"
 
