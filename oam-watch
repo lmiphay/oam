@@ -9,16 +9,6 @@ LOGDATE=$(ls -1dt 2* | head -1)
 
 if [[ -z "$LOGDATE" ]] ; then
     LOGDATE=$(date +%Y%m%d)
-    mkdir -p $LOGDATE
-fi
-
-TOPLOGFILES="error glsa oam 
-	$LOGDATE/sync $LOGDATE/fetch $LOGDATE/update $LOGDATE/blocks"
-
-if [[ $(id -u) -eq 0 ]] ; then
-    for f in $TOPLOGFILES ; do
-	[[ ! -f ${f}.log ]] && touch ${f}.log
-    done
 fi
 
 oam-genlop-current | \
@@ -31,6 +21,7 @@ oam-genlop-current | \
 	  -wh 12 oam.log \
 	  -j \
 	  \
+	  --retry-all \
 	  -i $LOGDATE/sync.log \
 	  -I $LOGDATE/merge.log \
 	  -I $LOGDATE/blocks.log \
