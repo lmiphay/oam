@@ -21,11 +21,12 @@ oam_log "python-updater start"
        >>${LOGPREFIX}/merge.log \
        2> >(oam_stripansi | oam_err "python")
 
-oam_log "perl-cleaner start"
-[[ -x /usr/sbin/perl-cleaner ]] && \
+if [[ -x /usr/sbin/perl-cleaner ]] ; then
+    oam_log "perl-cleaner start"
     perl-cleaner --all \
-       >>${LOGPREFIX}/merge.log \
+       > >(oam_stripansi >> ${LOGPREFIX}/merge.log) \
        2> >(oam_stripansi | oam_err "perl")
+fi
 
 [[ -n "$(portageq list_preserved_libs / )" ]] && \
     OAM_TAG=preserved \
