@@ -21,7 +21,7 @@ oam_log "python-updater start"
        >>${LOGPREFIX}/merge.log \
        2> >(oam_stripansi | oam_err "python")
 
-if [[ -x /usr/sbin/perl-cleaner ]] ; then
+if [[ "$OAM_PERL_CLEANER" -eq 1 && -x /usr/sbin/perl-cleaner ]] ; then
     oam_log "perl-cleaner start"
     perl-cleaner --all \
        > >(oam_stripansi >> ${LOGPREFIX}/merge.log) \
