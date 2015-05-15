@@ -19,6 +19,11 @@ install:
 	install gentoo-oam-multitail.conf $(DESTDIR)/usr/share/gentoo-oam
 	install oam-emptytree $(DESTDIR)/usr/sbin
 	install oam-fetch $(DESTDIR)/usr/sbin
+	install oam-edit-blocks $(DESTDIR)/usr/sbin
+	install oam-edit-errors $(DESTDIR)/usr/sbin
+	install oam-edit-glsa $(DESTDIR)/usr/sbin
+	install oam-edit-sync $(DESTDIR)/usr/sbin
+	install oam-edit-updates $(DESTDIR)/usr/sbin
 	install oam-glsa $(DESTDIR)/usr/sbin
 	install oam-qcheck $(DESTDIR)/usr/sbin
 	install oam-genlop-current $(DESTDIR)/usr/sbin

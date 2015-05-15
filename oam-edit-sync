@@ -1,0 +1,5 @@
+#!/bin/bash
+
+source /etc/gentoo-oam.conf
+
+exec $edit $OAM_LOGDIR/sync.log
