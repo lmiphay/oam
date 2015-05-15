@@ -28,14 +28,13 @@ eix-update --nocolor \
        2> >(oam_stripansi | oam_err "eix-update")
 
 if [[ -x /usr/bin/layman ]] ; then
-    # eix-remote update1 spams the error log
-    eix-remote update1 \
-	       >>${LOGPREFIX}/sync.log \
-	       2>&1
-    # eix-remote add1 spams the error log
-    eix-remote add1 \
-	       >>${LOGPREFIX}/sync.log \
-	       2>&1
+    # eix-remote {update1,add1} spam the error log
+    for cmd in update1 add1 ; do
+	oam_log "eix-remote $cmd start"
+	eix-remote $cmd \
+		   > >(oam_stripansi >>${LOGPREFIX}/sync.log) \
+		   2>&1
+    done
 fi
 
 oam_log "oam-sync complete"
