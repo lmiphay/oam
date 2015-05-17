@@ -16,12 +16,13 @@ oam-genlop-current | \
 	  -x "$HOSTNAME/oam/$LOGDATE gentoo-oam Version $(oam_version)" \
 	  --config /usr/share/gentoo-oam/gentoo-oam-multitail.conf \
 	  --basename \
-	  -sw 45,40 -sn 2,3 \
+	  -sw 45,40 -sn 2,4 \
 	  \
-	  -wh 12 oam.log \
 	  -j \
+	  -wh 13 oam.log \
 	  \
 	  --retry-all \
+	  -wh 6 -i /var/log/emerge.log \
 	  -i $LOGDATE/sync.log \
 	  -I $LOGDATE/merge.log \
 	  -I $LOGDATE/blocks.log \
