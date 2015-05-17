@@ -18,7 +18,7 @@ revdep-rebuild --nocolor --ignore \
 oam_log "python-updater start"
 [ -x /usr/sbin/python-updater ] && \
     python-updater -eall \
-       >>${LOGPREFIX}/merge.log \
+       > >(oam_stripansi >> ${LOGPREFIX}/merge.log) \
        2> >(oam_stripansi | oam_err "python")
 
 if [[ "$OAM_PERL_CLEANER" -eq 1 && -x /usr/sbin/perl-cleaner ]] ; then
