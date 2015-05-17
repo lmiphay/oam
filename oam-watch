@@ -22,7 +22,7 @@ oam-genlop-current | \
 	  -wh 13 oam.log \
 	  \
 	  --retry-all \
-	  -wh 6 -i /var/log/emerge.log \
+	  -wh 6 -l oam-emergelog \
 	  -i $LOGDATE/sync.log \
 	  -I $LOGDATE/merge.log \
 	  -I $LOGDATE/blocks.log \
