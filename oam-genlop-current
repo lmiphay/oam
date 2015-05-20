@@ -22,18 +22,22 @@ oam_genlop_filter()
 echo "$(oam_ts) oam-watch started"
 
 while /bin/true; do
-    inotifywait --timeout $OAM_HEARTBEATSLEEP --quiet --event modify /var/log/emerge.log
+    inotifywait --timeout $OAM_HEARTBEATSLEEP --quiet --event modify /var/log/emerge.log >/dev/null
     case "$?" in
-	0)
-	    sleep 1
-	    [[ -n "$(pgrep sandbox)" ]] && \
-		genlop --nocolor --current | oam_genlop_filter
+        0)
+	    for ((t=0; $t<$OAM_SANDBOXWAIT; t++)); do
+		if [[ -n "$(pgrep sandbox)" ]] ; then
+		    genlop --nocolor --current | oam_genlop_filter
+		    break
+		fi
+		sleep 1
+	    done
+	    ;&
+	2)
+            oam-uptime
             ;;
 	1)
 	    echo "$(oam_ts) /var/log/emerge.log was removed"
-            ;;
-	2)
-	    oam-uptime
             ;;
 	*)
 	    echo "$(oam_ts) inotifywait exited with $?"
