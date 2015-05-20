@@ -19,8 +19,6 @@ oam_genlop_filter()
     fi
 }
 
-echo "$(oam_ts) oam-watch started"
-
 while /bin/true; do
     inotifywait --timeout $OAM_HEARTBEATSLEEP --quiet --event modify /var/log/emerge.log >/dev/null
     case "$?" in
