@@ -18,15 +18,15 @@ oam-genlop-current | \
 	  --basename \
 	  -sw 45,40 -sn 2,4 \
 	  \
+	  -wh 20 oam.log \
 	  -j \
-	  -wh 13 oam.log \
 	  \
 	  -wh 6 -l oam-emergelog \
 	  --retry-all \
+	  -wh 6 error.log \
+	  -wh 6 -ci red glsa.log \
 	  -i $LOGDATE/sync.log \
 	  -I $LOGDATE/merge.log \
-	  -I $LOGDATE/blocks.log \
-	  -wh 8 error.log \
-	  -wh 4 -ci red glsa.log
+	  -I $LOGDATE/blocks.log
 
 exit 0
