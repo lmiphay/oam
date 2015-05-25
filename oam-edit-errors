@@ -2,4 +2,6 @@
 
 source /etc/gentoo-oam.conf
 
-exec $edit $OAM_LOGDIR/error.log
+edit=${EDITOR:-"/usr/bin/vi"}
+
+exec xterm -e $edit $OAM_LOGDIR/error.log &

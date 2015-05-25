@@ -132,6 +132,9 @@ The
 .B oam-version
 simply prints the version of the gentoo-oam scripts to stdout.
 .P
+
+.SH SYSTEM SETTINGS
+
 These settings control the operation of gentoo-oam and are set in /etc/gentoo-oam.conf:
 .TP
 .BI OAM_EMERGE_OPTS
@@ -166,14 +169,63 @@ How long to sleep between printing out the load average and gelop(1) output. Def
 How long to wait for the sandbox process to appear before trying to run genlop(1).
 
 .SH FILES
+.TP
+.BI /etc/gentoo-oam.conf
+gentoo-oam system configuration
+.TP
+.BI /var/log/oam/error.log
+central locations for error reports
+.TP
+.BI /var/log/oam/glsa.log
+results of a glsa-check(1) run following a sync
+.TP
+.BI /var/log/oam/oam.log
+log of oam operations started/stopped
+.TP
+.BI /var/log/oam/DATE/blocks.log
+log of the errors reported by emerge fetch operation (typically blocks) for one particular day
+.TP
+.BI /var/log/oam/DATE/merge.log
+log of the emerge for one particular day
+.TP
+.BI /var/log/oam/DATE/sync.log
+log of the oam-sync operation for one particular day
+.TP
+.BI /usr/share/gentoo-oam/gentoo-oam-functions.sh
+common shell functions called by the various oam scripts
+.TP
+.BI /usr/share/gentoo-oam/gentoo-oam-multitail.conf
+some system wide configuration for multitail(1) when called from oam-watch
 
-/etc/gentoo-oam.conf \- gentoo-oam system configuration
+.SH HELPER PROGRAMS
 
-/var/log/oam/oam.log \- log of oam operations started/stopped
-
-/var/log/oam/error.log \- central locations for error reports
-
-/var/log/oam/glsa.log \- results of a glsa-check(1) run following a sync
+These oam log files can be viewed while running oam-watch:
+.TP
+.BI /var/log/oam/DATE/blocks.log
+by default this file can be viewed from oam-watch when <control>b is pressed
+.TP
+.BI /var/log/oam/error.log
+by default this file can be viewed from oam-watch when <control>e is pressed
+.TP
+.BI /var/log/oam/glsa.log
+by default this file can be viewed from oam-watch when <control>g is pressed
+.TP
+.BI /var/log/oam/DATE/merge.log
+by default this file can be viewed from oam-watch when <control>r is pressed
+.TP
+.BI /var/log/oam/oam.log
+by default this file can be viewed from oam-watch when <control>o is pressed
+.TP
+.BI /var/log/oam/DATE/sync.log
+by default this file can be viewed from oam-watch when <control>y is pressed
+.P
+These environment settings are required for the external viewing function:
+.TP
+.BI DISPLAY
+A new xterm(1) is run to view each log file - so DISPLAY must be set appropriately.
+.TP
+.BI EDITOR
+the EDITOR setting is used as viewing program.
 
 .SH BUGS
 Some actions (e.g. emaint, emerge... etc) buffer output. As a result

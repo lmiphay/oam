@@ -22,8 +22,9 @@ install:
 	install oam-edit-blocks $(DESTDIR)/usr/sbin
 	install oam-edit-errors $(DESTDIR)/usr/sbin
 	install oam-edit-glsa $(DESTDIR)/usr/sbin
+	install oam-edit-merge $(DESTDIR)/usr/sbin
+	install oam-edit-oam $(DESTDIR)/usr/sbin
 	install oam-edit-sync $(DESTDIR)/usr/sbin
-	install oam-edit-updates $(DESTDIR)/usr/sbin
 	install oam-emergelog $(DESTDIR)/usr/sbin
 	install oam-glsa $(DESTDIR)/usr/sbin
 	install oam-qcheck $(DESTDIR)/usr/sbin

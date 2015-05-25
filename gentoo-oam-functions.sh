@@ -29,6 +29,17 @@ oam_log()
     fi
 }
 
+oam_logdate()
+{
+    local logdate=$(ls -1dt $OAM_LOGDIR/2* | head -1)
+
+    if [[ -z "$logdate" ]] ; then
+	logdate="$OAM_LOGDIR/$(date +%Y%m%d)"
+    fi
+    
+    echo "$logdate"
+}
+
 oam_logphase()
 {
     local tag=$1 logfile=$2

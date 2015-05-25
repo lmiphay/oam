@@ -5,4 +5,4 @@ source /usr/share/gentoo-oam/gentoo-oam-functions.sh
 
 edit=${EDITOR:-"/usr/bin/vi"}
 
-exec xterm -e $edit $(oam_logdate)/sync.log &
+exec xterm -e $edit $(oam_logdate)/merge.log &

@@ -1,5 +1,8 @@
 #!/bin/bash
 
 source /etc/gentoo-oam.conf
+source /usr/share/gentoo-oam/gentoo-oam-functions.sh
 
-exec $edit $OAM_LOGDIR/blocks.log
+edit=${EDITOR:-"/usr/bin/vi"}
+
+exec xterm -e $edit $(oam_logdate)/blocks.log &
