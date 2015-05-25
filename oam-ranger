@@ -1,0 +1,5 @@
+#!/bin/bash
+
+source /etc/gentoo-oam.conf
+
+exec xterm -e ranger $OAM_LOGDIR &

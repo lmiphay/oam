@@ -30,6 +30,7 @@ install:
 	install oam-qcheck $(DESTDIR)/usr/sbin
 	install oam-genlop-current $(DESTDIR)/usr/sbin
 	install oam-merge $(DESTDIR)/usr/sbin
+	install oam-ranger $(DESTDIR)/usr/sbin
 	install oam-sync $(DESTDIR)/usr/sbin
 	install oam-unmask-write $(DESTDIR)/usr/sbin
 	install oam-update $(DESTDIR)/usr/sbin
