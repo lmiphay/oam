@@ -140,6 +140,11 @@ These settings control the operation of gentoo-oam and are set in /etc/gentoo-oa
 .BI OAM_EMERGE_OPTS
 The parameters passed to emerge for update. Defaults to "--backtrack=50 --deep -v"
 .TP
+.BI OAM_EMERGE_SYNC
+Used to decide if emerge --sync should be run (for example you may not want to
+run it if the /usr/portage/distfiles is nfs mounted from another server).
+Defaults to 1
+.TP
 .BI OAM_CLEAN_DISTFILES
 Used to decide if eclean distfiles should be run (for example you may not want to
 run it if the /usr/portage/distfiles is nfs mounted from another server). Defaults to 1
