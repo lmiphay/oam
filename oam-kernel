@@ -1,0 +1,73 @@
+#!/bin/bash
+
+source /etc/gentoo-oam.conf
+source /usr/share/gentoo-oam/gentoo-oam-functions.sh
+
+set -e
+
+usrsrc_kernel=$(readlink /usr/src/linux|sed -e 's/^linux-//')
+running_kernel=$(uname -r)
+
+oam_kernel_cp_config() {
+    if [[ -f "$1" ]] ; then
+	oam_log "installing config from $1"
+	${2:-"cat"} $1 > /usr/src/linux/.config
+	return 0
+    else
+	return 1
+    fi
+}
+
+oam_kernel_install_config()
+{
+    if [[ ! -f "/usr/src/linux/.config" ]] ; then
+	oam_log "/usr/src/linux/.config found - not overwriting"
+    else
+	oam_kernel_cp_config "/usr/src/linux-$(uname -r)/.config" || \
+	oam_kernel_cp_config "/proc/config.gz" "zcat"             || \
+	oam_kernel_cp_config "/boot/config-$(uname -r)"
+    fi
+}
+
+oam_kernel_backup_config()
+{
+    if [[ -x /usr/bin/git ]] ; then
+	[[ ! -d /usr/src/config.git ]] && mkdir -p /usr/src/config.git && git init /usr/src/config.git
+	git pull #??
+	cp -p /usr/src/linux/.config /usr/src/config.git/kernel-config-$HOSTNAME
+	git add /usr/src/config.git/kernel-config-$HOSTNAME
+	git commit -m "oam-kernel $usrsrc_kernel for $HOSTNAME"
+	#git tag -a v${usrsrc_kernel} "oam-kernel $usrsrc_kernel for $HOSTNAME"
+    else
+	mkdir /usr/src/config
+	cp .config /usr/src/config/kernel-config-${HOSTNAME}-$(uname -r)
+    fi
+}
+
+oam_kernel_install_efi()
+{
+    local tag=$1
+    cp -p /usr/src/linux/arch/x86_64/boot/bzImage /boot/efi/EFI/Boot/${tag}.efi
+    efibootmgr --create --part 1 --label "${tag}" --loader '\efi\boot\'${tag}.efi
+}
+
+oam_kernel_build()
+{
+    oam-kernel-install-config
+    make -C /usr/src/linux olddefconfig all modules_install
+    oam_kernel_backup_config
+    oam-merge @module-rebuild
+    [[ -d /boot/efi/EFI/Boot && -x /usr/sbin/efibootmgr ]] && oam_kernel_install_efi $usrsrc_kernel
+    #installkernel
+}
+
+if [[ -d /lib/modules/$usrsrc_kernel ]] ; then
+    oam_log "/lib/modules/$usrsrc_kernel found - kernel build will not be attempted"
+elif [[ -f /usr/src/linux/vmlinux ]] ; then
+    oam_log "/usr/src/linux/vmlinux (partial? build) found - kernel build will not be attempted"
+else
+    # eselect kernel list
+    oam_kernel_build
+fi
+
+exit 0
