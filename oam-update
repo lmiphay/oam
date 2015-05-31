@@ -32,13 +32,6 @@ fi
     OAM_TAG=preserved \
 	   oam-merge --keep-going --verbose @preserved-rebuild
 
-if [[ "$OAM_CLEAN_DISTFILES" = "1" ]] ; then
-    oam_log "eclean-distfiles start"
-    eclean --nocolor distfiles \
-       > >(oam_logphase "eclean" ${LOGPREFIX}/merge.log) \
-       2> >(oam_stripansi | oam_err "eclean")
-fi
-
 oam_log "oam-update complete"
 
 exit 0

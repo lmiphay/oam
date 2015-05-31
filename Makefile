@@ -17,6 +17,7 @@ install:
 	install gentoo-oam.conf $(DESTDIR)/etc
 	install gentoo-oam-functions.sh $(DESTDIR)/usr/share/gentoo-oam
 	install gentoo-oam-multitail.conf $(DESTDIR)/usr/share/gentoo-oam
+	install oam-clean $(DESTDIR)/usr/sbin
 	install oam-emptytree $(DESTDIR)/usr/sbin
 	install oam-fetch $(DESTDIR)/usr/sbin
 	install oam-edit-blocks $(DESTDIR)/usr/sbin
