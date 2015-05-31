@@ -28,7 +28,7 @@ install:
 	install oam-emergelog $(DESTDIR)/usr/sbin
 	install oam-glsa $(DESTDIR)/usr/sbin
 	install oam-qcheck $(DESTDIR)/usr/sbin
-	install oam-genlop-current $(DESTDIR)/usr/sbin
+	install oam-genlop $(DESTDIR)/usr/sbin
 	install oam-merge $(DESTDIR)/usr/sbin
 	install oam-ranger $(DESTDIR)/usr/sbin
 	install oam-sync $(DESTDIR)/usr/sbin

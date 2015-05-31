@@ -11,7 +11,7 @@ if [[ -z "$LOGDATE" ]] ; then
     LOGDATE=$(date +%Y%m%d)
 fi
 
-oam-genlop-current | \
+oam-genlop tail | \
     multitail \
 	  -x "$HOSTNAME/oam/$LOGDATE gentoo-oam Version $(oam_version)" \
 	  --config /usr/share/gentoo-oam/gentoo-oam-multitail.conf \
