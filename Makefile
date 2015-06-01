@@ -30,6 +30,7 @@ install:
 	install oam-glsa $(DESTDIR)/usr/sbin
 	install oam-qcheck $(DESTDIR)/usr/sbin
 	install oam-genlop $(DESTDIR)/usr/sbin
+	install oam-kernel $(DESTDIR)/usr/sbin
 	install oam-merge $(DESTDIR)/usr/sbin
 	install oam-ranger $(DESTDIR)/usr/sbin
 	install oam-sync $(DESTDIR)/usr/sbin
