@@ -1,0 +1,5 @@
+^o oam.log  ^e errors.log
+            ^g glsa.log
+            ^y sync.log
+            ^b blocks.log  
+^n ranger   ^r merge.log

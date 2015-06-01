@@ -16,9 +16,10 @@ oam-genlop tail | \
 	  -x "$HOSTNAME/oam/$LOGDATE gentoo-oam Version $(oam_version)" \
 	  --config /usr/share/gentoo-oam/gentoo-oam-multitail.conf \
 	  --basename \
-	  -sw 45,40 -sn 2,4 \
+	  -sw 45,40 -sn 3,4 \
 	  \
-	  -wh 20 oam.log \
+	  -wh 6 /usr/share/gentoo-oam/oam-watch.help \
+	  -wh 13 oam.log \
 	  -j \
 	  \
 	  -wh 6 -l oam-emergelog \
