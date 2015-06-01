@@ -1,5 +1,14 @@
 # -*- sh -*-
 
+oam_cmd()
+{
+    local logfile=$1
+
+    shift
+    oam_log "$*"
+    $* >> $logfile 2>&1
+}
+
 oam_die()
 {
     if [[ $(id -u) -eq 0 ]] ; then
@@ -38,6 +47,17 @@ oam_logdate()
     fi
     
     echo "$logdate"
+}
+
+oam_logfile()
+{
+    local logprefix=$OAM_LOGDIR/$(date +%Y%m%d)
+
+    [[ ! -d $logprefix ]] && mkdir -p $logprefix
+
+    [[ ! -f ${LOGPREFIX}/${1}.log ]] && echo "$(oam_ts) created log file" >>${LOGPREFIX}/${1}.log
+
+    echo ${LOGPREFIX}/${1}.log
 }
 
 oam_logphase()
