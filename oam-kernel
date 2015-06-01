@@ -5,61 +5,63 @@ source /usr/share/gentoo-oam/gentoo-oam-functions.sh
 
 set -e
 
+logfile=$(oam_logfile kernel)
 usrsrc_kernel=$(readlink /usr/src/linux|sed -e 's/^linux-//')
 running_kernel=$(uname -r)
+repo=/usr/src/kernel-config.git
+config=/usr/src/linux/.config
 
 oam_kernel_cp_config() {
-    if [[ -f "$1" ]] ; then
-	oam_log "installing config from $1"
-	${2:-"cat"} $1 > /usr/src/linux/.config
-	return 0
-    else
-	return 1
-    fi
+    [[ ! -f "$1" ]] && return 1
+    
+    oam_log "installing config from $1"
+    ${2:-"cat"} $1 > $config
+    return 0
 }
 
 oam_kernel_install_config()
 {
-    if [[ ! -f "/usr/src/linux/.config" ]] ; then
-	oam_log "/usr/src/linux/.config found - not overwriting"
+    if [[ -f "$config" ]] ; then
+	oam_log "$config found - not overwriting"
     else
 	oam_kernel_cp_config "/usr/src/linux-$(uname -r)/.config" || \
 	oam_kernel_cp_config "/proc/config.gz" "zcat"             || \
-	oam_kernel_cp_config "/boot/config-$(uname -r)"
+	oam_kernel_cp_config "/boot/config-$(uname -r)"           || \
+	oam_kernel_cp_config "$repo/$HOSTNAME"
     fi
 }
 
 oam_kernel_backup_config()
 {
     if [[ -x /usr/bin/git ]] ; then
-	[[ ! -d /usr/src/config.git ]] && mkdir -p /usr/src/config.git && git init /usr/src/config.git
-	git pull #??
-	cp -p /usr/src/linux/.config /usr/src/config.git/kernel-config-$HOSTNAME
-	git add /usr/src/config.git/kernel-config-$HOSTNAME
-	git commit -m "oam-kernel $usrsrc_kernel for $HOSTNAME"
-	#git tag -a v${usrsrc_kernel} "oam-kernel $usrsrc_kernel for $HOSTNAME"
+	[[ ! -d $repo ]] && mkdir -p $repo && oam_cmd $logfile git init $repo
+	cd $repo
+	oam_cmd $logfile cp -p $config $HOSTNAME
+	oam_cmd $logfile git add $HOSTNAME
+	oam_cmd $logfile git commit -m "$HOSTNAME $usrsrc_kernel (oam-kernel)"
     else
-	mkdir /usr/src/config
-	cp .config /usr/src/config/kernel-config-${HOSTNAME}-$(uname -r)
+	[[ ! -d /usr/src/kernel-config ]] && mkdir -p /usr/src/kernel-config
+	oam_cmd $logfile cp -p $config /usr/src/kernel-config/${HOSTNAME}-$usrsrc_kernel
     fi
 }
 
 oam_kernel_install_efi()
 {
     local tag=$1
-    cp -p /usr/src/linux/arch/x86_64/boot/bzImage /boot/efi/EFI/Boot/${tag}.efi
-    efibootmgr --create --part 1 --label "${tag}" --loader '\efi\boot\'${tag}.efi
+    oam_cmd $logfile cp -p /usr/src/linux/arch/x86_64/boot/bzImage /boot/efi/EFI/Boot/${tag}.efi
+    oam_cmd $logfile efibootmgr --create --part 1 --label "${tag}" --loader '\efi\boot\'${tag}.efi
 }
 
 oam_kernel_build()
 {
-    oam-kernel-install-config
-    make -C /usr/src/linux olddefconfig all modules_install
+    oam_kernel_install_config
+    oam_cmd $logfile make -C /usr/src/linux olddefconfig all modules_install
     oam_kernel_backup_config
     oam-merge @module-rebuild
     [[ -d /boot/efi/EFI/Boot && -x /usr/sbin/efibootmgr ]] && oam_kernel_install_efi $usrsrc_kernel
-    #installkernel
 }
+
+oam_log "kernel updater start"
 
 if [[ -d /lib/modules/$usrsrc_kernel ]] ; then
     oam_log "/lib/modules/$usrsrc_kernel found - kernel build will not be attempted"
@@ -69,5 +71,7 @@ else
     # eselect kernel list
     oam_kernel_build
 fi
+
+oam_log "kernel updater complete"
 
 exit 0
