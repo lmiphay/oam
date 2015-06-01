@@ -27,6 +27,7 @@ oam-genlop tail | \
 	  -wh 6 -ci red glsa.log \
 	  -i $LOGDATE/sync.log \
 	  -I $LOGDATE/merge.log \
-	  -I $LOGDATE/blocks.log
+	  -I $LOGDATE/blocks.log \
+	  -I $LOGDATE/kernel.log
 
 exit 0
