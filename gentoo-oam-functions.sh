@@ -79,5 +79,5 @@ oam_ts()
 
 oam_version()
 {
-    echo "1.1"
+    echo "2.0"
 }
