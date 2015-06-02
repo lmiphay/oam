@@ -196,10 +196,12 @@ The step should ideally handle its own logging (in this case gentoo-oam capture 
 The step should return 0 to indicate that the action succeeded. If it returns a non-zero result then the
 workflow will be aborted at that point.
 .P
-Example OAM_LOCAL setting in /etc/gentoo-oam.d/oam-local.conf (with made up scripts being called):
+Example OAM_LOCAL setting in /etc/gentoo-oam.d/oam-local.conf (not all of these scripts are included in gentoo-oam):
 .PP
 .RS 0
 OAM_LOCAL="
+.RS 0
+	oam-emptytree
 .RS 0
 	depclean-pretend.sh
 .RS 0
