@@ -3,14 +3,20 @@
 source /etc/gentoo-oam.conf
 source /usr/share/gentoo-oam/gentoo-oam-functions.sh
 
+set -e
+
 [[ ! -d $OAM_LOGDIR ]] && mkdir -p $OAM_LOGDIR
 
-oam_log "oam-weekly start"
+scriptname=$(basename $0)
+steps=${scriptname^^}
+steps=${steps/-/_}
 
-for op in $OAM_WEEKLY ; do
-    $op
+oam_log "$scriptname start"
+
+for op in ${!steps} ; do
+    $op || oam_die "$op failed - exiting $scriptname"
 done
 
-oam_log "oam-weekly stop"
+oam_log "$scriptname stop"
 
 exit 0
