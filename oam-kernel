@@ -8,27 +8,15 @@ set -e
 logfile=$(oam_logfile kernel)
 usrsrc_kernel=$(readlink /usr/src/linux|sed -e 's/^linux-//')
 running_kernel=$(uname -r)
-repo=/usr/src/kernel-config.git
+repo=$OAM_KERNEL_CONFIG_REPO
 config=/usr/src/linux/.config
 
 oam_kernel_cp_config() {
     [[ ! -f "$1" ]] && return 1
     
-    oam_log "installing config from $1"
+    oam_log "${2:-cat} $1 > $config"
     ${2:-"cat"} $1 > $config
     return 0
-}
-
-oam_kernel_install_config()
-{
-    if [[ -f "$config" ]] ; then
-	oam_log "$config found - not overwriting"
-    else
-	oam_kernel_cp_config "/usr/src/linux-$(uname -r)/.config" || \
-	oam_kernel_cp_config "/proc/config.gz" "zcat"             || \
-	oam_kernel_cp_config "/boot/config-$(uname -r)"           || \
-	oam_kernel_cp_config "$repo/$HOSTNAME"
-    fi
 }
 
 oam_kernel_backup_config()
@@ -45,6 +33,21 @@ oam_kernel_backup_config()
     fi
 }
 
+oam_kernel_config()
+{
+    if [[ -f "$config" ]] ; then
+	oam_log "$config found - not overwriting"
+    else
+	oam_kernel_cp_config "/usr/src/linux-$(uname -r)/.config" || \
+	oam_kernel_cp_config "/proc/config.gz" "zcat"             || \
+	oam_kernel_cp_config "/boot/config-$(uname -r)"           || \
+	oam_kernel_cp_config "$repo/$HOSTNAME"
+
+	oam_cmd $logfile make -C /usr/src/linux olddefconfig
+	oam_kernel_backup_config
+    fi
+}
+
 oam_kernel_install_efi()
 {
     local tag=$1
@@ -54,24 +57,27 @@ oam_kernel_install_efi()
 
 oam_kernel_build()
 {
-    oam_kernel_install_config
-    oam_cmd $logfile make -C /usr/src/linux olddefconfig all modules_install
-    oam_kernel_backup_config
+    oam_cmd $logfile make -C /usr/src/linux all modules_install
     oam-merge @module-rebuild
     [[ -d /boot/efi/EFI/Boot && -x /usr/sbin/efibootmgr ]] && oam_kernel_install_efi $usrsrc_kernel
 }
 
-oam_log "kernel updater start"
-
-if [[ -d /lib/modules/$usrsrc_kernel ]] ; then
-    oam_log "/lib/modules/$usrsrc_kernel found - kernel build will not be attempted"
-elif [[ -f /usr/src/linux/vmlinux ]] ; then
-    oam_log "/usr/src/linux/vmlinux (partial? build) found - kernel build will not be attempted"
-else
-    # eselect kernel list
+if [[ "$1" = "build" ]] ; then
     oam_kernel_build
-fi
+else
+    oam_log "kernel updater start"
 
-oam_log "kernel updater complete"
+    if [[ -d /lib/modules/$usrsrc_kernel ]] ; then
+	oam_log "/lib/modules/$usrsrc_kernel found - kernel build will not be attempted"
+    elif [[ -f /usr/src/linux/vmlinux ]] ; then
+	oam_log "/usr/src/linux/vmlinux (partial? build) found - kernel build will not be attempted"
+    else
+	# eselect kernel list
+	oam_kernel_config
+	oam_kernel_build
+    fi
+
+    oam_log "kernel updater complete"
+fi
 
 exit 0
