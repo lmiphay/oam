@@ -11,7 +11,7 @@ For example the default weekly task will run these steps:
 3. fetch: `emerge --fetchonly --update world`
 4. update: `emerge --update world, python-updater, perl-cleaner, emerge @preserved-rebuild`
 5. clean: `eclean distfiles, eclean-kernel`
-6. kernel: if a new kernel has been install an attempt to build it is made
+6. kernel: attempts to build a new kernel if necessary
 7. qcheck: `qcheck --all`
 
 From configuration a complete step can be skipped,
@@ -36,7 +36,7 @@ The operator must still:
 
 #### Why should you not use gentoo-oam?
 
-* its not a way to become familar with gentoo (learn emerge... etc first)
+* it is not a way to become familar with gentoo (learn emerge... etc first)
 * you are happy with your current workflow (stick with your own scripts)
 
 #### Known Similar Tools
