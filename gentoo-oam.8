@@ -173,7 +173,45 @@ How long to sleep between printing out the load average and gelop(1) output. Def
 .BI OAM_SANDBOXWAIT
 How long to wait for the sandbox process to appear before trying to run genlop(1).
 
+.SH WORKFLOW
+
+As an example, to add a new "local" workflow:
+.TP
+.BI /usr/local/sbin/oam-local
+Create the new workflow script by copying the oam-weekly script: cp /usr/sbin/oam-weekly /usr/local/sbin/oam-local
+.TP
+.BI /etc/gentoo-oam.d/oam-local.conf
+Add the required steps to a new OAM_LOCAL variable defined in: /etc/gentoo-oam.d/oam-local.conf
+Note the underscore required in the variable and the minus sign in the configuration file name.
+Other settings which need to be specific to this new workflow can be added to this newly created
+configuration file and they will override the system settings found in /etc/gentoo-oam.conf
+.P
+Non gentoo-oam steps can be added to the new workflow provided that:
+.IP \(bu
+The step can be executed as a program requiring no arguments (note that environment variables can be set/exported
+in the workflow configuration file); e.g. "/usr/local/bin/localbackup.sh"
+.IP \(bu
+The step should ideally handle its own logging (in this case gentoo-oam capture output to /var/oam/oam-local.log).
+.IP \(bu
+The step should return 0 to indicate that the action succeeded. If it returns a non-zero result then the
+workflow will be aborted at that point.
+.P
+Example OAM_LOCAL setting in /etc/gentoo-oam.d/oam-local.conf (with made up scripts being called):
+.PP
+.RS 0
+OAM_LOCAL="
+.RS 0
+	depclean-pretend.sh
+.RS 0
+	localdumpfs.sh
+.RS 0
+	rdumpfs-rota-daily
+.RS 0
+	smartctl-start.sh
+"
+
 .SH FILES
+
 .TP
 .BI /etc/gentoo-oam.conf
 gentoo-oam system configuration

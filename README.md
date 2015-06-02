@@ -26,7 +26,7 @@ The operator must still:
 
 ### Features
 
-* simple workflow configuration on a per-server basis
+* simple workflow configuration on a per-server basis - new workflows can be added
 * dashboard display of currently running oam processes
 * logs all operations, errors, process output... etc
 * install via ebuild from the [lmiphay overlay](https://gitweb.gentoo.org/user/lmiphay.git/about/)
