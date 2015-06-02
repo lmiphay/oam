@@ -2,6 +2,6 @@
 
 source /etc/gentoo-oam.conf
 
-edit=${EDITOR:-"/usr/bin/vi"}
+$OAM_EDITOR $OAM_LOGDIR/glsa.log &
 
-exec xterm -e $edit $OAM_LOGDIR/glsa.log &
+exit 0
