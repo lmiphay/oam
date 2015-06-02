@@ -10,7 +10,7 @@ check:
 .PHONY: install
 install:
 	install -d $(DESTDIR)/usr/sbin \
-	$(DESTDIR)/etc $(DESTDIR)/etc/logrotate.d \
+	$(DESTDIR)/etc $(DESTDIR)/etc/gentoo-oam.d $(DESTDIR)/etc/logrotate.d \
 	$(DESTDIR)/usr/share/gentoo-oam \
 	$(DESTDIR)/var/log/oam/ \
 	$(DESTDIR)/usr/share/man/man8
