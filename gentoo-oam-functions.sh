@@ -55,9 +55,9 @@ oam_logfile()
 
     [[ ! -d $logprefix ]] && mkdir -p $logprefix
 
-    [[ ! -f ${LOGPREFIX}/${1}.log ]] && echo "$(oam_ts) created log file" >>${LOGPREFIX}/${1}.log
+    [[ ! -f ${logprefix}/${1}.log ]] && echo "$(oam_ts) created log file" >>${logprefix}/${1}.log
 
-    echo ${LOGPREFIX}/${1}.log
+    echo ${logprefix}/${1}.log
 }
 
 oam_logphase()
