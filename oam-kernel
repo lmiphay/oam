@@ -26,7 +26,7 @@ oam_kernel_backup_config()
 	cd $repo
 	oam_cmd $logfile cp -p $config $HOSTNAME
 	oam_cmd $logfile git add $HOSTNAME
-	oam_cmd $logfile git commit -m "$HOSTNAME $usrsrc_kernel (oam-kernel)"
+	oam_cmd $logfile git commit -m "${HOSTNAME}/${usrsrc_kernel}/oam-kernel"
     else
 	[[ ! -d /usr/src/kernel-config ]] && mkdir -p /usr/src/kernel-config
 	oam_cmd $logfile cp -p $config /usr/src/kernel-config/${HOSTNAME}-$usrsrc_kernel
@@ -38,7 +38,7 @@ oam_kernel_config()
     if [[ -f "$config" ]] ; then
 	oam_log "$config found - not overwriting"
     else
-	oam_kernel_cp_config "/usr/src/linux-$(uname -r)/.config" || \
+	oam_kernel_cp_config "/usr/src/linux-${running_kernel}/.config" || \
 	oam_kernel_cp_config "/proc/config.gz" "zcat"             || \
 	oam_kernel_cp_config "/boot/config-$(uname -r)"           || \
 	oam_kernel_cp_config "$repo/$HOSTNAME"
@@ -59,13 +59,12 @@ oam_kernel_build()
 {
     oam_cmd $logfile make -C /usr/src/linux all modules_install
     oam-merge @module-rebuild
-    [[ -d /boot/efi/EFI/Boot && -x /usr/sbin/efibootmgr ]] && oam_kernel_install_efi $usrsrc_kernel
 }
 
 if [[ "$1" = "build" ]] ; then
     oam_kernel_build
 else
-    oam_log "kernel updater start"
+    oam_log "kernel updater start: running kernel=${running_kernel}, latest /usr/src kernel=$usrsrc_kernel"
 
     if [[ -d /lib/modules/$usrsrc_kernel ]] ; then
 	oam_log "/lib/modules/$usrsrc_kernel found - kernel build will not be attempted"
@@ -75,6 +74,9 @@ else
 	# eselect kernel list
 	oam_kernel_config
 	oam_kernel_build
+	if [[ $OAM_KERNEL_INSTALL -eq 1 ]] ; then
+	    [[ -d /boot/efi/EFI/Boot && -x /usr/sbin/efibootmgr ]] && oam_kernel_install_efi $usrsrc_kernel
+	fi
     fi
 
     oam_log "kernel updater complete"
