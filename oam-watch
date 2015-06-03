@@ -1,9 +1,9 @@
 #!/bin/bash
 
-source /etc/gentoo-oam.conf || oam_die "/etc/gentoo-oam.conf missing - exiting"
+source /etc/gentoo-oam.conf
 source /usr/share/gentoo-oam/gentoo-oam-functions.sh
 
-cd $OAM_LOGDIR || oam_die "/var/log/oam is missing - exiting"
+cd $OAM_LOGDIR || oam_die "$OAM_LOGDIR is missing - exiting"
 
 LOGDATE=$(ls -1dt 2* | head -1)
 
@@ -29,6 +29,7 @@ oam-genlop tail | \
 	  -i $LOGDATE/sync.log \
 	  -I $LOGDATE/merge.log \
 	  -I $LOGDATE/blocks.log \
-	  -I $LOGDATE/kernel.log
+	  -I $LOGDATE/kernel.log \
+	  $OAM_MULTITAIL_EXTRA_OPT
 
 exit 0
