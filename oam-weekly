@@ -14,7 +14,7 @@ steps=${steps/-/_}
 oam_log "$scriptname start"
 
 for op in ${!steps} ; do
-    $op || oam_die "$op failed - exiting $scriptname"
+    $op >>$OAM_LOGDIR/${scriptname}.log 2>&1 || oam_die "$op failed - exiting $scriptname"
 done
 
 oam_log "$scriptname stop"
