@@ -63,6 +63,8 @@ oam_kernel_build()
 
 if [[ "$1" = "build" ]] ; then
     oam_kernel_build
+elif [[ "$1" = "install" ]] ; then
+    [[ -d /boot/efi/EFI/Boot && -x /usr/sbin/efibootmgr ]] && oam_kernel_install_efi $usrsrc_kernel
 else
     oam_log "kernel updater start: running kernel=${running_kernel}, latest /usr/src kernel=$usrsrc_kernel"
 
