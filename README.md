@@ -1,4 +1,13 @@
-### gentoo-oam - Operations/Admin/Management Workflow for gentoo
+#### Table of Contents
+
+* [Table of Contents](#table-of-contents)
+* [Operations/Admin/Management for gentoo](#operationsadminmanagement-for-gentoo)
+* [Features](#features)
+* [Why should you not use gentoo-oam?](#why-should-you-not-use-gentoo-oam)
+* [Known Similar Tools](#known-similar-tools)
+* [Copyright](#copyright)
+
+#### Operations/Admin/Management for gentoo
 
 See `man 8 gentoo-oam` / gentoo-oam(8) for documentation on this package.
 
@@ -41,6 +50,9 @@ The operator must still:
 
 #### Known Similar Tools
 
+* [porticron](https://github.com/gentoo/porticron)
+* [gentmaint](http://gentmaint.sourceforge.net/)
+* [glcu](http://www.panhorst.com/glcu/)
 * [ug](https://github.com/sidusnare/ug)
 * [update](http://weaver.gentooexperimental.org/update.html)
 
