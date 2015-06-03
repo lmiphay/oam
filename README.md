@@ -2,6 +2,8 @@
 
 * [Table of Contents](#table-of-contents)
 * [Operations/Admin/Management for gentoo](#operationsadminmanagement-for-gentoo)
+* [Workflows](#workflows)
+* [Manual Operations](#manual-operations)
 * [Features](#features)
 * [Why should you not use gentoo-oam?](#why-should-you-not-use-gentoo-oam)
 * [Known Similar Tools](#known-similar-tools)
@@ -9,11 +11,20 @@
 
 #### Operations/Admin/Management for gentoo
 
-See `man 8 gentoo-oam` / gentoo-oam(8) for documentation on this package.
-
 gentoo-oam aims to reduce some of the repetition of normal regular maintainance tasks on a gentoo server.
 
-For example the default weekly task will run these steps:
+The philosophy is to:
++ automate tasks where it is safe to do so (e.g. merge blockers must be still resolved manually)
++ log all actions and outputs (to aid postmortum analysis and followup manual intervention)
++ provide a dashboard view of the progress of actions and results (to spot issues early)
+
+See `man 8 gentoo-oam` / gentoo-oam(8) for documentation on this package.
+
+#### Workflows
+
+Workflows are a sequence of steps which are executed in sequence, stopping at the first failure.
+
+For example the default weekly workflow will run these steps:
 
 1. sync: `emaint --auto sync, layman --sync=ALL, eix-update/eix-remote`
 2. glsa: `glsa-check`
@@ -23,14 +34,16 @@ For example the default weekly task will run these steps:
 6. kernel: attempts to build a new kernel if necessary
 7. qcheck: `qcheck --all`
 
-From configuration a complete step can be skipped,
+From workflow specific configuration a complete step can be skipped,
 or where it makes sense one of components of a step
 (e.g. eclean-kernel, perl-cleaner... etc).
 
-The operator must still:
+#### Manual Operations
 
-+ resolve keyword or use flag blockers
-+ run `dispatch-conf` when required
+The operator must still manually:
+
++ resolve keyword or use flag blockers (see the blocks.log file for a starting point)
++ run `dispatch-conf` when prompted/required
 + run `emerge --depclean`
 
 #### Features
