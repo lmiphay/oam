@@ -17,7 +17,7 @@ The philosophy is to:
 + automate tasks where it is safe to do so (e.g. merge blockers must be still resolved manually)
 + log all actions and outputs (to aid postmortum analysis and followup manual intervention)
 + provide a dashboard view of the progress of actions and results (to spot issues early)
-+ an editor preloaded with logs and portage config files ("vim -p" tabs)
++ provide an editor preloaded with logs and portage config files ("vim -p" tabs)
 
 See `man 8 gentoo-oam` / gentoo-oam(8) for documentation.
 
