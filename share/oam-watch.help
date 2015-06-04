@@ -1,4 +1,4 @@
-^o oam.log  ^e errors.log
+^a ALL-logs ^e errors.log  ^o oam.log  
             ^g glsa.log
             ^y sync.log
             ^b blocks.log  

@@ -1,0 +1,14 @@
+#!/bin/bash
+
+source /etc/gentoo-oam.conf
+source /usr/share/gentoo-oam/gentoo-oam-functions.sh
+
+subdir=$(basename $(oam_logdate))
+
+cd $OAM_LOGDIR && \
+    $OAM_EDITOR_MULTITAB oam.log \
+			 error.log \
+			 glsa.log \
+			 $subdir/{blocks,kernel,merge,sync}.log \
+			 /etc/portage/package.{keywords,use} &
+exit 0
