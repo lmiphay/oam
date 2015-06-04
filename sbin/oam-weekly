@@ -3,8 +3,6 @@
 source /etc/gentoo-oam.conf
 source /usr/share/gentoo-oam/gentoo-oam-functions.sh
 
-set -e
-
 [[ ! -d $OAM_LOGDIR ]] && mkdir -p $OAM_LOGDIR
 
 scriptname=$(basename $0)
@@ -26,7 +24,7 @@ for op in ${!steps} ; do
 		continue
 	    fi
 	fi
-	oam_die "$op failed - exiting $scriptname"
+	[[ $result -ne 7 ]] && oam_die "$op failed - exiting $scriptname"
     fi
 done
 

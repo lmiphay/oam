@@ -24,7 +24,7 @@ oam_log "oam-glsa complete"
 
 if [[ -s ${LOGPREFIX}/glsa.log ]] ; then
     echo "Security issues have been found which may affect this server"
-    exit 1
+    exit 7
 else
     exit 0
 fi

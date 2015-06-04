@@ -88,20 +88,26 @@ eix-remote add1 (only if layman is installed)
 .B oam-watch
 can be used to montor currently running operations.
 The multi-pane UI is provided by multitail(1).
+.RS
+.P
+.IP \(bu
 Hit 'b' to select a window and then browse the multitail(1) scrollback buffer.
+.IP \(bu
 Exit the program by typing: <control>-C
-To run oam-watch as a non-root user (recommended), add the user to the portage group
-and add /usr/sbin to its PATH.
+.RE
+.P
+To run oam-watch as a non-root user (recommended), add the user to the portage group.
 .P
 
 .B oam-glsa
 runs glsa-check, logging the results to /var/log/oam/glsa.log.
-Will return 1 if that file is non-empty, 0 otherwise.
+Will return 7 if that file is non-empty, 0 otherwise. Returning 7 means that
+the workflow will continue processing the remaining tasks.
 .P
 
 .B oam-fetch
 runs
-.I
+.B
 "emerge --fetchonly"
 to pull down source packages prior to the merge step.
 .P
@@ -231,11 +237,15 @@ The task belonging to the workflow that failed (e.g. oam-update)
 .IP \(bu
 The return value from the failed task (e.g. 1)
 .P
-If the return code result from the handler process is
+A workflow is deemed to fail when the return code from any of the tasks is not zero.
+If the return code result from the
+.I
+task or the handler process
+is
 .I
 7
 then the workflow will be continued at the next task - if the handler process
-returns anyother value, then the workflow will be terminated.
+returns any other value, then the workflow will be terminated.
 .RE
 .TP
 .BI OAM_LOGDIR
