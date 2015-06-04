@@ -14,7 +14,20 @@ steps=${steps/-/_}
 oam_log "$scriptname start"
 
 for op in ${!steps} ; do
-    $op >>$OAM_LOGDIR/${scriptname}.log 2>&1 || oam_die "$op failed - exiting $scriptname"
+    $op >>$OAM_LOGDIR/${scriptname}.log 2>&1
+    result=$?
+    if [[ $result -ne 0 ]] ; then
+	oam_log "$scriptname failed at $op, return code=$result"
+	if [[ -n "$OAM_ONERROR" ]] ; then
+	    oam_log "running: $OAM_ONERROR $scriptname $op $result"
+	    $OAM_ONERROR $scriptname $op $result >>$OAM_LOGDIR/${scriptname}.log 2>&1
+	    if [[ $? -eq 7 ]] ; then
+		oam_log "$OAM_ONERROR has requested workflow continuation"
+		continue
+	    fi
+	fi
+	oam_die "$op failed - exiting $scriptname"
+    fi
 done
 
 oam_log "$scriptname stop"
