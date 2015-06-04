@@ -5,7 +5,7 @@
 gentoo-oam \- workflow helpers for a gentoo server
 
 .SH SYNOPSIS
-oam-expire \- prune old log files produced by the gentoo-oam scripts
+oam-expire \- prune old log files produced by gentoo-oam
 
 oam-fetch \- fetch package sources prior to compilation/installation
 
@@ -32,25 +32,23 @@ oam-watch \- watch the various files and status of an update cycle using multita
 oam-weekly \- run sync and update actions (actions defined in /etc/gentoo-oam.conf)
 
 .SH DESCRIPTION
-The gentoo-oam scripts build on portage utilities to automate some common
-sys-admin tasks. They delegate most of the actual work to the normal
-portage tools.
+gentoo-oam builds on portage utilities to automate some common
+task sequences (referred to here as workflows).
+The individual tasks delegate most of the work to portage tools.
 .P
 .IP \(bu
 Common tasks are automated (e.g. weekly update, overlays sync... etc)
 .IP \(bu
 Everything is logged (under /var/log/oam), and logrotate'd.
 .IP \(bu
-Overview of actions provided by oam-watch (built on multitail(1) )
+Overview of actions provided by oam-watch
 .IP \(bu
 Central configuration is taken from /etc/gentoo-oam.conf
 .IP \(bu
 The package also acts as a meta package pulling in some very useful portage
 utilities (e.g. eix, glsa-check... etc)
 .P
-The default weekly action list (run by
-.B oam-weekly
-using OAM_WEEKLY setting in /etc/gentoo-oam.conf) is:
+An example action list: 
 .PP
 .RS 0
         oam-sync
@@ -62,9 +60,17 @@ using OAM_WEEKLY setting in /etc/gentoo-oam.conf) is:
         oam-update
 .RS 0
         oam-qcheck
+	
+.SH COMPONENTS
+
 .P
-The
-.B oam-sync script runs these actions in sequence:
+.B oam-weekly
+runs the list of tasks defined by the OAM_WEEKLY setting in /etc/gentoo-oam.conf.
+.P
+
+.B oam-sync
+runs these actions in sequence:
+.RS
 .P
 .IP \(bu
 emaint --auto sync
@@ -76,27 +82,33 @@ eix-update
 eix-remote update1 (only if layman is installed)
 .IP \(bu
 eix-remote add1 (only if layman is installed)
+.RE
 .P
-The
+
 .B oam-watch
-script can be used to montor a currently running operation.
+can be used to montor currently running operations.
 The multi-pane UI is provided by multitail(1).
-To run oam-watch as a non-root user (recommended), add the user to the portage group and add /usr/sbin to its PATH.
 Hit 'b' to select a window and then browse the multitail(1) scrollback buffer.
 Exit the program by typing: <control>-C
+To run oam-watch as a non-root user (recommended), add the user to the portage group
+and add /usr/sbin to its PATH.
 .P
-The
+
 .B oam-glsa
-script simply runs glsa-check, logging the results to /var/log/oam/glsa.log. The
-script return 1 if that file is non-empty, 0 otherwise.
+runs glsa-check, logging the results to /var/log/oam/glsa.log.
+Will return 1 if that file is non-empty, 0 otherwise.
 .P
-The
+
 .B oam-fetch
-script simply runs emerge --fetchonly to pull down source packages prior to installation
-proper.
+runs
+.I
+"emerge --fetchonly"
+to pull down source packages prior to the merge step.
 .P
-The
-.B oam-update script runs these actions in sequence:
+
+.B oam-update
+runs these actions in sequence:
+.RS
 .P
 .IP \(bu
 emerge world
@@ -110,37 +122,92 @@ perl-cleaner (if it is installed)
 emerge @preserved-rebuild (if there are preserved libraries)
 .IP \(bu
 eclean distfiles (if the OAM_CLEAN_DISTFILES setting is 1)
+.RE
 .P
-The
+
 .B oam-qcheck
-script runs qcheck(1), saving all AFK and MD5-DIGEST failures to a (daily) file under
+runs qcheck(1), saving all AFK and MD5-DIGEST failures to a (daily) file under
 /var/log/oam/qcheck.
 
-The
 .B oam-expire
-script is called by the installed logrotate control settings. See the OAM_KEEPLOGS and
+is called by the installed logrotate control settings. See the OAM_KEEPLOGS and
 OAM_QCHECKKEEPLOGS settings.
 
-The
 .B oam-unmask-write
-scripts runs with oam-fetch script with '--autounmask-write y' set.
+runs oam-fetch with '--autounmask-write y' set.
 
-The
 .B oam-genlop
-script is a wrapper called by oam-watch to filter the output of 'genlop -c'. See
+is a wrapper called by oam-watch to filter the output of 'genlop -c'. See
 man genlop(1) / FEATURES if there never seems to be a merge running.
 
-The
 .B oam-version
-simply prints the version of the gentoo-oam scripts to stdout.
+prints the version of the gentoo-oam to stdout.
 .P
+
+.B oam-kernel
+is a new kernel manager - it will:
+.RS
+.IP \(bu
+attempt to locate, install, configure and backup .config files
+.IP \(bu
+build the kernel, modules and rebuild external third party modules
+.IP \(bu
+optionally install the new kernel
+.RE
+.P
+It will not compile a kernel if any of these conditions are true:
+.RS
+.IP \(bu
+if the kernel version at /usr/src/linux is found installed under /lib/modules
+.IP \(bu
+if /usr/src/linux/vmlinux exists
+.RE
+.P
+If a .config file is not present under /usr/src/linux, the oam-kernel will attempt to
+locate one, checking for files in this order:
+.RS
+.IP \(bu
+/usr/src/linux-$(uname -r)/.config
+.IP \(bu
+/proc/config.gz
+.IP \(bu
+/boot/config-$(uname -r)
+.IP \(bu
+from the oam-kernel maintained git repository at /usr/src/kernel-config.git
+.RE
+.P
+The script will then:
+.RS
+.IP \(bu
+run make -C /usr/src/linux olddefconfig
+.IP \(bu
+back up the resulting .config to the git repo at /usr/src/kernel-config.git
+.IP \(bu
+run make -C /usr/src/linux all modules_install
+.IP \(bu
+oam-merge @module-rebuild
+.RE
+.P
+The resulting kernel will not be automatically installed. This behavior is controlled by
+the 
+.I
+OAM_KERNEL_INSTALL
+variable - setting this to 1 will trigger the install following a successful compilation.
+.P
+Manually running
+.I
+"oam-kernel install"
+will attempt to install the kernel.
+.P
+.B
+Currently the only installation method supported is via efibootmgr(8).
 
 .SH SYSTEM SETTINGS
 
 These settings control the operation of gentoo-oam and are set in /etc/gentoo-oam.conf:
 .TP
 .BI OAM_EMERGE_OPTS
-The parameters passed to emerge for update. Defaults to "--backtrack=50 --deep -v"
+The parameters passed to emerge for update. See /etc/gentoo-oam.conf for default settings.
 .TP
 .BI OAM_EMERGE_SYNC
 Used to decide if emerge --sync should be run (for example you may not want to
@@ -152,7 +219,24 @@ Used to decide if eclean distfiles should be run (for example you may not want t
 run it if the /usr/portage/distfiles is nfs mounted from another server). Defaults to 1
 .TP
 .BI OAM_WEEKLY
-The actions to perform when the oam-weekly is run. Defaults to "oam-sync oam-glsa oam-fetch oam-update oam-qcheck "
+The actions to perform when the oam-weekly is run. See /etc/gentoo-oam.conf for default settings.
+.TP
+.BI OAM_ONERROR
+When a workflow fails, the program given by this setting will be called with three parameters:
+.RS
+.IP \(bu 
+The name of the workflow script that failed (e.g. oam-weekly)
+.IP \(bu
+The task belonging to the workflow that failed (e.g. oam-update)
+.IP \(bu
+The return value from the failed task (e.g. 1)
+.P
+If the return code result from the handler process is
+.I
+7
+then the workflow will be continued at the next task - if the handler process
+returns anyother value, then the workflow will be terminated.
+.RE
 .TP
 .BI OAM_LOGDIR
 The location where gentoo-oam logs will be sent/stored. Defaults to /var/log/oam
@@ -174,31 +258,41 @@ How long to sleep between printing out the load average and gelop(1) output. Def
 .TP
 .BI OAM_SANDBOXWAIT
 How long to wait for the sandbox process to appear before trying to run genlop(1).
+.TP
+.BI DISPLAY
+DISPLAY should be set appropriately if the configured editor needs X11.
 
 .SH WORKFLOW
 
 As an example, to add a new "local" workflow:
 .TP
 .BI /usr/local/sbin/oam-local
-Create the new workflow script by copying the oam-weekly script: cp /usr/sbin/oam-weekly /usr/local/sbin/oam-local
+Create the new workflow script by copying the oam-weekly script:
+cp /usr/sbin/oam-weekly /usr/local/sbin/oam-local
 .TP
 .BI /etc/gentoo-oam.d/oam-local.conf
 Add the required steps to a new OAM_LOCAL variable defined in: /etc/gentoo-oam.d/oam-local.conf
 Note the underscore required in the variable and the minus sign in the configuration file name.
 Other settings which need to be specific to this new workflow can be added to this newly created
 configuration file and they will override the system settings found in /etc/gentoo-oam.conf
+For example a workflow specific OAM_ONERROR handler can be defined for the new workflow here as
+well.
 .P
 Non gentoo-oam steps can be added to the new workflow provided that:
 .IP \(bu
-The step can be executed as a program requiring no arguments (note that environment variables can be set/exported
-in the workflow configuration file); e.g. "/usr/local/bin/localbackup.sh"
+The step can be executed as a program requiring no arguments (note that environment
+variables can be set/exported in the workflow configuration file);
+e.g. "/usr/local/bin/localbackup.sh"
 .IP \(bu
-The step should ideally handle its own logging (in this case gentoo-oam capture output to /var/oam/oam-local.log).
+The step should ideally its own logging - gentoo-oam will capture output
+to /var/oam/oam-local.log (in the case of the example).
 .IP \(bu
-The step should return 0 to indicate that the action succeeded. If it returns a non-zero result then the
-workflow will be aborted at that point.
+The step should return 0 to indicate that the action succeeded. If it returns a
+non-zero result then the workflow will be aborted at that point (and the on error
+handler called if one has been defined).
+
 .P
-Example OAM_LOCAL setting in /etc/gentoo-oam.d/oam-local.conf (not all of these scripts are included in gentoo-oam):
+Example: in /etc/gentoo-oam.d/oam-local.conf (note dummy scripts for illustration purposes):
 .PP
 .RS 0
 OAM_LOCAL="
@@ -211,8 +305,13 @@ OAM_LOCAL="
 .RS 0
 	rdumpfs-rota-daily
 .RS 0
+	localfstrim.sh
+.RS 0
 	smartctl-start.sh
+.RS 0
 "
+.RS 0
+OAM_ONERROR="localonerrorhandler.sh"
 
 .SH FILES
 
@@ -266,16 +365,8 @@ by default this file can be viewed from oam-watch when <control>o is pressed
 .BI /var/log/oam/DATE/sync.log
 by default this file can be viewed from oam-watch when <control>y is pressed
 .P
-These environment settings are required for the external viewing function:
-.TP
-.BI DISPLAY
-A new xterm(1) is run to view each log file - so DISPLAY must be set appropriately.
-.TP
-.BI EDITOR
-the EDITOR setting is used as viewing program.
-
-In addition the /var/log/oam directory tree can be browsed by ranger(1) if
-that is installed when <control>n is pressed while in oam-watch(1).
+In addition the /var/log/oam directory tree can be browsed by ranger(1) when
+<control>n is pressed while in oam-watch(1).
 
 .SH BUGS
 Some actions (e.g. emaint, emerge... etc) buffer output. As a result
