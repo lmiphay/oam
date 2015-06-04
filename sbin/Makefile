@@ -9,6 +9,7 @@ check:
 
 FILES=\
 	oam-clean \
+	oam-depclean \
 	oam-edit-blocks \
 	oam-edit-errors \
 	oam-edit-glsa \
