@@ -5,10 +5,16 @@ source /usr/share/gentoo-oam/gentoo-oam-functions.sh
 
 subdir=$(basename $(oam_logdate))
 
+if [[ -f /etc/make.conf ]] ; then
+    makeconf=/etc/make.conf
+elif [[ -f /etc/portage/make.conf ]] ; then
+    makeconf=/etc/portage/make.conf
+fi
+
 cd $OAM_LOGDIR && \
     $OAM_EDITOR_MULTITAB oam.log \
 			 error.log \
 			 glsa.log \
 			 $subdir/{blocks,kernel,merge,sync}.log \
-			 /etc/portage/package.{keywords,use} &
+			 /etc/portage/package.{keywords,use} $makeconf &
 exit 0
