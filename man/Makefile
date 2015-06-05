@@ -10,4 +10,4 @@ check:
 .PHONY: install
 install:
 	install -d $(DESTDIR)/usr/share/man/man8
-	install gentoo-oam.8 $(DESTDIR)/usr/share/man/man8/
+	install --mode=0644 gentoo-oam.8 $(DESTDIR)/usr/share/man/man8/
