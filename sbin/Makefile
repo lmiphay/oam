@@ -22,6 +22,7 @@ FILES=\
 	oam-fetch \
 	oam-glsa \
 	oam-kernel \
+	oam-lnav \
 	oam-merge \
 	oam-qcheck \
 	oam-ranger \

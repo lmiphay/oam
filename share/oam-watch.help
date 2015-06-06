@@ -1,4 +1,4 @@
 ^a ALL-logs ^o oam.log    ^y sync.log
 ^n ranger   ^e errors.log ^b blocks.log
-            ^g glsa.log   ^r merge.log
+^L lnav     ^g glsa.log   ^r merge.log
 
