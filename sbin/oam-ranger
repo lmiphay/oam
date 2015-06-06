@@ -4,4 +4,4 @@ source /etc/gentoo-oam.conf
 
 $OAM_TERMINAL ranger $OAM_LOGDIR &
 
-exec 0
+exit 0
