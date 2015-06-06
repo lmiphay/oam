@@ -2,4 +2,6 @@
 
 source /etc/gentoo-oam.conf
 
-exec xterm -e ranger $OAM_LOGDIR &
+$OAM_TERMINAL ranger $OAM_LOGDIR &
+
+exec 0
