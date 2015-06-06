@@ -392,6 +392,10 @@ by default this file can be viewed from oam-watch when <control>y is pressed
 .P
 In addition the /var/log/oam directory tree can be browsed by ranger(1) when
 <control>n is pressed while in oam-watch(1).
+.P
+Note that the default action is to start vim or ranger running inside
+an xterm started by multitail - so you may need to configure
+sshd/X11Forwarding and/or X11/DISPLAY/xauth settings appropriately.
 
 .SH BUGS
 Some actions (e.g. emaint, emerge... etc) buffer output. As a result
