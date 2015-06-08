@@ -29,9 +29,11 @@ oam-genlop tail | \
 	  --retry-all \
 	  -wh 6 error.log \
 	  -wh 6 -ci red glsa.log \
+	  --mark-change -T \
 	  -i $LOGDATE/sync.log \
 	  -I $LOGDATE/merge.log \
-	  -I $LOGDATE/blocks.log \
+	  --label "blocks " -I $LOGDATE/blocks.log \
+	  -t "sync/merge/blocks/kernel " \
 	  -I $LOGDATE/kernel.log \
 	  $OAM_MULTITAIL_EXTRA_OPT
 
