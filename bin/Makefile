@@ -8,6 +8,7 @@ check:
 	@echo "done"
 
 FILES=\
+	oam-checknews \
 	oam-emergelog \
 	oam-genlop \
 	oam-uptime \

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+source /etc/gentoo-oam.conf
+source /usr/share/gentoo-oam/gentoo-oam-functions.sh
+
+LOGPREFIX=$OAM_LOGDIR/$(date +%Y%m%d)
+
+logfile=$LOGPREFIX/sync.log
+
+if [[ -f "$logfile" ]] ; then
+    count=$(egrep 'IMPORTANT: [0-9]* news items need reading' $logfile | tail -1 | awk '{print $3}' ) 
+    eselect news list| tail -${count} 
+fi
+
+exit 0
