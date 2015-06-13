@@ -55,7 +55,7 @@ The operator must still manually:
 * install via ebuild from the [lmiphay overlay](https://gitweb.gentoo.org/user/lmiphay.git/about/)
 * pulls in many useful dependencies as part of the install (eix, genlop, multitail, logrotate, eclean-kernel)
 
-![oam-watch](screenshots/oam-watch.png?raw=true "oam-watch sample")
+![oam-watch](screenshots/oam-watch2.png?raw=true "oam-watch sample")
 
 #### Why should you not use gentoo-oam?
 
