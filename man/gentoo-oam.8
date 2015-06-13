@@ -107,10 +107,12 @@ layman --sync=ALL (only if layman is installed)
 .IP \(bu
 eix-update
 .IP \(bu
-eix-remote update1 (only if layman is installed)
+eix-remote update1 (only if layman is installed - disable by setting OAM_EIX_REMOTE=0)
 .IP \(bu
-eix-remote add1 (only if layman is installed)
+eix-remote add1 (only if layman is installed - disable by setting OAM_EIX_REMOTE=0)
 .RE
+The eix actions will only run every OAM_EIX_REMOTE_DAYS days - by default they will not
+run more than once every 6 days to avoid hammering zugaina.
 .P
 
 .B oam-watch
