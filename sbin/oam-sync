@@ -11,7 +11,7 @@ oam_log "gentoo-oam V$(oam_version)"
 
 if [[ "$OAM_EMERGE_SYNC" = "1" ]] ; then
     oam_log "oam-sync start"
-    PORTAGE_RSYNC_EXTRA_OPTS="--info=progress2,name0,del0" \
+    PORTAGE_RSYNC_EXTRA_OPTS="--info=progress0,name0,del0" \
     emaint --auto sync \
 	   >>${LOGPREFIX}/sync.log \
 	   2> >(oam_stripansi | oam_err "sync")
