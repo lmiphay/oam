@@ -23,7 +23,7 @@ glsa-check --test --verbose  --nocolor all \
 oam_log "oam-glsa complete"
 
 if [[ -s ${LOGPREFIX}/glsa.log ]] ; then
-    echo "Security issues have been found which may affect this server"
+    echo "$(oam_ts) Security issues have been found which may affect this server"
     exit 7
 else
     exit 0
