@@ -35,6 +35,7 @@ oam-genlop tail | \
 	  --label "blocks " -I $LOGDATE/blocks.log \
 	  -t "sync/merge/blocks/kernel " \
 	  -I $LOGDATE/kernel.log \
+	  -I $LOGDATE/summary.log \
 	  $OAM_MULTITAIL_EXTRA_OPT
 
 exit 0

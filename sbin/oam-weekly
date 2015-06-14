@@ -4,6 +4,7 @@ source /etc/gentoo-oam.conf
 source /usr/share/gentoo-oam/gentoo-oam-functions.sh
 
 [[ ! -d $OAM_LOGDIR ]] && mkdir -p $OAM_LOGDIR
+LOGPREFIX=$OAM_LOGDIR/$(date +%Y%m%d)
 
 scriptname=$(basename $0)
 steps=${scriptname^^}
@@ -27,6 +28,9 @@ for op in ${!steps} ; do
 	[[ $result -ne 7 ]] && oam_die "$op failed - exiting $scriptname"
     fi
 done
+
+oam_log "$scriptname generating merge summary"
+oam-summary >>${LOGPREFIX}/summary.log
 
 oam_log "$scriptname stop"
 

@@ -1,0 +1,49 @@
+#!/bin/bash
+
+source /etc/gentoo-oam.conf
+source /usr/share/gentoo-oam/gentoo-oam-functions.sh
+
+cd $OAM_LOGDIR || oam_die "$OAM_LOGDIR is missing - exiting"
+
+if [[ $# -eq 1 ]] ; then
+    LOGDATE=$1
+else
+    LOGDATE=$(ls -1dt 2* | head -1)
+fi
+
+echo "$(oam_ts) summary report for $LOGDATE"
+
+mergelog=$LOGDATE/merge.log
+blockslog=$LOGDATE/blocks.log
+
+echo "$(oam_ts) merges"
+while read firsttoken line ; do
+    if [[ "$firsttoken" = '[ebuild' ]] ; then
+	while read firsttoken line ; do
+	    if [[ "$firsttoken" = 'Total:' ]] ; then
+		break 2
+	    else
+		echo "$firsttoken $line" | sed -e 's/^/   /'
+	    fi
+	done
+    fi
+done <$mergelog
+
+if [[ -f $blockslog ]] ; then
+    echo "$(oam_ts) blocked packages raw output"
+    cat $blockslog | sed -e 's/^/   /'
+fi
+
+echo "$(oam_ts) checking for unread news items"
+oam-checknews | sed -e 's/^/   /'
+
+echo "$(oam_ts) merge summary: $(grep 'Size of downloads:' $mergelog | head -1)"
+
+if [[ -f $blockslog ]] ; then
+    echo "$(oam_ts) keyword/use changes summary"
+    egrep '^>|^=' $blockslog | sort | uniq | sed -e 's/^/   /'
+fi
+
+echo "$(oam_ts) summary report complete for $OAM_LOGDIR"
+
+exit 0

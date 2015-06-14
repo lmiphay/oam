@@ -48,10 +48,6 @@ if [[ "$OAM_EIX_REMOTE" = "1" && -x /usr/bin/layman ]] ; then
     fi
 fi
 
-oam_log "oam-checknews start"
-oam-checknews >>${LOGPREFIX}/sync.log
-oam_log "oam-checknews complete"
-
 oam_log "oam-sync complete"
 
 exit 0
