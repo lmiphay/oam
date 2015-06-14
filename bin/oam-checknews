@@ -3,13 +3,8 @@
 source /etc/gentoo-oam.conf
 source /usr/share/gentoo-oam/gentoo-oam-functions.sh
 
-LOGPREFIX=$OAM_LOGDIR/$(date +%Y%m%d)
-
-logfile=$LOGPREFIX/sync.log
-
-if [[ -f "$logfile" ]] ; then
-    count=$(egrep 'IMPORTANT: [0-9]* news items need reading' $logfile | tail -1 | awk '{print $3}' ) 
-    eselect news list| tail -${count} 
-fi
+#  [21]     2015-04-16  FFmpeg default
+#  [22]  N  2015-06-08  udev-init-scripts-29 important changes
+eselect news list | egrep '  \[[0-9]*\]  N'
 
 exit 0
