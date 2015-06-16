@@ -5,37 +5,67 @@ source /usr/share/gentoo-oam/gentoo-oam-functions.sh
 
 [[ ! -d $OAM_LOGDIR ]] && mkdir -p $OAM_LOGDIR
 
-flowname=$1
+[[ "$1" = "-d" ]] && DRYRUN="echo" && shift
+flowname=${1:-OAM_WEEKLY}
 
-oam_log "oam-flow start"
+resulthandler()
+{
+    local step="$1"
+    local result=$2
+
+    oam_log "$flowname/$step result=$result"
+
+    if [[ $result -ne 0 && -n "$OAM_ONERROR" ]] ; then
+	oam_log "running error handler: $OAM_ONERROR $flowname $step $result"
+	$OAM_ONERROR $flowname $step $result
+	if [[ $? -eq 7 ]] ; then
+	    oam_log "$OAM_ONERROR has requested workflow continuation"
+	    result=0
+	fi
+    fi
+
+    return $result
+}
+
+execstep()
+{
+    local step="$1"
+
+    if [[ $step =~ (.*):(.*) ]] ; then
+	$DRYRUN ssh ${BASH_REMATCH[1]} "${BASH_REMATCH[2]}"
+    else
+	$DRYRUN $step
+    fi
+    
+    resulthandler "$step" $?
+}
 
 execstage()
 {
-    local steps="$1"
+    local stage="$1"
+    local pid=()
     
-    for op in ${steps} ; do
-	$op >>$OAM_LOGDIR/${scriptname}.log 2>&1
-	result=$?
-	if [[ $result -ne 0 ]] ; then
-	    oam_log "$scriptname failed at $op, return code=$result"
-	    if [[ -n "$OAM_ONERROR" ]] ; then
-		oam_log "running: $OAM_ONERROR $scriptname $op $result"
-		$OAM_ONERROR $scriptname $op $result >>$OAM_LOGDIR/${scriptname}.log 2>&1
-		if [[ $? -eq 7 ]] ; then
-		    oam_log "$OAM_ONERROR has requested workflow continuation"
-		    continue
-		fi
-	    fi
-	    [[ $result -ne 7 ]] && oam_die "$op failed - exiting $scriptname"
-	fi
+    for step in ${stage} ; do
+	$execstep "$step" &
+	pid+=($!)
     done
+
+    local result=0
+
+    for ((i=0; i<${#pid[@]}; i++)) ; do
+	wait ${pid[$i]} || result=1
+    done
+
+    return $result
 }
 
-while read -r -a stage; do
-    oam_log "stage: ${stage[@]}"
-    execstage "${stage[@]}"
-done <<<"$(printf '%s' "${!bar}")"
+oam_log "oam-flow $flowname start"
 
-oam_log "oam-flow complete"
+while read -r -a stage; do
+    oam_log "running stage ${stage[@]}"
+    execstage "${stage[@]}" || oam_die "$flowname ( ${stage[@]} )  failed - exiting"
+done <<<"$(printf '%s' "${!flowname}")" >>$OAM_LOGDIR/${flowname}.log 2>&1 
+
+oam_log "oam-flow $flowname complete"
 
 exit 0
