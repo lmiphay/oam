@@ -30,20 +30,20 @@ while read firsttoken line ; do
 done <$mergelog
 
 if [[ -f $blockslog ]] ; then
-    echo "$(oam_ts) blocked packages raw output"
+    echo "$(oam_ts) errors/blocked packages"
     cat $blockslog | sed -e 's/^/   /'
 fi
 
-echo "$(oam_ts) checking for unread news items"
+echo "$(oam_ts) checking for new news items"
 oam-checknews | sed -e 's/^/   /'
 
-echo "$(oam_ts) merge summary: $(grep 'Size of downloads:' $mergelog | head -1)"
+echo "$(oam_ts) merges: $(grep 'Size of downloads:' $mergelog | head -1)"
 
 if [[ -f $blockslog ]] ; then
-    echo "$(oam_ts) keyword/use changes summary"
+    echo "$(oam_ts) keyword/use changes"
     egrep '^>|^=' $blockslog | sort | uniq | sed -e 's/^/   /'
 fi
 
-echo "$(oam_ts) summary report complete for $OAM_LOGDIR"
+echo "$(oam_ts) summary report complete for $LOGDATE"
 
 exit 0
