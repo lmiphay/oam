@@ -29,6 +29,22 @@ oam_err()
     fi
 }
 
+oam_indent()
+{
+    sed -e 's/^/   /'
+}
+
+oam_lastdate()
+{
+    local dir=$(cd $OAM_LOGDIR && ls -1dt 2* | head -1)
+
+    if [[ -z "$dir" ]] ; then
+	dir=$(date +%Y%m%d)
+    fi
+
+    echo $dir
+}
+
 oam_log()
 {
     if [[ $(id -u) -eq 0 ]] ; then
@@ -51,13 +67,27 @@ oam_logdate()
 
 oam_logfile()
 {
-    local logprefix=$OAM_LOGDIR/$(date +%Y%m%d)
+    if [[ -n "$OAM_LOGDATE" ]] ; then
+	local logdate=$OAM_LOGDATE
+    else
+	local logdate=$(date +%Y%m%d)
+	export OAM_LOGDATE=$logdate
+    fi
+
+    local logprefix=$OAM_LOGDIR/$logdate
 
     [[ ! -d $logprefix ]] && mkdir -p $logprefix
 
     [[ ! -f ${logprefix}/${1}.log ]] && echo "$(oam_ts) created log file" >>${logprefix}/${1}.log
 
     echo ${logprefix}/${1}.log
+}
+
+oam_prevdate()
+{
+    local laterdate=$1
+
+    (cd $OAM_LOGDIR && ls -d1 20* |grep --before-context=1 $laterdate | head -1)
 }
 
 oam_logphase()
