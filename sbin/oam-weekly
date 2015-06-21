@@ -3,23 +3,21 @@
 source /etc/gentoo-oam.conf
 source /usr/share/gentoo-oam/gentoo-oam-functions.sh
 
-[[ ! -d $OAM_LOGDIR ]] && mkdir -p $OAM_LOGDIR
-LOGPREFIX=$OAM_LOGDIR/$(date +%Y%m%d)
-
 scriptname=$(basename $0)
 steps=${scriptname^^}
 steps=${steps/-/_}
+logfile=$(oam_logfile ${scriptname})
 
 oam_log "$scriptname start"
 
 for op in ${!steps} ; do
-    $op >>$OAM_LOGDIR/${scriptname}.log 2>&1
+    $op >>$logfile 2>&1
     result=$?
     if [[ $result -ne 0 ]] ; then
 	oam_log "$scriptname failed at $op, return code=$result"
 	if [[ -n "$OAM_ONERROR" ]] ; then
 	    oam_log "running: $OAM_ONERROR $scriptname $op $result"
-	    $OAM_ONERROR $scriptname $op $result >>$OAM_LOGDIR/${scriptname}.log 2>&1
+	    $OAM_ONERROR $scriptname $op $result >>$logfile 2>&1
 	    if [[ $? -eq 7 ]] ; then
 		oam_log "$OAM_ONERROR has requested workflow continuation"
 		continue
@@ -30,7 +28,7 @@ for op in ${!steps} ; do
 done
 
 oam_log "$scriptname generating merge summary"
-oam-summary >>${LOGPREFIX}/summary.log
+oam-summary $OAM_LOGDATE >>$(oam_logfile summary)
 
 oam_log "$scriptname stop"
 

@@ -3,21 +3,19 @@
 source /etc/gentoo-oam.conf
 source /usr/share/gentoo-oam/gentoo-oam-functions.sh
 
-LOGPREFIX=$OAM_LOGDIR/$(date +%Y%m%d)
-
-[[ ! -d $LOGPREFIX ]] && mkdir -p $LOGPREFIX
-
 if [[ "$OAM_CLEAN_DISTFILES" = "1" ]] ; then
     oam_log "eclean-distfiles start"
     eclean --nocolor distfiles \
-       > >(oam_logphase "eclean" ${LOGPREFIX}/merge.log) \
+       > >(oam_logphase "eclean" $(oam_logfile merge) ) \
        2> >(oam_stripansi | oam_err "eclean")
     oam_log "eclean-distfiles complete"
 fi
 
 if [[ "$OAM_CLEAN_KERNEL" = "1" ]] ; then
     oam_log "eclean-kernel start"
-    eclean-kernel $OAM_ECLEAN_KERNEL
+    eclean-kernel $OAM_ECLEAN_KERNEL \
+       > >(oam_logphase "eclean-kernel" $(oam_logfile merge) ) \
+       2>&1
     oam_log "eclean-kernel complete"
 fi
 
