@@ -3,8 +3,6 @@
 source /etc/gentoo-oam.conf
 source /usr/share/gentoo-oam/gentoo-oam-functions.sh
 
-[[ ! -d $OAM_LOGDIR ]] && mkdir -p $OAM_LOGDIR
-
 [[ "$1" = "-d" ]] && DRYRUN="echo" && shift
 flowname=${1:-OAM_WEEKLY}
 
@@ -64,7 +62,7 @@ oam_log "oam-flow $flowname start"
 while read -r -a stage; do
     oam_log "running stage ${stage[@]}"
     execstage "${stage[@]}" || oam_die "$flowname ( ${stage[@]} )  failed - exiting"
-done <<<"$(printf '%s' "${!flowname}")" >>$OAM_LOGDIR/${flowname}.log 2>&1 
+done <<<"$(printf '%s' "${!flowname}")" >>$(oam_logfile ${flowname}) 2>&1 
 
 oam_log "oam-flow $flowname complete"
 
