@@ -300,13 +300,8 @@ DISPLAY should be set appropriately if the configured editor needs X11.
 
 As an example, to add a new "local" workflow:
 .TP
-.BI /usr/local/sbin/oam-local
-Create the new workflow script by copying the oam-weekly script:
-cp /usr/sbin/oam-weekly /usr/local/sbin/oam-local
-.TP
-.BI /etc/gentoo-oam.d/oam-local.conf
-Add the required steps to a new OAM_LOCAL variable defined in: /etc/gentoo-oam.d/oam-local.conf
-Note the underscore required in the variable and the minus sign in the configuration file name.
+.BI /etc/gentoo-oam.d/local.conf
+Add the required steps to a new OAM_FLOW variable defined in: /etc/gentoo-oam.d/local.conf
 Other settings which need to be specific to this new workflow can be added to this newly created
 configuration file and they will override the system settings found in /etc/gentoo-oam.conf
 For example a workflow specific OAM_ONERROR handler can be defined for the new workflow here as
@@ -319,17 +314,17 @@ variables can be set/exported in the workflow configuration file);
 e.g. "/usr/local/bin/localbackup.sh"
 .IP \(bu
 The step should ideally its own logging - gentoo-oam will capture output
-to /var/oam/oam-local.log (in the case of the example).
+to /var/oam/local.log (in the case of the example).
 .IP \(bu
 The step should return 0 to indicate that the action succeeded. If it returns a
 non-zero result then the workflow will be aborted at that point (and the on error
 handler called if one has been defined).
 
 .P
-Example: in /etc/gentoo-oam.d/oam-local.conf (note dummy scripts for illustration purposes):
+Example: in /etc/gentoo-oam.d/local.conf (note dummy scripts for illustration purposes):
 .PP
 .RS 0
-OAM_LOCAL="
+OAM_FLOW="
 .RS 0
 	localdumpfs.sh
 .RS 0
