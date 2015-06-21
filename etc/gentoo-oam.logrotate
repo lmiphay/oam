@@ -10,15 +10,6 @@
         olddir /var/log/oam/old
 }
 
-/var/log/oam/glsa.log {
-        weekly
-        missingok
-        copytruncate
-        rotate 9
-        notifempty
-        olddir /var/log/oam/old-glsa
-}
-
 /var/log/oam/.keep_app-portage_gentoo-oam {
         monthly
         rotate 0
