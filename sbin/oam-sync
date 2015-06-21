@@ -3,16 +3,14 @@
 source /etc/gentoo-oam.conf
 source /usr/share/gentoo-oam/gentoo-oam-functions.sh
 
-LOGPREFIX=$OAM_LOGDIR/$(date +%Y%m%d)
-
-[[ ! -d $LOGPREFIX ]] && mkdir -p $LOGPREFIX
+logfile=$(oam_logfile sync)
 
 oam_log "gentoo-oam V$(oam_version)"
 
 if [[ "$OAM_EMERGE_SYNC" = "1" ]] ; then
     oam_log "oam-sync start"
     emaint --auto sync \
-	   >>${LOGPREFIX}/sync.log \
+	   >>$logfile \
 	   2> >(oam_stripansi | oam_err "sync")
 fi
 
@@ -20,13 +18,13 @@ if [[ -x /usr/bin/layman ]] ; then
     oam_log "layman start"
     # layman spams the error log
     layman --sync=ALL --nocolor \
-	   >>${LOGPREFIX}/sync.log \
+	   >>$logfile \
 	   2>&1
 fi
 
 oam_log "eix-update start"
 eix-update --nocolor \
-       >>${LOGPREFIX}/sync.log \
+       >>$logfile \
        2> >(oam_stripansi | oam_err "eix-update")
 
 remote=/var/cache/eix/remote.tar.bz2
@@ -38,7 +36,7 @@ if [[ "$OAM_EIX_REMOTE" = "1" && -x /usr/bin/layman ]] ; then
 	for cmd in update1 add1 ; do
 	    oam_log "eix-remote $cmd start"
 	    eix-remote $cmd \
-		       > >(oam_stripansi >>${LOGPREFIX}/sync.log) \
+		       > >(oam_stripansi >>$logfile \
 		       2>&1
 	done
     else

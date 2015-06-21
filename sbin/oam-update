@@ -3,28 +3,26 @@
 source /etc/gentoo-oam.conf
 source /usr/share/gentoo-oam/gentoo-oam-functions.sh
 
-LOGPREFIX=$OAM_LOGDIR/$(date +%Y%m%d)
-
-[[ ! -d $LOGPREFIX ]] && mkdir -p $LOGPREFIX
+logfile=$(oam_logfile merge)
 
 OAM_TAG=update \
        oam-merge --keep-going --update $OAM_EMERGE_OPTS world
 
 oam_log "revdep-rebuild start"
 revdep-rebuild --nocolor --ignore \
-       >>${LOGPREFIX}/merge.log \
+       >>$logfile \
        2> >(oam_err "revdep")
 
 oam_log "python-updater start"
-[ -x /usr/sbin/python-updater ] && \
+[[ -x /usr/sbin/python-updater ]] && \
     python-updater -eall \
-       > >(oam_stripansi >> ${LOGPREFIX}/merge.log) \
+       > >(oam_stripansi >> $logfile) \
        2> >(oam_stripansi | oam_err "python")
 
 if [[ "$OAM_PERL_CLEANER" -eq 1 && -x /usr/sbin/perl-cleaner ]] ; then
     oam_log "perl-cleaner start"
     perl-cleaner --all \
-       > >(oam_stripansi >> ${LOGPREFIX}/merge.log) \
+       > >(oam_stripansi >> $logfile) \
        2> >(oam_stripansi | oam_err "perl")
 fi
 
