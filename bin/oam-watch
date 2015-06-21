@@ -5,18 +5,14 @@ source /usr/share/gentoo-oam/gentoo-oam-functions.sh
 
 cd $OAM_LOGDIR || oam_die "$OAM_LOGDIR is missing - exiting"
 
-LOGDATE=$(ls -1dt 2* | head -1)
-
-if [[ -z "$LOGDATE" ]] ; then
-    LOGDATE=$(date +%Y%m%d)
-fi
+dir=$(oam_lastdate)
 
 # we currently need to pick up some of the edit script in /usr/sbin
 export PATH=/usr/sbin:$PATH
 
 oam-genlop tail | \
     multitail \
-	  -x "$HOSTNAME/oam/$LOGDATE gentoo-oam Version $(oam_version)" \
+	  -x "$HOSTNAME/oam/$dir gentoo-oam Version $(oam_version)" \
 	  --config /usr/share/gentoo-oam/gentoo-oam-multitail.conf \
 	  --basename \
 	  -sw 45,40 -sn 3,4 \
@@ -27,15 +23,14 @@ oam-genlop tail | \
 	  \
 	  -wh 6 -l oam-emergelog \
 	  --retry-all \
-	  -wh 6 error.log \
-	  -wh 6 -ci red glsa.log \
+	  -wh 13 error.log \
 	  --mark-change -T \
-	  -i $LOGDATE/sync.log \
-	  -I $LOGDATE/merge.log \
-	  --label "blocks " -I $LOGDATE/blocks.log \
+	  -i $dir/sync.log \
+	  -I $dir/merge.log \
+	  --label "blocks " -I $dir/blocks.log \
 	  -t "sync/merge/blocks/kernel " \
-	  -I $LOGDATE/kernel.log \
-	  -I $LOGDATE/summary.log \
+	  -I $dir/kernel.log \
+	  -I $dir/summary.log \
 	  $OAM_MULTITAIL_EXTRA_OPT
 
 exit 0
