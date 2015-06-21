@@ -1,20 +1,17 @@
-#!/bin/bash
+g#!/bin/bash
 
 source /etc/gentoo-oam.conf
 source /usr/share/gentoo-oam/gentoo-oam-functions.sh
 
-echo "$(oam_ts) oam-expire start" >>$OAM_LOGDIR/expire.log
+logfile=$OAM_LOGDIR/expire.log
 
-if [[ -d $OAM_QCHECKDIR ]] ; then
-    cd $OAM_QCHECKDIR && \
-    ls -1tr | head -n -$OAM_QCHECKKEEPLOGS | xargs --verbose -d '\n' rm -f >>$OAM_LOGDIR/expire.log 2>&1
-fi
+echo "$(oam_ts) oam-expire start" >>$logfile
 
 if [[ -d $OAM_LOGDIR ]] ; then
     cd $OAM_LOGDIR && \
-    ls -d1tr 2* | head -n -$OAM_KEEPLOGS | xargs --verbose -d '\n' rm -rf >>$OAM_LOGDIR/expire.log 2>&1
+    ls -d1tr 2* | head -n -$OAM_KEEPLOGS | xargs --verbose -d '\n' rm -rf >>$logfile 2>&1
 fi
 
-echo "$(oam_ts) oam-expire complete" >>$OAM_LOGDIR/expire.log
+echo "$(oam_ts) oam-expire complete" >>$logfile
 
 exit 0
