@@ -23,7 +23,7 @@ while read firsttoken line ; do
 	    if [[ "$firsttoken" = 'Total:' ]] ; then
 		break 2
 	    else
-		echo "$firsttoken $line" | sed -e 's/^/   /'
+		echo "$firsttoken $line" | oam_indent
 	    fi
 	done
     fi
@@ -31,17 +31,23 @@ done <$mergelog
 
 if [[ -f $blockslog ]] ; then
     echo "$(oam_ts) errors/blocked packages"
-    cat $blockslog | sed -e 's/^/   /'
+    cat $blockslog | oam_indent
+fi
+
+PREVDATE=$(oam_prevdate $LOGDATE)
+echo "$(oam_ts) checking for qcheck differences"
+if [[ -f $LOGDATE/qcheck.log -a $PREVDATE/qcheck.log ]] ; then
+    diff -u $PREVDATE/qcheck.log $LOGDATE/qcheck.log | oam_indent
 fi
 
 echo "$(oam_ts) checking for new news items"
-oam-checknews | sed -e 's/^/   /'
+oam-checknews | oam_indent
 
 echo "$(oam_ts) merges: $(grep 'Size of downloads:' $mergelog | head -1)"
 
 if [[ -f $blockslog ]] ; then
     echo "$(oam_ts) keyword/use changes"
-    egrep '^>|^=' $blockslog | sort | uniq | sed -e 's/^/   /'
+    egrep '^>|^=' $blockslog | sort | uniq | oam_indent
 fi
 
 echo "$(oam_ts) summary report complete for $LOGDATE"
