@@ -164,12 +164,10 @@ eclean distfiles (if the OAM_CLEAN_DISTFILES setting is 1)
 .P
 
 .B oam-qcheck
-runs qcheck(1), saving all AFK and MD5-DIGEST failures to a (daily) file under
-/var/log/oam/qcheck.
+runs qcheck(1), saving all AFK and MD5-DIGEST failures to a summary file
 
 .B oam-expire
-is called by the installed logrotate control settings. See the OAM_KEEPLOGS and
-OAM_QCHECKKEEPLOGS settings.
+is called by the installed logrotate control settings. See the OAM_KEEPLOGS setting.
 
 .B oam-unmask-write
 runs oam-fetch with '--autounmask-write y' set.
@@ -285,12 +283,6 @@ The location where gentoo-oam logs will be sent/stored. Defaults to /var/log/oam
 .TP
 .BI OAM_KEEPLOGS
 The number of sync/update log sets to keep. Defaults to 10
-.TP
-.BI OAM_QCHECKDIR
-The location where qcheck log summaries will be stored. Defaults to /var/log/oam/qcheck
-.TP
-.BI OAM_QCHECKKEEPLOGS
-The number of old qcheck logs to keep. Defaults to 10
 .TP
 .BI OAM_TS
 The date/time format used by gentoo-oam for logging. Defaults to "%Y%m%d:%H:%M:%S"
