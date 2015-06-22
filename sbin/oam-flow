@@ -71,6 +71,9 @@ while read -r -a stage; do
     execstage "${stage[@]}" || oam_die "$flowname ( ${stage[@]} )  failed - exiting"
 done <<<"$(printf '%s' "${OAM_FLOW}")" >>$(oam_logfile ${flowname}) 2>&1 
 
+oam_log "$scriptname generating merge summary"
+oam-summary $OAM_LOGDATE >>$(oam_logfile summary)
+
 oam_log "oam-flow $flowname complete"
 
 exit 0
