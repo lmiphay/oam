@@ -10,22 +10,13 @@ check:
 FILES=\
 	oam-clean \
 	oam-depclean \
-	oam-edit-all \
-	oam-edit-blocks \
-	oam-edit-errors \
-	oam-edit-glsa \
-	oam-edit-merge \
-	oam-edit-oam \
-	oam-edit-sync \
 	oam-emptytree \
 	oam-expire \
 	oam-fetch \
 	oam-glsa \
 	oam-kernel \
-	oam-lnav \
 	oam-merge \
 	oam-qcheck \
-	oam-ranger \
 	oam-sync \
 	oam-unmask-write \
 	oam-update \

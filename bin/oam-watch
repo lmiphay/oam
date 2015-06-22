@@ -5,14 +5,29 @@ source /usr/share/gentoo-oam/gentoo-oam-functions.sh
 
 cd $OAM_LOGDIR || oam_die "$OAM_LOGDIR is missing - exiting"
 
-dir=$(oam_lastdate)
+watch_dir=$(oam_lastdate)
 
-# we currently need to pick up some of the edit script in /usr/sbin
+if [[ -f /etc/make.conf ]] ; then
+    makeconf=/etc/make.conf
+elif [[ -f /etc/portage/make.conf ]] ; then
+    makeconf=/etc/portage/make.conf
+fi
+
+watch_allfiles="\
+	oam.log \
+	error.log \
+	$watch_dir/{blocks,glsa,kernel,merge,summary,sync}.log \
+	/etc/portage/package.{keywords,use} \
+	$makeconf \
+"
+
+# these are needed by the helper programs run from multitail
+export OAM_EDITOR OAM_EDITOR_MULTITAB OAM_TERMINAL watch_dir watch_allfiles
 export PATH=/usr/sbin:$PATH
 
 oam-genlop tail | \
     multitail \
-	  -x "$HOSTNAME/oam/$dir gentoo-oam Version $(oam_version)" \
+	  -x "$HOSTNAME/oam/$watch_dir gentoo-oam Version $(oam_version)" \
 	  --config /usr/share/gentoo-oam/gentoo-oam-multitail.conf \
 	  --basename \
 	  -sw 45,40 -sn 3,4 \
@@ -25,12 +40,12 @@ oam-genlop tail | \
 	  --retry-all \
 	  -wh 13 error.log \
 	  --mark-change -T \
-	  -i $dir/sync.log \
-	  -I $dir/merge.log \
-	  --label "blocks " -I $dir/blocks.log \
+	  -i $watch_dir/sync.log \
+	  -I $watch_dir/merge.log \
+	  --label "blocks " -I $watch_dir/blocks.log \
 	  -t "sync/merge/blocks/kernel " \
-	  -I $dir/kernel.log \
-	  -I $dir/summary.log \
+	  -I $watch_dir/kernel.log \
+	  -I $watch_dir/summary.log \
 	  $OAM_MULTITAIL_EXTRA_OPT
 
 exit 0
