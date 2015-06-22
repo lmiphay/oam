@@ -41,7 +41,7 @@ if [[ -f $LOGDATE/qcheck.log -a $PREVDATE/qcheck.log ]] ; then
 fi
 
 echo "$(oam_ts) checking for new news items"
-oam-checknews | oam_indent
+oam_checknews | oam_indent
 
 echo "$(oam_ts) merges: $(grep 'Size of downloads:' $mergelog | head -1)"
 

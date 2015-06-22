@@ -1,5 +1,12 @@
 # -*- sh -*-
 
+oam_checknews()
+{
+    #  [21]     2015-04-16  FFmpeg default
+    #  [22]  N  2015-06-08  udev-init-scripts-29 important changes
+    eselect news list | egrep '  \[[0-9]*\]  N'
+}
+
 oam_cmd()
 {
     local logfile=$1
