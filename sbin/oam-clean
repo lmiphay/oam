@@ -13,7 +13,7 @@ fi
 
 if [[ "$OAM_CLEAN_KERNEL" = "1" ]] ; then
     oam_log "eclean-kernel start"
-    eclean-kernel $OAM_ECLEAN_KERNEL \
+    eclean-kernel $OAM_CLEAN_KERNEL_OPTS \
        > >(oam_logphase "eclean-kernel" $(oam_logfile merge) ) \
        2>&1
     oam_log "eclean-kernel complete"
