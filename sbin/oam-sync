@@ -36,7 +36,7 @@ if [[ "$OAM_EIX_REMOTE" = "1" && -x /usr/bin/layman ]] ; then
 	for cmd in update1 add1 ; do
 	    oam_log "eix-remote $cmd start"
 	    eix-remote $cmd \
-		       > >(oam_stripansi >>$logfile \
+		       > >(oam_stripansi >>$logfile) \
 		       2>&1
 	done
     else
