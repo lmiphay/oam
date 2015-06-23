@@ -1,4 +1,4 @@
-g#!/bin/bash
+#!/bin/bash
 
 source /etc/gentoo-oam.conf
 source /usr/share/gentoo-oam/gentoo-oam-functions.sh
