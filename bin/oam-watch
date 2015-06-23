@@ -13,13 +13,12 @@ elif [[ -f /etc/portage/make.conf ]] ; then
     makeconf=/etc/portage/make.conf
 fi
 
-watch_allfiles="\
+watch_allfiles=$(echo \
 	oam.log \
 	error.log \
 	$watch_dir/{blocks,glsa,kernel,merge,summary,sync}.log \
 	/etc/portage/package.{keywords,use} \
-	$makeconf \
-"
+	$makeconf)
 
 # these are needed by the helper programs run from multitail
 export OAM_EDITOR OAM_EDITOR_MULTITAB OAM_LOGDIR OAM_TERMINAL watch_dir watch_allfiles
