@@ -22,7 +22,7 @@ watch_allfiles="\
 "
 
 # these are needed by the helper programs run from multitail
-export OAM_EDITOR OAM_EDITOR_MULTITAB OAM_TERMINAL watch_dir watch_allfiles
+export OAM_EDITOR OAM_EDITOR_MULTITAB OAM_LOGDIR OAM_TERMINAL watch_dir watch_allfiles
 export PATH=/usr/sbin:$PATH
 
 oam-genlop tail | \
