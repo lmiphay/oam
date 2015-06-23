@@ -40,7 +40,7 @@ if [[ -f $LOGDATE/qcheck.log -a $PREVDATE/qcheck.log ]] ; then
     diff -u $PREVDATE/qcheck.log $LOGDATE/qcheck.log | oam_indent
 fi
 
-echo "$(oam_ts) checking for new news items"
+echo "$(oam_ts) checking for unread news items"
 oam_checknews | oam_indent
 
 echo "$(oam_ts) merges: $(grep 'Size of downloads:' $mergelog | head -1)"
