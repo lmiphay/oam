@@ -11,7 +11,6 @@ FILES=\
 	oam-emergelog \
 	oam-genlop \
 	oam-summary \
-	oam-uptime \
 	oam-version \
 	oam-watch
 

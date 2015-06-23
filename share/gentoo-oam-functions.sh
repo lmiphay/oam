@@ -19,7 +19,7 @@ oam_cmd()
 oam_die()
 {
     if [[ $(id -u) -eq 0 ]] ; then
-	echo "$(oam_ts) $*" | tee -a $OAM_LOGDIR/error.log
+	echo "$(oam_ts) $*" | tee -a $(oam_logfile error)
     else
 	echo "$(oam_ts) $*"
     fi
@@ -30,7 +30,7 @@ oam_die()
 oam_err()
 {
     if [[ $(id -u) -eq 0 ]] ; then
-	sed "s/^/$1 /" | ts $OAM_TS >>$OAM_LOGDIR/error.log
+	sed "s/^/$1 /" | ts $OAM_TS >>$(oam_logfile error)
     else
 	sed "s/^/$1 /" | ts $OAM_TS
     fi
@@ -55,7 +55,7 @@ oam_lastdate()
 oam_log()
 {
     if [[ $(id -u) -eq 0 ]] ; then
-	echo "$(oam_ts) $*" >>$OAM_LOGDIR/oam.log
+	echo "$(oam_ts) $*" >>$(oam_logfile oam)
     else
 	echo "$(oam_ts) $*"
     fi
@@ -112,6 +112,11 @@ oam_stripansi()
 oam_ts()
 {
     date +$OAM_TS
+}
+
+oam_uptime()
+{
+    echo "$(oam_ts) $(cat /proc/loadavg | awk '{print $1 " " $2 " " $3}')"
 }
 
 oam_version()
