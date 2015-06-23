@@ -1,6 +1,6 @@
 # logrotate script for gentoo-oam
 
-/var/log/oam/oam.log /var/log/oam/error.log /var/log/oam/expire.log {
+/var/log/oam/expire.log {
         monthly
         missingok
         copytruncate
