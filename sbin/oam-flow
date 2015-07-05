@@ -32,8 +32,10 @@ execstep()
     local step="$1"
 
     if [[ $step =~ (.*):(.*) ]] ; then
+	oam_log "oam-flow running remote step: $step"
 	$DRYRUN ssh ${BASH_REMATCH[1]} "${BASH_REMATCH[2]}"
     else
+	oam_log "oam-flow running step: $step"
 	$DRYRUN $step
     fi
     
@@ -64,11 +66,15 @@ execstage()
     return $result
 }
 
-oam_log "oam-flow $flowname start"
+oam_log "oam-flow $flowname start (DRYRUN=$DRYRUN)"
+
+[ -z "${OAM_FLOW}" ] && oam_die "OAM_FLOW is empty - exiting"
 
 while read -r -a stage; do
     oam_log "running stage ${stage[@]}"
-    execstage "${stage[@]}" || oam_die "$flowname ( ${stage[@]} )  failed - exiting"
+    if [ -n "$stage" ] ; then
+	execstage "${stage[@]}" || oam_die "$flowname ( ${stage[@]} )  failed - exiting ($?)"
+    fi
 done <<<"$(printf '%s' "${OAM_FLOW}")" >>$(oam_logfile ${flowname}) 2>&1 
 
 oam_log "$scriptname generating merge summary"
