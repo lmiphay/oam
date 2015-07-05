@@ -20,7 +20,7 @@ glsa-check --test --verbose --nocolor all \
 
 oam_log "oam-glsa complete"
 
-if [[ -s $logfile -a $(grep -q '\[N]' $logfile) ]] ; then
+if [[ -s "$logfile" && $(grep -q '\[N]' $logfile) ]] ; then
     echo "$(oam_ts) Security issues have been found which may affect this server"
     exit 7
 else
