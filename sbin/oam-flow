@@ -46,7 +46,7 @@ execstage()
     local pid=()
     
     for step in ${stage} ; do
-	if [[ $step =~ (.*)& ]] ; then
+	if [[ $step =~ (.*)\& ]] ; then
 	    $execstep "${step/&/}" &
 	    disown $!
 	else
