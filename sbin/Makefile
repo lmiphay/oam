@@ -13,6 +13,7 @@ FILES=\
 	oam-emptytree \
 	oam-expire \
 	oam-fetch \
+	oam-flow \
 	oam-glsa \
 	oam-kernel \
 	oam-merge \
