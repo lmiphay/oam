@@ -32,12 +32,12 @@ oam-genlop tail | \
 	  -sw 45,40 -sn 3,4 \
 	  \
 	  -wh 6 /usr/share/gentoo-oam/oam-watch.help \
-	  -wh 13 oam.log \
+	  -wh 13 $watch_dir/oam.log \
 	  -j \
 	  \
 	  -wh 6 -l oam-emergelog \
 	  --retry-all \
-	  -wh 13 error.log \
+	  -wh 13 $watch_dir/error.log \
 	  --mark-change -T \
 	  -i $watch_dir/sync.log \
 	  -I $watch_dir/merge.log \
