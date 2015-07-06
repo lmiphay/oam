@@ -54,10 +54,10 @@ execstage()
     
     for step in ${stage} ; do
 	if [[ $step =~ (.*)\& ]] ; then
-	    $execstep "${step/&/}" &
+	    execstep "${step/&/}" &
 	    disown $!
 	else
-	    $execstep "$step" &
+	    execstep "$step" &
 	    pid+=($!)
 	fi
     done
