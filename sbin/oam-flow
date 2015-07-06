@@ -71,7 +71,7 @@ execstage()
     return $result
 }
 
-oam_log "oam-flow $flowname start (DRYRUN=$DRYRUN)"
+oam_log "oam-flow $flowname start"
 
 [ -z "${OAM_FLOW}" ] && oam_die "OAM_FLOW is empty - exiting"
 
