@@ -20,8 +20,7 @@ FILES=\
 	oam-qcheck \
 	oam-sync \
 	oam-unmask-write \
-	oam-update \
-	oam-weekly
+	oam-update
 
 .PHONY: install
 install:
