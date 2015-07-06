@@ -41,7 +41,7 @@ if [[ "$OAM_EIX_REMOTE" = "1" && -x /usr/bin/layman ]] ; then
 	done
     else
 	days=$(( ( $(date +%s) - $(stat --format=%Y $remote) ) / (24 * 3600) ))
-	oam_log "eix-remote not updating - $remote is only $day(s) old"
+	oam_log "eix-remote not updating - $remote is only $days old"
     fi
 fi
 
