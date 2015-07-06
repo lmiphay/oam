@@ -36,7 +36,7 @@ fi
 
 PREVDATE=$(oam_prevdate $LOGDATE)
 echo "$(oam_ts) checking for qcheck differences"
-if [[ -f $LOGDATE/qcheck.log -a $PREVDATE/qcheck.log ]] ; then
+if [[ -f $LOGDATE/qcheck.log && $PREVDATE/qcheck.log ]] ; then
     diff -u $PREVDATE/qcheck.log $LOGDATE/qcheck.log | oam_indent
 fi
 
