@@ -3,7 +3,12 @@
 source /etc/gentoo-oam.conf
 source /usr/share/gentoo-oam/gentoo-oam-functions.sh
 
-[[ "$1" = "-d" ]] && DRYRUN="echo" && shift
+if [[ "$1" = "-d" ]] ; then
+    DRYRUN="echo"
+    shift
+    oam_log "running in debug mode: $@"
+fi
+
 flowname=${1:-weekly}
 
 [[ -f /etc/gentoo-oam.d/${flowname}.conf ]] && . /etc/gentoo-oam.d/${flowname}.conf
