@@ -12,9 +12,8 @@ elif [[ -f /etc/portage/make.conf ]] ; then
 fi
 
 cd $OAM_LOGDIR && \
-    $OAM_EDITOR_MULTITAB oam.log \
-			 error.log \
-			 glsa.log \
-			 $subdir/{blocks,kernel,merge,sync}.log \
-			 /etc/portage/package.{keywords,use} $makeconf &
+    $OAM_EDITOR_MULTITAB \
+	$subdir/{oam,error,glsa,blocks,kernel,merge,sync}.log \
+	/etc/portage/package.{keywords,use} $makeconf &
+
 exit 0
