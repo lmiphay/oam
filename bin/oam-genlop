@@ -26,6 +26,8 @@ oam_genlop_short()
 
 oam_genlop_tail()
 {
+    local t
+    
     while /bin/true; do
 	inotifywait --timeout $OAM_HEARTBEATSLEEP --quiet --event modify /var/log/emerge.log >/dev/null
 	case "$?" in
