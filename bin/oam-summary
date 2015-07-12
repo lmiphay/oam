@@ -17,17 +17,21 @@ mergelog=$LOGDATE/merge.log
 blockslog=$LOGDATE/blocks.log
 
 echo "$(oam_ts) merges"
-while read firsttoken line ; do
-    if [[ "$firsttoken" = '[ebuild' ]] ; then
-	while read firsttoken line ; do
-	    if [[ "$firsttoken" = 'Total:' ]] ; then
-		break 2
-	    else
-		echo "$firsttoken $line" | oam_indent
-	    fi
-	done
-    fi
-done <$mergelog
+if [[ -f "$mergelog" ]] ; then
+    while read firsttoken line ; do
+	if [[ "$firsttoken" = '[ebuild' ]] ; then
+	    while read firsttoken line ; do
+		if [[ "$firsttoken" = 'Total:' ]] ; then
+		    break 2
+		else
+		    echo "$firsttoken $line" | oam_indent
+		fi
+	    done
+	fi
+    done <$mergelog
+else
+    echo "$(oam_ts) $mergelog not found"
+fi
 
 if [[ -f $blockslog ]] ; then
     echo "$(oam_ts) errors/blocked packages"
@@ -43,7 +47,7 @@ fi
 echo "$(oam_ts) checking for unread news items"
 oam_checknews | oam_indent
 
-echo "$(oam_ts) merges: $(grep 'Size of downloads:' $mergelog | head -1)"
+[[ -f "$mergelog" ]] && echo "$(oam_ts) merges: $(grep 'Size of downloads:' $mergelog | head -1)"
 
 if [[ -f $blockslog ]] ; then
     echo "$(oam_ts) keyword/use changes"
