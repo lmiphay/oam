@@ -1,0 +1,99 @@
+.\" Manpage for gentoo-oam
+.TH man 8 "10 July 2015" "1.0" "oam-flow man page"
+
+.SH NAME
+oam-flow \- workflow runner for a gentoo server
+
+.SH SYNOPSIS
+oam-flow [-d] flowname \- run a specified flow
+
+.SH DESCRIPTION
+
+An flow is made up of an ordered list of stages.
+Each stage can have one or more steps which are actions run in parallel.
+.PP
+Steps can optionally be:
+.P
+.IP \(bu
+run on remote servers (via ssh)
+.P
+.IP \(bu
+run detached (the flow will not wait for the action to complete before starting the next stage).
+
+.PP
+An example flow definition
+.PP
+.RS 0
+        oam-sync
+.RS 0
+        oam-glsa
+.RS 0
+        oam-fetch
+.RS 0
+        oam-update "laptop:oam-flow weekly &"
+.RS 0
+        oam-qcheck
+.PP
+In this example the fourth stage will run two steps in parallel, with the second step running
+a remote call to the "laptop" server (detached in this case by the presence of the ampersand).
+.PP
+The stages/steps for a flow FLOWNAME are defined in the OAM_FLOW variable in: /etc/gentoo-oam.d/FLOWNAME.conf
+
+Other settings specific to the flow can also be added to this configuration file and
+they will override the system settings found in /etc/gentoo-oam.conf
+.PP
+For example a workflow specific OAM_ONERROR handler can be defined for the workflow here as
+well.
+.P
+Non gentoo-oam steps can be added to the new workflow provided that:
+.IP \(bu
+The step should ideally its own logging - gentoo-oam will capture output
+to /var/oam/DATE/FLOWNAME.log
+.IP \(bu
+The step should return 0 to indicate that the action succeeded. If it returns a
+non-zero result then the workflow will be aborted at that point (and the on error
+handler called if one has been defined).
+
+.P
+Example: in /etc/gentoo-oam.d/local.conf (note dummy scripts for illustration purposes):
+.PP
+.RS 0
+OAM_FLOW="
+.RS 0
+	localdumpfs.sh
+.RS 0
+	oam-depclean
+.RS 0
+	oam-emptytree
+.RS 0
+	rdumpfs-rota-daily
+.RS 0
+	localfstrim.sh
+.RS 0
+	smartctl-start.sh
+.RS 0
+"
+.RS 0
+OAM_ONERROR="localonerrorhandler.sh"
+
+.SH FILES
+
+.TP
+.BI /etc/gentoo-oam.conf
+gentoo-oam system configuration
+.TP
+.BI /etc/gentoo-oam.d/weekly.conf
+example configuration - "weekly" flow
+
+.SH BUGS
+None.
+
+.SH SEE ALSO
+gentoo-oam(8), emaint(1), emerge(1), eclean(1), glsa-check(1), qcheck(1), logrotate(8),
+eix(1), genlop(1), ts(1), multitail(1)
+
+.SH AUTHOR
+Paul Healy
+
+.SH COPYRIGHT
+GNU GENERAL PUBLIC LICENSE Version 2
