@@ -11,17 +11,24 @@ fi
 
 flowname=${1:-weekly}
 
-[[ -f /etc/gentoo-oam.d/${flowname}.conf ]] && . /etc/gentoo-oam.d/${flowname}.conf
+if [[ -f "$flowname" ]] ; then
+    . $flowname
+    flowname=$(basename $flowname)
+elif [[ -f /etc/gentoo-oam.d/${flowname}.conf ]] ; then
+    . /etc/gentoo-oam.d/${flowname}.conf
+else
+    oam_die "$flowname not found - exiting"
+fi
 
 resulthandler()
 {
     local step="$1"
     local result=$2
 
-    oam_log "$flowname/$step result=$result"
+    oam_log "result logger: '$flowname/$step' result=$result"
 
     if [[ $result -ne 0 && -n "$OAM_ONERROR" ]] ; then
-	oam_log "running error handler: $OAM_ONERROR $flowname $step $result"
+	oam_log "running error handler: $OAM_ONERROR $flowname '$step' $result"
 	$OAM_ONERROR $flowname $step $result
 	if [[ $? -eq 7 ]] ; then
 	    oam_log "$OAM_ONERROR has requested workflow continuation"
@@ -37,10 +44,10 @@ execstep()
     local step="$1"
 
     if [[ $step =~ (.*):(.*) ]] ; then
-	oam_log "oam-flow running remote step: $step"
+	oam_log "oam-flow running remote step: '$step', ssh ${BASH_REMATCH[1]} '${BASH_REMATCH[2]}'"
 	$DRYRUN ssh ${BASH_REMATCH[1]} "${BASH_REMATCH[2]}"
     else
-	oam_log "oam-flow running step: $step"
+	oam_log "oam-flow running step: '$step'"
 	$DRYRUN $step
     fi
     
@@ -49,20 +56,24 @@ execstep()
 
 execstage()
 {
-    local stage="$1"
+    local -n stage="$1"
     local pid=()
+    local step
     
-    for step in ${stage} ; do
+    for step in ${stage[@]} ; do
 	if [[ $step =~ (.*)\& ]] ; then
+	    oam_log "oam-flow running '$step' detached"
 	    execstep "${step/&/}" &
 	    disown $!
 	else
+	    oam_log "oam-flow running '$step' with wait for completion"
 	    execstep "$step" &
 	    pid+=($!)
 	fi
     done
 
     local result=0
+    local i
 
     for ((i=0; i<${#pid[@]}; i++)) ; do
 	wait ${pid[$i]} || result=1
@@ -75,14 +86,16 @@ oam_log "oam-flow $flowname start"
 
 [ -z "${OAM_FLOW}" ] && oam_die "OAM_FLOW is empty - exiting"
 
-while read -r -a stage; do
-    oam_log "running stage ${stage[@]}"
-    if [ -n "$stage" ] ; then
-	execstage "${stage[@]}" || oam_die "$flowname ( ${stage[@]} )  failed - exiting ($?)"
+while read -r -a line; do
+    if [ "${#line}" -gt 0 ] ; then
+	oam_log "running ${line[@]}"
+	declare -a operation
+	eval "IFS=$'\n\t' operation=(${line[@]})"
+	execstage operation || oam_die "$flowname ( ${line[@]} )  failed - exiting ($?)"
     fi
 done <<<"$(printf '%s' "${OAM_FLOW}")" >>$(oam_logfile ${flowname}) 2>&1 
 
-oam_log "$scriptname generating merge summary"
+oam_log "oam-flow generating merge summary"
 oam-summary $OAM_LOGDATE >>$(oam_logfile summary)
 
 oam_log "oam-flow $flowname complete"
