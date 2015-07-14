@@ -24,9 +24,25 @@ oam_genlop_short()
     genlop --nocolor --current | oam_genlop_filter
 }
 
+oam_genlog_tmpdir()
+{
+    emerge --verbose --info | egrep '^PORTAGE_TMPDIR=' | sed -e 's/^.*=//' -e 's/"//g'
+}
+
+oam_genlop_df()
+{
+    df -$1 $2 | tail -1 | awk '{print $5}'
+}
+
+oam_genlop_used()
+{
+    echo "$(oam_genlop_df h $1)/$(oam_genlop_df hi $1) (Use/IUse%)"
+}
+
 oam_genlop_tail()
 {
     local t
+    local portage_tmpdir=$(oam_genlog_tmpdir)
     
     while /bin/true; do
 	inotifywait --timeout $OAM_HEARTBEATSLEEP --quiet --event modify /var/log/emerge.log >/dev/null
@@ -42,6 +58,7 @@ oam_genlop_tail()
 		;&
 	    2)
 		oam_uptime
+		echo "                  $(oam_genlop_used)"
 		;;
 	    1)
 		echo "$(oam_ts) /var/log/emerge.log was removed"
@@ -55,6 +72,9 @@ oam_genlop_tail()
 
 if [[ "$1" = "tail" ]] ; then
     oam_genlop_tail
+elif [[ "$1" = "status" ]] ; then
+    oam_uptime
+    echo "                  $(oam_genlop_used)"
 else
     oam_genlop_short
 fi
