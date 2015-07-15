@@ -31,7 +31,7 @@ oam_genlog_tmpdir()
 
 oam_genlop_df()
 {
-    df -$1 $2 | tail -1 | awk '{print $5}'
+    df -$1 $2 | tail -1 | awk '{print $5}' | sed -e 's/%//'
 }
 
 oam_genlop_used()
