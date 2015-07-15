@@ -1,0 +1,88 @@
+.\" Manpage for oam-watch
+.TH man 8 "10 May 2015" "1.0" "gentoo-oam man page"
+
+.SH NAME
+oam-watch \- watch the various files and status of an update using multitail(1)
+
+.SH SYNOPSIS
+
+.B oam-watch
+can be used to montor currently running operations. The multi-pane UI is provided by multitail(1).
+
+.SH DESCRIPTION
+
+In a console run:
+.B
+oam-watch
+.P
+.RS
+.P
+.IP \(bu
+Hit 'b' to select a window and then browse the multitail(1) scrollback buffer.
+.IP \(bu
+Exit the program by typing: <control>-C
+.RE
+.P
+To run oam-watch as a non-root user (recommended), add the user to the portage group.
+.P
+
+Useful hotkeys in oam-watch include:
+.IP \(bu
+<control>a will load up all logs, plus /etc/portage/package.{keywords,use} into your editor
+(default is to load into "vim -p" tabs). Inside vim: <control>PageUp/<control>PageDown/:qa will be useful.
+.IP \(bu
+<control>n to browse the set of logs from the daily run under: /var/log/oam/[DATE] 
+.IP \(bu
+<control>r to see what was merged: /var/log/oam/[DATE]/merge.log - you can move through the installed
+packages by searching for "Emerging ".
+.IP \(bu
+<control>b to see any keyword or use flag blockers recorded in: /var/log/oam/[DATE]/blocks.log
+.P
+
+.SH FILES
+
+.BI /usr/share/gentoo-oam/gentoo-oam-multitail.conf
+some system wide configuration for multitail(1) when called from oam-watch
+
+.SH LOG FILES
+
+These oam log files can be viewed while running oam-watch:
+.TP
+.BI /var/log/oam/DATE/blocks.log
+by default this file can be viewed from oam-watch when <control>b is pressed
+.TP
+.BI /var/log/oam/DATE/error.log
+by default this file can be viewed from oam-watch when <control>e is pressed
+.TP
+.BI /var/log/oam/DATE/glsa.log
+by default this file can be viewed from oam-watch when <control>g is pressed
+.TP
+.BI /var/log/oam/DATE/merge.log
+by default this file can be viewed from oam-watch when <control>r is pressed
+.TP
+.BI /var/log/oam/DATE/oam.log
+by default this file can be viewed from oam-watch when <control>o is pressed
+.TP
+.BI /var/log/oam/DATE/sync.log
+by default this file can be viewed from oam-watch when <control>y is pressed
+.P
+In addition the /var/log/oam directory tree can be browsed by ranger(1) when
+<control>n is pressed while in oam-watch(1).
+.P
+Note that the default action is to start vim or ranger running inside
+an xterm started by multitail - so you may need to configure
+sshd/X11Forwarding and/or X11/DISPLAY/xauth settings appropriately.
+
+.SH BUGS
+Some actions (e.g. emaint, emerge... etc) buffer output. As a result
+oam-watch may not show anything going on for long periods.
+
+.SH SEE ALSO
+oam-flow(8), gentoo-oam(8), emaint(1), emerge(1), eclean(1), glsa-check(1), qcheck(1), logrotate(8),
+eix(1), genlop(1), ts(1), multitail(1)
+
+.SH AUTHOR
+Paul Healy
+
+.SH COPYRIGHT
+GNU GENERAL PUBLIC LICENSE Version 2

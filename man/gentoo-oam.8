@@ -27,10 +27,6 @@ oam-uptime \- writes a short system loadavg to the console
 
 oam-version \- write the gentoo-oam version to the console
 
-oam-watch \- watch the various files and status of an update cycle using multitail(1)
-
-oam-weekly \- run sync and update actions (actions defined in /etc/gentoo-oam.conf)
-
 .SH DESCRIPTION
 gentoo-oam builds on portage utilities to automate some common
 task sequences (referred to here as workflows).
@@ -69,31 +65,18 @@ Examine /etc/gentoo-oam.conf for anything that you need to localise on your serv
 .IP \(bu
 As root run:
 .B
-oam-weekly
+oam-flow weekly
 .IP \(bu
 In another console run:
 .B
 oam-watch
 .P
 
-Useful hotkeys in oam-watch include:
-.IP \(bu
-<control>a will load up all logs, plus /etc/portage/package.{keywords,use} into your editor
-(default is load into "vim -p" tabs). Inside vim: <control>PageUp/<control>PageDown/:qa will be useful.
-.IP \(bu
-<control>n to browse the set of logs from the daily run under: /var/log/oam/[DATE] 
-.IP \(bu
-<control>r to see what was merged: /var/log/oam/[DATE]/merge.log - you can move through the installed
-packages by searching for "Emerging ".
-.IP \(bu
-<control>b to see any keyword or use flag blockers recorded in: /var/log/oam/[DATE]/blocks.log
-.P
-
 .SH COMPONENTS
 
 .P
-.B oam-weekly
-runs the list of tasks defined by the OAM_WEEKLY setting in /etc/gentoo-oam.conf.
+.B oam-flow <flowname>
+runs the tasks in OAM_FLOW from: /etc/gentoo-oam.d/<flowname>.conf
 .P
 
 .B oam-sync
@@ -113,26 +96,12 @@ eix-remote add1 (only if layman is installed - disable by setting OAM_EIX_REMOTE
 .IP \(bu
 oam-summary (to summarise the merges/blocks/news items in the update)
 .RE
+.P
 The eix actions will only run every OAM_EIX_REMOTE_DAYS days - by default they will not
 run more than once every 6 days to avoid hammering zugaina.
 .P
-
-.B oam-watch
-can be used to montor currently running operations.
-The multi-pane UI is provided by multitail(1).
-.RS
-.P
-.IP \(bu
-Hit 'b' to select a window and then browse the multitail(1) scrollback buffer.
-.IP \(bu
-Exit the program by typing: <control>-C
-.RE
-.P
-To run oam-watch as a non-root user (recommended), add the user to the portage group.
-.P
-
 .B oam-glsa
-runs glsa-check, logging the results to /var/log/oam/glsa.log.
+runs glsa-check, logging the results to /var/log/oam/DATE/glsa.log.
 Will return 7 if that file is non-empty, 0 otherwise. Returning 7 means that
 the workflow will continue processing the remaining tasks.
 .P
@@ -254,14 +223,14 @@ Defaults to 1
 Used to decide if eclean distfiles should be run (for example you may not want to
 run it if the /usr/portage/distfiles is nfs mounted from another server). Defaults to 1
 .TP
-.BI OAM_WEEKLY
-The actions to perform when the oam-weekly is run. See /etc/gentoo-oam.conf for default settings.
+.BI OAM_FLOW
+The actions to perform when "oam-flow <flowname>" is run. See /etc/gentoo-oam.conf for default settings.
 .TP
 .BI OAM_ONERROR
 When a workflow fails, the program given by this setting will be called with three parameters:
 .RS
 .IP \(bu 
-The name of the workflow script that failed (e.g. oam-weekly)
+The name of the workflow script that failed
 .IP \(bu
 The task belonging to the workflow that failed (e.g. oam-update)
 .IP \(bu
@@ -309,8 +278,7 @@ well.
 .P
 Non gentoo-oam steps can be added to the new workflow provided that:
 .IP \(bu
-The step can be executed as a program requiring no arguments (note that environment
-variables can be set/exported in the workflow configuration file);
+The step can be executed as a program such as:
 e.g. "/usr/local/bin/localbackup.sh"
 .IP \(bu
 The step should ideally its own logging - gentoo-oam will capture output
@@ -348,13 +316,13 @@ OAM_ONERROR="localonerrorhandler.sh"
 .BI /etc/gentoo-oam.conf
 gentoo-oam system configuration
 .TP
-.BI /var/log/oam/error.log
+.BI /var/log/oam/DATE/error.log
 central locations for error reports
 .TP
-.BI /var/log/oam/glsa.log
+.BI /var/log/oam/DATE/glsa.log
 results of a glsa-check(1) run following a sync
 .TP
-.BI /var/log/oam/oam.log
+.BI /var/log/oam/DATE/oam.log
 log of oam operations started/stopped
 .TP
 .BI /var/log/oam/DATE/blocks.log
@@ -368,47 +336,12 @@ log of the oam-sync operation for one particular day
 .TP
 .BI /usr/share/gentoo-oam/gentoo-oam-functions.sh
 common shell functions called by the various oam scripts
-.TP
-.BI /usr/share/gentoo-oam/gentoo-oam-multitail.conf
-some system wide configuration for multitail(1) when called from oam-watch
-
-.SH HELPER PROGRAMS
-
-These oam log files can be viewed while running oam-watch:
-.TP
-.BI /var/log/oam/DATE/blocks.log
-by default this file can be viewed from oam-watch when <control>b is pressed
-.TP
-.BI /var/log/oam/error.log
-by default this file can be viewed from oam-watch when <control>e is pressed
-.TP
-.BI /var/log/oam/glsa.log
-by default this file can be viewed from oam-watch when <control>g is pressed
-.TP
-.BI /var/log/oam/DATE/merge.log
-by default this file can be viewed from oam-watch when <control>r is pressed
-.TP
-.BI /var/log/oam/oam.log
-by default this file can be viewed from oam-watch when <control>o is pressed
-.TP
-.BI /var/log/oam/DATE/sync.log
-by default this file can be viewed from oam-watch when <control>y is pressed
-.P
-In addition the /var/log/oam directory tree can be browsed by ranger(1) when
-<control>n is pressed while in oam-watch(1).
-.P
-Note that the default action is to start vim or ranger running inside
-an xterm started by multitail - so you may need to configure
-sshd/X11Forwarding and/or X11/DISPLAY/xauth settings appropriately.
 
 .SH BUGS
-Some actions (e.g. emaint, emerge... etc) buffer output. As a result
-oam-watch may not show anything going on for long periods.
-.P
 The perl-cleaner stdout needs more ansi control character filtering.
 
 .SH SEE ALSO
-emaint(1), emerge(1), eclean(1), glsa-check(1), qcheck(1), logrotate(8),
+oam-flow(8), oam-watch(8), emaint(1), emerge(1), eclean(1), glsa-check(1), qcheck(1), logrotate(8),
 eix(1), genlop(1), ts(1), multitail(1)
 
 .SH AUTHOR
