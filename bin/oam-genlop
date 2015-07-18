@@ -36,7 +36,7 @@ oam_genlop_df()
 
 oam_genlop_used()
 {
-    echo "$(oam_genlop_df h $1)/$(oam_genlop_df hi $1) (Use/IUse%)"
+    echo "$(oam_genlop_df h $1)%d $(oam_genlop_df hi $1)%i"
 }
 
 oam_genlop_tail()
@@ -57,8 +57,7 @@ oam_genlop_tail()
 		done
 		;&
 	    2)
-		oam_uptime
-		echo "                  $(oam_genlop_used)"
+		echo "$(oam_uptime)$(oam_genlop_used)"
 		;;
 	    1)
 		echo "$(oam_ts) /var/log/emerge.log was removed"
