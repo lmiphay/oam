@@ -10,6 +10,7 @@ check:
 FILES=\
 	oam-emergelog \
 	oam-genlop \
+	oam-mkset \
 	oam-summary \
 	oam-version \
 	oam-watch

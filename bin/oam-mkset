@@ -1,0 +1,5 @@
+#!/bin/bash
+
+equery list -F '$cp' ${1}*/*
+
+exit 0
