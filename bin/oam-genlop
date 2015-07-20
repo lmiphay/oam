@@ -57,7 +57,7 @@ oam_genlop_tail()
 		done
 		;&
 	    2)
-		echo "$(oam_uptime)$(oam_genlop_used)"
+		echo "$(oam_uptime) $(oam_genlop_used)"
 		;;
 	    1)
 		echo "$(oam_ts) /var/log/emerge.log was removed"
