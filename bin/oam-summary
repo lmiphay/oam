@@ -35,13 +35,7 @@ fi
 
 if [[ -f $blockslog ]] ; then
     echo "$(oam_ts) errors/blocked packages"
-    if [[ -x /usr/bin/unique ]] ; then
-	dedupedlog=$LOGDATE/dedupe.log
-	cat $blockslog  | /usr/bin/unique $dedupedlog
-	cat $dedupedlog | oam_indent
-    else
-	cat $blockslog  | oam_indent
-    fi
+    awk '!x[$0]++' $blockslog | oam_indent
 fi
 
 PREVDATE=$(oam_prevdate $LOGDATE)
