@@ -3,3 +3,4 @@ F1 help      l keys        t showfiles
 ^a ALL-logs ^o oam.log    ^y sync.log
 ^n ranger   ^e errors.log ^b blocks.log
 ^x lnav     ^g glsa.log   ^r merge.log
+^u summary
