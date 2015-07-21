@@ -34,7 +34,8 @@ oam_genlop_df()
     df -$1 $2 | tail -1 | awk '{print $5}' | sed -e 's/%//'
 }
 
-# 20150721:18:23:40 0.04 0.14 0.31 13% 1%   x
+#   "                 uptimes        df inode"
+  # 20150721:18:23:40 0.04 0.14 0.31 13% 1%   x
 oam_genlop_used()
 {
     echo "$(oam_genlop_df h $1)% $(oam_genlop_df hi $1)%"
@@ -44,6 +45,8 @@ oam_genlop_tail()
 {
     local t
     local portage_tmpdir=$(oam_genlog_tmpdir)
+
+    echo "                 uptimes        df inode"
     
     while /bin/true; do
 	inotifywait --timeout $OAM_HEARTBEATSLEEP --quiet --event modify /var/log/emerge.log >/dev/null
