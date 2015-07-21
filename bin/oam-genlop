@@ -34,9 +34,10 @@ oam_genlop_df()
     df -$1 $2 | tail -1 | awk '{print $5}' | sed -e 's/%//'
 }
 
+# 20150721:18:23:40 0.04 0.14 0.31 13% 1%   x
 oam_genlop_used()
 {
-    echo "$(oam_genlop_df h $1)%d $(oam_genlop_df hi $1)%i"
+    echo "$(oam_genlop_df h $1)% $(oam_genlop_df hi $1)%"
 }
 
 oam_genlop_tail()
