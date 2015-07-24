@@ -24,7 +24,7 @@ oam_genlop_short()
     genlop --nocolor --current | oam_genlop_filter
 }
 
-oam_genlog_tmpdir()
+oam_genlop_tmpdir()
 {
     emerge --verbose --info | egrep '^PORTAGE_TMPDIR=' | sed -e 's/^.*=//' -e 's/"//g'
 }
@@ -41,12 +41,24 @@ oam_genlop_used()
     echo "$(oam_genlop_df h $1)% $(oam_genlop_df hi $1)%"
 }
 
+oam_genlop_monitor_count=0
+oam_genlop_monitor()
+{
+    if [[ $oam_genlop_monitor_count -eq 0 ]] ; then
+         echo "                 uptimes        df inode"
+         oam_genlop_monitor_count=$(expr $oam_genlop_monitor_count + 1)
+    elif [[ $oam_genlop_monitor_count -eq 20 ]] ; then
+         oam_genlop_monitor_count=0
+    fi
+    echo "$(oam_uptime) $(oam_genlop_used $1)"
+}
+
 oam_genlop_tail()
 {
     local t
-    local portage_tmpdir=$(oam_genlog_tmpdir)
+    local portage_tmpdir=$(oam_genlop_tmpdir)
 
-    echo "                 uptimes        df inode"
+    oam_genlop_monitor $portage_tmpdir
     
     while /bin/true; do
 	inotifywait --timeout $OAM_HEARTBEATSLEEP --quiet --event modify /var/log/emerge.log >/dev/null
@@ -61,7 +73,7 @@ oam_genlop_tail()
 		done
 		;&
 	    2)
-		echo "$(oam_uptime) $(oam_genlop_used $portage_tmpdir)"
+		oam_genlop_monitor $portage_tmpdir
 		;;
 	    1)
 		echo "$(oam_ts) /var/log/emerge.log was removed"
