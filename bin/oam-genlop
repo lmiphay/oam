@@ -34,7 +34,7 @@ oam_genlop_df()
     df -$1 $2 | tail -1 | awk '{print $5}' | sed -e 's/%//'
 }
 
-#   "                 uptimes        df inode"
+#  "                  uptimes        df inode"
   # 20150721:18:23:40 0.04 0.14 0.31 13% 1%   x
 oam_genlop_used()
 {
@@ -45,7 +45,7 @@ oam_genlop_monitor_count=0
 oam_genlop_monitor()
 {
     if [[ $oam_genlop_monitor_count -eq 0 ]] ; then
-         echo "                 uptimes        df inode"
+         echo "                  uptimes        df inode"
          oam_genlop_monitor_count=$(expr $oam_genlop_monitor_count + 1)
     elif [[ $oam_genlop_monitor_count -eq 20 ]] ; then
          oam_genlop_monitor_count=0
@@ -89,7 +89,7 @@ if [[ "$1" = "tail" ]] ; then
     oam_genlop_tail
 elif [[ "$1" = "status" ]] ; then
     oam_uptime
-    echo "                  $(oam_genlop_used)"
+    echo "                  $(oam_genlop_used $(oam_genlop_tmpdir))"
 else
     oam_genlop_short
 fi
