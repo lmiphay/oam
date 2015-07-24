@@ -26,7 +26,7 @@ export PATH=/usr/sbin:$PATH
 
 oam-genlop tail | \
     multitail \
-	  -x "$HOSTNAME/oam/$watch_dir gentoo-oam Version $(oam_version)" \
+	  -x "$HOSTNAME/oam/$watch_dir/$(uname -r) gentoo-oam V$(oam_version)" \
 	  --config /usr/share/gentoo-oam/gentoo-oam-multitail.conf \
 	  --basename \
 	  -sw 45,40 -sn 3,4 \
