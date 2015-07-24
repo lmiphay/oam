@@ -20,11 +20,11 @@ The philosophy is to:
 + provide an editor preloaded with logs and portage config files ("vim -p" tabs)
 + provide a quick glance summary of merges, blocks and new news items
 
-See `man 8 gentoo-oam` / gentoo-oam(8) for documentation.
+See: gentoo-oam(8), oam-flow(8), oam-watch(8) for detailed documentation.
 
 #### Workflows
 
-Workflows are a sequence of steps which are executed in sequence, stopping at the first failure.
+Workflows are a sequence of steps which are executed in sequence, usually stopping at the first failure.
 
 For example the default weekly workflow will run these steps:
 
@@ -56,7 +56,7 @@ The operator must still manually:
 * install via ebuild from the [lmiphay overlay](https://gitweb.gentoo.org/user/lmiphay.git/about/)
 * pulls in many useful dependencies as part of the install (eix, genlop, multitail, logrotate, eclean-kernel)
 
-![oam-watch](screenshots/oam-watch2.png?raw=true "oam-watch sample")
+![oam-watch](screenshots/oam-watch3.png?raw=true "oam-watch sample")
 
 #### Why should you not use gentoo-oam?
 
