@@ -15,3 +15,4 @@ install:
 	install --mode=0644 gentoo-oam.logrotate $(DESTDIR)/etc/logrotate.d/gentoo-oam
 	install --mode=0644 officenet.conf $(DESTDIR)/etc/gentoo-oam.d
 	install --mode=0644 weekly.conf $(DESTDIR)/etc/gentoo-oam.d
+	install --mode=0644 monthly.conf $(DESTDIR)/etc/gentoo-oam.d
