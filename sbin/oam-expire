@@ -9,7 +9,9 @@ echo "$(oam_ts) oam-expire start" >>$logfile
 
 if [[ -d $OAM_LOGDIR ]] ; then
     cd $OAM_LOGDIR && \
-    ls -d1tr 2* | head -n -$OAM_KEEPLOGS | xargs --verbose -d '\n' rm -rf >>$logfile 2>&1
+	ls -d1tr 2* | head -n -$OAM_KEEPLOGS | xargs --verbose -d '\n' rm -rf >>$logfile 2>&1
+else
+    echo "$(oam_ts) oam-expire $OAM_LOGDIR is missing" >>$logfile
 fi
 
 echo "$(oam_ts) oam-expire complete" >>$logfile
