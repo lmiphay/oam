@@ -16,6 +16,6 @@
         create
         ifempty
         lastaction
-		oam-expire
+		/usr/sbin/oam-expire
         endscript
 }
