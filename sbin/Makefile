@@ -17,6 +17,7 @@ FILES=\
 	oam-glsa \
 	oam-kernel \
 	oam-merge \
+	oam-newuse \
 	oam-qcheck \
 	oam-sync \
 	oam-unmask-write \

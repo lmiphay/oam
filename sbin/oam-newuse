@@ -1,0 +1,9 @@
+#!/bin/bash
+
+source /etc/gentoo-oam.conf
+source /usr/share/gentoo-oam/gentoo-oam-functions.sh
+
+OAM_TAG=newuse \
+       oam-merge --newuse --update $OAM_EMERGE_OPTS $@ world
+
+exit 0
