@@ -5,12 +5,22 @@ source /usr/share/gentoo-oam/gentoo-oam-functions.sh
 
 logfile=$OAM_LOGDIR/expire.log
 
-echo "$(oam_ts) oam-expire start" >>$logfile
+echo "$(oam_ts) oam-expire start; keeplogs=$OAM_KEEPLOGS" >>$logfile
+
+if [[ "$1" = "-d" ]] ; then
+    DRYRUN="echo"
+    shift
+    echo "running in debug mode: $@" >>$logfile
+fi
+
+#       "20150728:16:31:40 "
+echo -n "                  " >>$logfile
 
 if [[ -d $OAM_LOGDIR ]] ; then
     cd $OAM_LOGDIR && \
-	ls -d1tr 2* | head -n -$OAM_KEEPLOGS | xargs --verbose -d '\n' rm -rf >>$logfile 2>&1
+	ls -d1tr 2* | head -n -$OAM_KEEPLOGS | xargs --verbose -d '\n' $DRYRUN rm -rf >>$logfile 2>&1
 else
+    echo "."
     echo "$(oam_ts) oam-expire $OAM_LOGDIR is missing" >>$logfile
 fi
 

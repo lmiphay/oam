@@ -1,0 +1,61 @@
+.\" Manpage for gentoo-oam
+.TH man 8 "10 May 2015" "1.0" "gentoo-expire man page"
+
+.SH NAME
+
+oam-expire \- prune old log file sets written by gentoo-oam
+
+.SH SYNOPSIS
+
+.B
+oam-expire [-d]
+
+.SH DESCRIPTION
+
+.B oam-expire
+is typically called from cron.
+
+It will remove all but the last N sets of logfiles.
+
+A set is a directory where the logfiles for one day are written (e.g. /var/log/oam/20150711).
+
+The installation installs a script into /etc/cron.daily which will keep, by default, the last 10 sets of logfiles.
+
+The expiry implementation is provided by: /usr/sbin/oam-expire
+
+See the OAM_KEEPLOGS setting to configure how many log file sets are kept.
+
+.SH SYSTEM SETTINGS
+
+.TP
+.BI OAM_KEEPLOGS
+The number of sync/update log sets to keep. Defaults to 10
+.TP
+.BI OAM_LOGDIR
+The location where gentoo-oam logs will be sent/stored. Defaults to /var/log/oam
+
+.SH FILES
+
+.TP
+.BI /etc/gentoo-oam.conf
+gentoo-oam system configuration
+.TP
+.BI /var/log/oam/expire.log
+expiry actions are logged to this file
+
+.SH BUGS
+
+None
+
+.SH SEE ALSO
+
+oam-flow(8), oam-watch(8), emaint(1), emerge(1), eclean(1), glsa-check(1), qcheck(1), logrotate(8),
+eix(1), genlop(1), ts(1), multitail(1)
+
+.SH AUTHOR
+
+Paul Healy
+
+.SH COPYRIGHT
+
+GNU GENERAL PUBLIC LICENSE Version 2
