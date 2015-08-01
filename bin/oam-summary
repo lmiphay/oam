@@ -47,10 +47,13 @@ fi
 echo "$(oam_ts) checking for unread news items"
 oam_checknews | oam_indent
 
-[[ -f "$mergelog" ]] && echo "$(oam_ts) merges: $(grep 'Size of downloads:' $mergelog | head -1)"
+if [[ -f "$mergelog" ]] ; then
+    echo "$(oam_ts) merges: $(grep 'Size of downloads:' $mergelog | head -1)"
+    egrep ' merged\.$' $mergelog | sed -e 's/^>>> //' | sort | oam_indent
+fi
 
 if [[ -f $blockslog ]] ; then
-    echo "$(oam_ts) keyword/use changes"
+    echo "$(oam_ts) checking for any required keyword/use changes"
     egrep '^>|^=' $blockslog | sort | uniq | oam_indent
 fi
 
