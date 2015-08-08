@@ -45,8 +45,8 @@ or where it makes sense one of components of a step
 The operator must still manually:
 
 + resolve keyword or use flag blockers (see the blocks.log file for a starting point)
-+ run `dispatch-conf` when prompted/required
-+ run `emerge --depclean`
++ run `dispatch-conf` when prompted
++ remove obsolete packages manually with: `emerge --depclean`
 
 #### Features
 
@@ -56,7 +56,7 @@ The operator must still manually:
 * install via ebuild from the [lmiphay overlay](https://gitweb.gentoo.org/user/lmiphay.git/about/)
 * pulls in many useful dependencies as part of the install (eix, genlop, multitail, logrotate, eclean-kernel)
 
-![oam-watch](screenshots/oam-watch3.png?raw=true "oam-watch sample")
+![oam-watch](screenshots/oam-watch4.png?raw=true "oam-watch sample")
 
 #### Why should you not use gentoo-oam?
 
