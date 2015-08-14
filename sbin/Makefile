@@ -26,4 +26,4 @@ FILES=\
 .PHONY: install
 install:
 	install -d $(DESTDIR)/usr/sbin
-	for i in $(FILES); do install $$i $(DESTDIR)/usr/sbin ; done
+	for i in $(FILES); do install $$i $(DESTDIR)/usr/sbin || exit 1; done
