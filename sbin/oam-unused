@@ -4,6 +4,7 @@ source /etc/gentoo-oam.conf
 source /usr/share/gentoo-oam/gentoo-oam-functions.sh
 
 deplog=$(oam_logfile depclean)
+cleanpkgs=$(oam_logfile cleanpkgs)
 
 oam_log "oam-unused start $*"
 
@@ -21,15 +22,21 @@ case "$1" in
     list)
 	grep "All selected packages:" $deplog | \
 	    sed -E -e 's/All selected packages://' -e "s/ /\n/g" | \
-	    sort
+	    sort >$cleanpkgs
+	oam_log "oam-unused pkg candidates for removal in $cleanpkgs"
 	;;
     run)
 	$0 newuse
 	$0 depclean
 	$0 list
 	;;
+    remove)
+	oam_log "oam-unused in 5 seconds, removing $(cat $cleanpkgs)"
+	sleep 5
+	emerge --depclean --verbose $(cat $cleanpkgs)
+	;;
     *)
-	echo "usage: $(basename $0) newuse|depclean|list"
+	echo "usage: $(basename $0) newuse|depclean|list|remove"
 	;;
 esac
 
