@@ -21,6 +21,7 @@ FILES=\
 	oam-qcheck \
 	oam-sync \
 	oam-unmask-write \
+	oam-unused \
 	oam-update
 
 .PHONY: install

@@ -1,0 +1,38 @@
+#!/bin/bash
+
+source /etc/gentoo-oam.conf
+source /usr/share/gentoo-oam/gentoo-oam-functions.sh
+
+deplog=$(oam_logfile depclean)
+
+oam_log "oam-unused start $*"
+
+case "$1" in
+    build|newuse)
+	oam_log "oam-unused newuse"
+	oam-newuse
+	;;
+    depclean)
+	oam_log "oam-unused depclean"
+	emerge --pretend --depclean --verbose $@ \
+	       >>$deplog \
+	       2>>$deplog
+	;;
+    list)
+	grep "All selected packages:" $deplog | \
+	    sed -E -e 's/All selected packages://' -e "s/ /\n/g" | \
+	    sort
+	;;
+    run)
+	$0 newuse
+	$0 depclean
+	$0 list
+	;;
+    *)
+	echo "usage: $(basename $0) newuse|depclean|list"
+	;;
+esac
+
+oam_log "oam-unused complete"
+
+exit 0
