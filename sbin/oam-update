@@ -3,7 +3,14 @@
 source /etc/gentoo-oam.conf
 source /usr/share/gentoo-oam/gentoo-oam-functions.sh
 
+syncfile=$(oam_logfile sync)
 logfile=$(oam_logfile merge)
+
+if grep -q 'An update to portage is available' $syncfile ; then
+    oam_log "updating sys-apps/portage"
+    OAM_TAG=portage \
+	   oam-merge --update --verbose --verbose-conflicts sys-apps/portage
+fi
 
 OAM_TAG=update \
        oam-merge --keep-going --update $OAM_EMERGE_OPTS world
