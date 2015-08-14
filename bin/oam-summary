@@ -56,7 +56,7 @@ if [[ -f $blockslog ]] ; then
     echo "$(oam_ts) checking for any required keyword/use changes"
     egrep '^>|^=' $blockslog | sort | uniq | oam_indent
     echo "$(oam_ts) checking for packages which failed to install"
-    egrep '^ \*  (' $blockslog | sort | uniq | \
+    egrep '^ \*  \(' $blockslog | sort | uniq | \
 	awk '{print $2}' | sed -e 's:^.::' -e 's:,::' | oam_indent
 fi
 
