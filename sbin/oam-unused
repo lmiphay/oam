@@ -5,17 +5,16 @@ source /usr/share/gentoo-oam/gentoo-oam-functions.sh
 
 deplog=$(oam_logfile depclean)
 cleanpkgs=$(oam_logfile cleanpkgs)
+logfile=$(oam_logfile merge)
 
 oam_log "oam-unused start $*"
 
 case "$1" in
     build|newuse)
-	oam_log "oam-unused newuse"
 	oam-newuse
 	;;
     depclean)
-	oam_log "oam-unused depclean"
-	emerge --pretend --depclean --verbose $@ \
+	emerge --pretend --depclean --verbose \
 	       >>$deplog \
 	       2>>$deplog
 	;;
@@ -33,7 +32,11 @@ case "$1" in
     remove)
 	oam_log "oam-unused in 5 seconds, removing $(cat $cleanpkgs)"
 	sleep 5
-	emerge --depclean --verbose $(cat $cleanpkgs)
+	emerge --depclean --verbose $(cat $cleanpkgs) >>$logfile 2>&1
+	oam_log "revdep-rebuild start"
+	revdep-rebuild --nocolor --ignore \
+		       >>$logfile \
+		       2> >(oam_err "revdep")
 	;;
     *)
 	echo "usage: $(basename $0) newuse|depclean|list|remove"
