@@ -6,7 +6,7 @@ source /usr/share/gentoo-oam/gentoo-oam-functions.sh
 syncfile=$(oam_logfile sync)
 logfile=$(oam_logfile merge)
 
-if grep -q 'An update to portage is available' $syncfile ; then
+if [[ -f $syncfile ]] && grep -q 'An update to portage is available' $syncfile ; then
     oam_log "updating sys-apps/portage"
     OAM_TAG=portage \
 	   oam-merge --update --verbose --verbose-conflicts sys-apps/portage
