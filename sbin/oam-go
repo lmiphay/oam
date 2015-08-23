@@ -1,5 +1,5 @@
 #!/bin/bash
 
-echo " { emerge gentoo-oam && oam-flow ${1:-weekly} && exit 0 } " | bash
+echo " { emerge gentoo-oam && oam-flow ${1:-weekly} && exit 0; } " | bash
 
 exit 1
