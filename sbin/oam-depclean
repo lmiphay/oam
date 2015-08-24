@@ -4,7 +4,7 @@ source /etc/gentoo-oam.conf
 source /usr/share/gentoo-oam/gentoo-oam-functions.sh
 
 OAM_TAG=newuse \
-       oam-merge --update --newuse --deep --verbose $@ world
+       oam-merge --update --newuse --deep --with-bdeps=y --verbose $@ world
 
 OAM_TAG=depclean \
        oam-merge --pretend --depclean --verbose $@ world

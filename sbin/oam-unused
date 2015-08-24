@@ -14,15 +14,17 @@ case "$1" in
 	oam-newuse
 	;;
     depclean)
-	emerge --pretend --depclean --verbose \
-	       >>$deplog \
-	       2>>$deplog
+	emerge --pretend --depclean --with-bdeps=y --verbose \
+	       >$deplog 2>&1
+	if grep "Dependencies could not be completely resolved" $deplog ; then
+	    echo "depclean check failed - see $deplog" | oam_err "depclean"
+	fi
 	;;
     list)
 	grep "All selected packages:" $deplog | \
 	    sed -E -e 's/All selected packages://' -e "s/ /\n/g" | \
 	    sort >$cleanpkgs
-	oam_log "oam-unused pkg candidates for removal in $cleanpkgs"
+	oam_log "oam-unused pkg candidates for removal are in $cleanpkgs"
 	;;
     run)
 	$0 newuse
