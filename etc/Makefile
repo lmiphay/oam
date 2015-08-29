@@ -16,3 +16,4 @@ install:
 	install --mode=0644 officenet.conf $(DESTDIR)/etc/gentoo-oam.d
 	install --mode=0644 weekly.conf $(DESTDIR)/etc/gentoo-oam.d
 	install --mode=0644 monthly.conf $(DESTDIR)/etc/gentoo-oam.d
+	install --mode=0644 sync.conf $(DESTDIR)/etc/gentoo-oam.d
