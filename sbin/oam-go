@@ -1,5 +1,7 @@
 #!/bin/bash
 
-echo " { emerge gentoo-oam && oam-flow ${1:-weekly} && exit 0; } " | bash
+source /etc/gentoo-oam.conf
+
+echo " { ${OAM_GO} ; } " | bash
 
 exit 1
