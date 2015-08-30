@@ -18,6 +18,7 @@ FILES=\
 	oam-go \
 	oam-kernel \
 	oam-merge \
+	oam-mussh \
 	oam-newuse \
 	oam-qcheck \
 	oam-sync \
