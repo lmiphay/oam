@@ -74,7 +74,7 @@ case "$1" in
     loop)
 	while /bin/true; do
 	    print_status
-	    sleep 10
+	    sleep 15
 	done
 	;;
     header)
@@ -87,11 +87,10 @@ case "$1" in
 	print_header
 	shift
 	mussh \
-	    -d 1 \
 	    -o ConnectTimeout=5 \
 	    -c "oam-status loop" \
 	    -m \
-	    -h $@
+	    -h $@ | sed -e 's/^.*: //'
 	;;
     *)
 	print_header
