@@ -12,6 +12,7 @@ FILES=\
 	oam-genlop \
 	oam-mkset \
 	oam-summary \
+	oam-status \
 	oam-version \
 	oam-watch
 

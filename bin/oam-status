@@ -1,0 +1,78 @@
+#!/bin/bash
+
+source /etc/gentoo-oam.conf
+source /usr/share/gentoo-oam/gentoo-oam-functions.sh
+
+cd $OAM_LOGDIR || oam_die "$OAM_LOGDIR is missing - exiting"
+
+watch_dir=$(oam_lastdate)
+oamlog=$watch_dir/oam.log
+mergelog=$watch_dir/merge.log
+
+start_time=$(head -1 $oamlog | awk '{print $1}')
+end_time=$(tail -1 $oamlog | awk '{print $1}')
+last_cmd=$(tail -1 $oamlog | awk '{for(i=2;i<=NF;++i) printf("%s ",  $i) }')
+merges_made=$(egrep ' merged\.$' $mergelog | wc -l)
+initial_merges=$(grep 'Size of downloads:' $mergelog | head -1 | awk '{print $2}')
+
+mergestat()
+{
+    message=$(tail -1 /var/log/emerge.log)
+    seconds=$(echo $message | awk '{print $1}'|sed -e 's/://')
+    ts=$(date +$OAM_TS -d @$seconds)
+
+    case "$message" in
+            *terminating*|*exiting*|*Finished*)
+		echo "IDLE at $ts"
+		;;
+	    "*>>> emerge*")
+		echo "Merging $(pick $message 7) at $ts"
+		;;
+	    *Cleaning*)
+		echo "Merging $(pick $message 7) at $ts"
+		;;
+	    *)
+		echo "UNKNOWN at $ts"
+		;;
+	esac
+}
+
+status_raw()
+{
+    echo "$HOSTNAME $start_time $end_time $merges_made $initial_merges '$last_cmd' '$(mergestat)'"
+}
+
+status_fixed_header()
+{
+    #12345678 12345678901234567 12345678901234567 123456 1234567 1234567890123456789012345
+    #     tur 20150905:13:52:24 20150905:15:07:46      9       7 oam-flow weekly complete  IDLE at 20150905:15:06:30
+    #Hostname Start              End              Merges Initial Last Cmd             Merge Status
+
+    printf "%-8s %-17s %-17s %-6s %-5s %-25s %-s\n" Host OAM-Start OAM-End Merges Total "OAM-Last" "emerge"
+}
+
+status_fixed()
+{
+    printf "%-8s %17s %17s %6d %5d %25s %s\n" $HOSTNAME $start_time $end_time $merges_made $initial_merges "$last_cmd" "$(mergestat)"
+}
+
+case "$1" in
+    watch)
+	status_fixed_header
+	while /bin/true; do
+	    status_fixed
+	    sleep 5
+	done
+	;;
+    header)
+	status_fixed_header
+	;;
+    raw)
+	status_raw
+	;;
+    *)
+	status_fixed
+	;;
+esac
+
+exit 0
