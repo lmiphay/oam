@@ -54,19 +54,21 @@ status_fixed_header()
     #     tur 20150905:13:52:24 20150905:15:07:46      9       7 oam-flow weekly complete  IDLE at 20150905:15:06:30
     #Hostname Start              End              Merges Initial Last Cmd             Merge Status
 
-    printf "%-8s %8s %9s %9s %7s %-27s %-s\n" Host Date \
-	   OAM_Beg OAM_End \
+    printf "%-8s %8s %8s %7s %-36s %-s\n" Host Date \
+	   OAM_Beg \
 	   Merges \
-	   OAM_Last_Action emerge
+	   OAM_Last_Log_Message \
+	   emerge
 }
 
 status_fixed()
 {
     oamstat
-    printf "%-8s %-8s %9s %9s %3d %3d '%-25s' %s\n" $HOSTNAME $oamdate \
-	   ${start_time#$oamdate:} ${end_time#$oamdate:} \
+    printf "%-8s %-8s %8s %3d %3d %8s '%-25s' %s\n" $HOSTNAME $oamdate \
+	   ${start_time#$oamdate:} \
 	   $merges_made $initial_merges \
-	   "${last_cmd:0:25}" "$(mergestat)"
+	   ${end_time#$oamdate:} "${last_cmd:0:25}" \
+	   "$(mergestat)"
 }
 
 case "$1" in
