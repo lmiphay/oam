@@ -5,34 +5,40 @@ source /usr/share/gentoo-oam/gentoo-oam-functions.sh
 
 cd $OAM_LOGDIR || oam_die "$OAM_LOGDIR is missing - exiting"
 
-watch_dir=$(oam_lastdate)
-oamlog=$watch_dir/oam.log
-mergelog=$watch_dir/merge.log
+oamstat()
+{
+    watch_dir=$(oam_lastdate)
+    oamdate=$(basename $watch_dir)
+    oamlog=$watch_dir/oam.log
+    mergelog=$watch_dir/merge.log
 
-start_time=$(head -1 $oamlog | awk '{print $1}')
-end_time=$(tail -1 $oamlog | awk '{print $1}')
-last_cmd=$(tail -1 $oamlog | awk '{for(i=2;i<=NF;++i) printf("%s ",  $i) }')
-merges_made=$(egrep ' merged\.$' $mergelog | wc -l)
-initial_merges=$(grep 'Size of downloads:' $mergelog | head -1 | awk '{print $2}')
+    start_time=$(head -1 $oamlog | awk '{print $1}')
+    end_time=$(tail -1 $oamlog | awk '{print $1}')
+    last_cmd=$(tail -1 $oamlog | awk '{for(i=2;i<=NF;++i) printf("%s ",  $i) }')
+    last_cmd=${last_cmd% }
+    merges_made=$(egrep ' merged\.$' $mergelog | wc -l)
+    initial_merges=$(grep 'Size of downloads:' $mergelog | head -1 | awk '{print $2}')
+}
 
 mergestat()
 {
     message=$(tail -1 /var/log/emerge.log)
     seconds=$(echo $message | awk '{print $1}'|sed -e 's/://')
     ts=$(date +$OAM_TS -d @$seconds)
+    ts=${ts#$oamdate:}
 
     case "$message" in
             *terminating*|*exiting*|*Finished*)
-		echo "IDLE at $ts"
+		echo "$ts IDLE"
 		;;
 	    "*>>> emerge*")
-		echo "Merging $(pick $message 7) at $ts"
+		echo "$ts Merging $(pick $message 7)"
 		;;
 	    *Cleaning*)
-		echo "Merging $(pick $message 7) at $ts"
+		echo "$ts Merging $(pick $message 7)"
 		;;
 	    *)
-		echo "UNKNOWN at $ts"
+		echo "$ts UNKNOWN"
 		;;
 	esac
 }
@@ -48,12 +54,19 @@ status_fixed_header()
     #     tur 20150905:13:52:24 20150905:15:07:46      9       7 oam-flow weekly complete  IDLE at 20150905:15:06:30
     #Hostname Start              End              Merges Initial Last Cmd             Merge Status
 
-    printf "%-8s %-17s %-17s %-6s %-5s %-25s %-s\n" Host OAM-Start OAM-End Merges Total "OAM-Last" "emerge"
+    printf "%-8s %8s %9s %9s %7s %-27s %-s\n" Host Date \
+	   OAM_Beg OAM_End \
+	   Merges \
+	   OAM_Last_Action emerge
 }
 
 status_fixed()
 {
-    printf "%-8s %17s %17s %6d %5d %25s %s\n" $HOSTNAME $start_time $end_time $merges_made $initial_merges "$last_cmd" "$(mergestat)"
+    oamstat
+    printf "%-8s %-8s %9s %9s %3d %3d '%-25s' %s\n" $HOSTNAME $oamdate \
+	   ${start_time#$oamdate:} ${end_time#$oamdate:} \
+	   $merges_made $initial_merges \
+	   "${last_cmd:0:25}" "$(mergestat)"
 }
 
 case "$1" in
@@ -61,7 +74,7 @@ case "$1" in
 	status_fixed_header
 	while /bin/true; do
 	    status_fixed
-	    sleep 5
+	    sleep 10
 	done
 	;;
     header)
