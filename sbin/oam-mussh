@@ -3,9 +3,9 @@
 source /etc/gentoo-oam.conf
 source /usr/share/gentoo-oam/gentoo-oam-functions.sh
 
-logfile=$(oam_logfile mussh)
+oamfile=$(oam_logfile oam)
 
-cd $(dirname $logfile) || oam_die "failed to chdir to $(dirname $logfile)"
+cd $(dirname $oamfile) || oam_die "failed to chdir to $(dirname $oamfile)"
 
 while true ; do
     case $1 in
@@ -13,25 +13,32 @@ while true ; do
             cmd=$2
             shift 2
             ;;
+	-d)
+            musshdebug="-d 1"
+            shift
+            ;;
 	-l)
             loginname=$2
             shift 2
+            ;;
+	-s) # start in detached mode, with output logging
+            screencmdprefix="screen -d -m -L -S oam-mussh"
+            shift
             ;;
 	*)
             break
             ;;
     esac
 done
- 
-exec \
-    screen \
-    -d -m -L \
-    -S oam-mussh \
-    mussh \
-    -d 1 \
-    -o ConnectTimeout=5 \
-    -l ${loginname:-"$USER"} \
-    -c "${cmd:-"oam-go"}" \
-    -m \
-    -h $@
+
+mussh="$screencmdprefix mussh $musshdebug -m -o ConnectTimeout=5"
+mussh="$mussh -l ${loginname:-"$USER"} -c "${cmd:-"oam-go"}" -h $@"
+
+oam_log "running: $mussh"
+
+$mussh &>> $oamfile
+
+exit 0
+
+    
 
