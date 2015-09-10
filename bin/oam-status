@@ -7,40 +7,53 @@ cd $OAM_LOGDIR || oam_die "$OAM_LOGDIR is missing - exiting"
 
 oamstat()
 {
-    watch_dir=$(oam_lastdate)
-    oamdate=$(basename $watch_dir)
-    oamlog=$watch_dir/oam.log
-    mergelog=$watch_dir/merge.log
+    local watch_dir=$(oam_lastdate)
+    local oamlog=$watch_dir/oam.log
 
+    oamdate=$(basename $watch_dir)
     start_time=$(head -1 $oamlog | awk '{print $1}')
     end_time=$(tail -1 $oamlog | awk '{print $1}')
     last_cmd=$(tail -1 $oamlog | awk '{for(i=2;i<=NF;++i) printf("%s ",  $i) }')
     last_cmd=${last_cmd% }
-    merges_made=$(egrep ' merged\.$' $mergelog | wc -l)
-    initial_merges=$(grep 'Size of downloads:' $mergelog | head -1 | awk '{print $2}')
+
+    local mergelog=$watch_dir/merge.log
+
+    if [[ -f "$mergelog" ]] ; then
+        merges_made=$(egrep ' merged\.$' $mergelog | wc -l)
+        initial_merges=$(grep 'Size of downloads:' $mergelog | head -1 | awk '{print $2}')
+    else
+        merges_made="-"
+        initial_merges="-"
+    fi
+}
+
+packagename()
+{
+    echo $1 | awk '{print $7}'
 }
 
 mergestat()
 {
-    message=$(tail -1 /var/log/emerge.log)
-    seconds=$(echo $message | awk '{print $1}'|sed -e 's/://')
-    ts=$(date +$OAM_TS -d @$seconds)
-    ts=${ts#$oamdate:}
+    local message=$(tail -1 /var/log/emerge.log)
+    local seconds=$(echo $message | awk '{print $1}'|sed -e 's/://')
+    local ts=$(date +$OAM_TS -d @$seconds)
+    
+    ts=${ts#${oamdate}:}
 
     case "$message" in
-            *terminating*|*exiting*|*Finished*)
-		echo "$ts IDLE"
-		;;
-	    "*>>> emerge*")
-		echo "$ts Merging $(pick $message 7)"
-		;;
-	    *Cleaning*)
-		echo "$ts Merging $(pick $message 7)"
-		;;
-	    *)
-		echo "$ts UNKNOWN"
-		;;
-	esac
+        *terminating*|*exiting*|*Finished*)
+            echo "$ts IDLE"
+            ;;
+        "*>>> emerge*")
+            echo "$ts Merging $(packagename $message)"
+            ;;
+        *Cleaning*|*Compiling*)
+            echo "$ts Merging $(packagename $message)"
+            ;;
+        *)
+            echo "$ts UNKNOWN: $message"
+            ;;
+    esac
 }
 
 print_raw_status()
@@ -51,51 +64,51 @@ print_raw_status()
 print_header()
 {
     printf "%-8s %8s %8s %7s %-36s %-s\n" Host Date \
-	   OAM_Beg \
-	   Merges \
-	   OAM_Last_Log_Message \
-	   emerge
+       OAM_Beg \
+       Merges \
+       OAM_Last_Log_Message \
+       emerge
 }
 
 print_status()
 {
     oamstat
     printf "%-8s %-8s %8s %3d %3d %8s '%-25s' %s\n" $HOSTNAME $oamdate \
-	   ${start_time#$oamdate:} \
-	   $merges_made $initial_merges \
-	   ${end_time#$oamdate:} "${last_cmd:0:25}" \
-	   "$(mergestat)"
+       ${start_time#$oamdate:} \
+       $merges_made $initial_merges \
+       ${end_time#$oamdate:} "${last_cmd:0:25}" \
+       "$(mergestat)"
 }
 
 case "$1" in
     watch)
-	print_header
-	;&
+        print_header
+        ;&
     loop)
-	while /bin/true; do
-	    print_status
-	    sleep 15
-	done
-	;;
+        while /bin/true; do
+            print_status
+            sleep 15
+        done
+        ;;
     header)
-	print_header
-	;;
+        print_header
+        ;;
     raw)
-	print_raw_status
-	;;
+        print_raw_status
+        ;;
     net|netwatch)
-	print_header
-	shift
-	mussh \
-	    -o ConnectTimeout=5 \
-	    -c "oam-status loop" \
-	    -m \
-	    -h $@ | sed -e 's/^.*: //'
-	;;
+        print_header
+        shift
+        mussh \
+            -o ConnectTimeout=5 \
+            -c "oam-status loop" \
+            -m \
+            -h $@ | sed -e 's/^.*: //'
+        ;;
     *)
-	print_header
-	print_status
-	;;
+        print_header
+        print_status
+    ;;
 esac
 
 exit 0
