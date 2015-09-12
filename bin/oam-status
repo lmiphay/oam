@@ -44,7 +44,7 @@ mergestat()
         *terminating*|*exiting*|*Finished*)
             echo "$ts IDLE"
             ;;
-        "*>>> emerge*")
+        "*emerge*")
             echo "$ts Merging $(packagename $message)"
             ;;
         *Cleaning*|*Compiling*)
@@ -73,7 +73,7 @@ print_header()
 print_status()
 {
     oamstat
-    printf "%-8s %-8s %8s %3d %3d %8s '%-25s' %s\n" $HOSTNAME $oamdate \
+    printf "%-8s %-8s %8s %3s %3s %8s '%-25s' %s\n" $HOSTNAME $oamdate \
        ${start_time#$oamdate:} \
        $merges_made $initial_merges \
        ${end_time#$oamdate:} "${last_cmd:0:25}" \
