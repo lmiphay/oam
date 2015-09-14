@@ -29,26 +29,56 @@ oamstat()
 
 packagename()
 {
-    echo $1 | awk '{print $7}'
+    echo $1 | cut -d\  -f$2 | sed -e 's:[\(\)]::g' -e 's/::.*//'
 }
 
 mergestat()
 {
     local message=$(tail -1 /var/log/emerge.log)
+    mergestatparse "$message"
+}
+
+mergestatparse()
+{
+    local message="$1"
     local seconds=$(echo $message | awk '{print $1}'|sed -e 's/://')
     local ts=$(date +$OAM_TS -d @$seconds)
     
     ts=${ts#${oamdate}:}
 
     case "$message" in
+        *Started*)
+            echo "$ts Starting"
+            ;;
         *terminating*|*exiting*|*Finished*)
             echo "$ts IDLE"
             ;;
-        "*emerge*")
-            echo "$ts Merging $(packagename $message)"
+        *AUTOCLEAN*)
+            echo "$ts Autoclean $(packagename "$message" 4)"
             ;;
-        *Cleaning*|*Compiling*)
-            echo "$ts Merging $(packagename $message)"
+        *completed\ emerge*)
+            echo "$ts Merged $(packagename "$message" 8)"
+            ;;
+        *unmerge\ success*)
+            echo "$ts Unmerged $(packagename "$message" 5)"
+            ;;
+        *\*\ emerge*)
+            echo "$ts Merge $(echo "$message" | cut -d\  -f5-)"
+            ;;
+        *emerge*|*unmerge*)
+            echo "$ts Merging $(packagename "$message" 7)"
+            ;;
+        *Post-Build\ Cleaning*)
+            echo "$ts Cleaning $(packagename "$message" 8)"
+            ;;
+        *Updating\ world*)
+            echo "$ts UpdateWorld $(packagename "$message" 9)"
+            ;;
+        *Cleaning*|*Compiling*|*Merging*)
+            echo "$ts Merging $(packagename "$message" 7)"
+            ;;
+        *Unmerging*)
+            echo "$ts Unmerging $(packagename "$message" 4)"
             ;;
         *)
             echo "$ts UNKNOWN: $message"
@@ -63,7 +93,7 @@ print_raw_status()
 
 print_header()
 {
-    printf "%-8s %8s %8s %7s %-36s %-s\n" Host Date \
+    printf "%-8s %8s %8s %9s %-36s %-s\n" Host Date \
        OAM_Beg \
        Merges \
        OAM_Last_Log_Message \
@@ -73,7 +103,7 @@ print_header()
 print_status()
 {
     oamstat
-    printf "%-8s %-8s %8s %3s %3s %8s '%-25s' %s\n" $HOSTNAME $oamdate \
+    printf "%-8s %-8s %8s %3s / %3s %8s '%-25s' %s\n" $HOSTNAME $oamdate \
        ${start_time#$oamdate:} \
        $merges_made $initial_merges \
        ${end_time#$oamdate:} "${last_cmd:0:25}" \
@@ -104,6 +134,11 @@ case "$1" in
             -c "oam-status loop" \
             -m \
             -h $@ | sed -e 's/^.*: //'
+        ;;
+    parsetest)
+	while read line ; do
+	    mergestatparse "$line"
+	done
         ;;
     *)
         print_header
