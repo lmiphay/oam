@@ -21,10 +21,12 @@ oamstat()
     if [[ -f "$mergelog" ]] ; then
         merges_made=$(egrep ' merged\.$' $mergelog | wc -l)
         initial_merges=$(grep 'Size of downloads:' $mergelog | head -1 | awk '{print $2}')
-    else
-        merges_made="-"
-        initial_merges="-"
     fi
+
+    [ -z "$merges_made" ]    && merges_made="0"
+    [ -z "$initial_merges" ] && initial_merges="0"
+
+    merge_counts="${merges_made}/${initial_merges}"
 }
 
 packagename()
@@ -103,9 +105,9 @@ print_header()
 print_status()
 {
     oamstat
-    printf "%-8s %-8s %8s %3s / %3s %8s '%-25s' %s\n" $HOSTNAME $oamdate \
+    printf "%-8s %-8s %8s %9s %8s '%-25s' %s\n" $HOSTNAME $oamdate \
        ${start_time#$oamdate:} \
-       $merges_made $initial_merges \
+       $merge_counts \
        ${end_time#$oamdate:} "${last_cmd:0:25}" \
        "$(mergestat)"
 }
