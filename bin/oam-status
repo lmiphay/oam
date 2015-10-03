@@ -5,6 +5,12 @@ source /usr/share/gentoo-oam/gentoo-oam-functions.sh
 
 cd $OAM_LOGDIR || oam_die "$OAM_LOGDIR is missing - exiting"
 
+if [ ! -r "/var/log/emerge.log" ] ; then
+    echo "$(basename $0)@$HOSTNAME: unable to read /var/log/emerge.log" 1>&2
+    [[ " $(groups) " != *" portage "* ]] && "  Please add $(whoami) to the portage group"
+    exit 1
+fi
+
 oamstat()
 {
     local watch_dir=$(oam_lastdate)
