@@ -94,10 +94,25 @@ mergestatparse()
     esac
 }
 
+str2json()
+{
+    sed -u -e s:\':\":g
+}
+
 print_raw_status()
 {
     oamstat
-    echo "{  'Host':'$HOSTNAME', 'Date':'$oamdate', 'OAM Begin':'$start_time', 'OAM End':'$end_time', 'Merges Made':'$merges_made', 'Total Merges':$initial_merges, 'OAM Last Cmd':'$last_cmd', 'emerge':'$(mergestat)' }" | sed -u -e s:\':\":g
+    echo "{ 'Host':'$HOSTNAME', 'Date':'$oamdate', 'OAM Begin':'$start_time', 'OAM End':'$end_time', 'Merges Made':'$merges_made', 'Total Merges':$initial_merges, 'OAM Last Cmd':'$last_cmd', 'emerge':'$(mergestat)' }" | str2json
+}
+
+print_raw_header_order()
+{
+    echo "[ 'Host', 'Date', 'OAM Begin', 'OAM End', 'Merges Made', 'Total Merges', 'OAM Last Cmd', 'emerge' ]" | str2json 
+}
+
+print_raw_header_field_width()
+{
+    echo "[ 'Host', 'Date', 'OAM Begin', 'OAM End', 'Merges Made', 'Total Merges', 'OAM Last Cmd', 'emerge' ]" | str2json 
 }
 
 print_header()
@@ -131,6 +146,12 @@ case "$1" in
         ;;
     header)
         print_header
+        ;;
+    rawheaderorder)
+        print_raw_header_order
+        ;;
+    rawheaderfieldwidth)
+        print_raw_header_field_width
         ;;
     raw)
         print_raw_status
