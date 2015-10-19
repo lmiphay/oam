@@ -22,6 +22,8 @@ The philosophy is to:
 
 See: gentoo-oam(8), oam-flow(8), oam-watch(8) for detailed documentation.
 
+See [gentoo-koam](https://github.com/lmiphay/gentoo-koam) for a GUI over gentoo-oam to help cross-server monitoring.
+
 #### Workflows
 
 Workflows are a sequence of steps which are executed in sequence, usually stopping at the first failure.
