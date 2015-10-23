@@ -15,7 +15,7 @@ Each stage can have one or more steps which are actions run in parallel.
 Steps can optionally be:
 .P
 .IP \(bu
-run on remote servers (via ssh)
+run on remote servers (via ssh - password-less key setup required)
 .P
 .IP \(bu
 run detached (the flow will not wait for the action to complete before starting the next stage).
@@ -34,8 +34,10 @@ An example flow definition
 .RS 0
         oam-qcheck
 .PP
-In this example the fourth stage will run two steps in parallel, with the second step running
+In this example the first three stages run strictly one-after-the-other.
+The fourth stage will run two steps in parallel, with the second step running
 a remote call to the "laptop" server (detached in this case by the presence of the ampersand).
+The final stage (oam-qcheck) will only run after the oam-update has completed.
 .PP
 The stages/steps for a flow FLOWNAME are defined in the OAM_FLOW variable in: /etc/gentoo-oam.d/FLOWNAME.conf
 
@@ -58,7 +60,7 @@ handler called if one has been defined).
 Example: in /etc/gentoo-oam.d/local.conf (note dummy scripts for illustration purposes):
 .PP
 .RS 0
-OAM_FLOW="
+OAM_FLOW='
 .RS 0
 	localdumpfs.sh
 .RS 0
@@ -72,9 +74,26 @@ OAM_FLOW="
 .RS 0
 	smartctl-start.sh
 .RS 0
-"
+ '
 .RS 0
 OAM_ONERROR="localonerrorhandler.sh"
+
+.P
+Example: for an lxc which has bind-mounted access to a host servers portage - in /etc/gentoo-oam.d/my-lxc.conf:
+.PP
+.RS 0
+OAM_FLOW='
+.RS 0
+	oam-glsa
+.RS 0
+	oam-layman
+.RS 0
+	oam-update
+.RS 0
+	oam-qcheck
+.RS 0
+ '
+.RS 0
 
 .SH FILES
 
