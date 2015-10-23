@@ -121,5 +121,5 @@ oam_uptime()
 
 oam_version()
 {
-    echo "3.0"
+    echo "4.0"
 }
