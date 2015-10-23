@@ -17,6 +17,7 @@ FILES=\
 	oam-glsa \
 	oam-go \
 	oam-kernel \
+	oam-layman \
 	oam-merge \
 	oam-mussh \
 	oam-newuse \

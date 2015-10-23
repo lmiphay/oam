@@ -14,13 +14,7 @@ if [[ "$OAM_EMERGE_SYNC" = "1" ]] ; then
 	   2> >(oam_stripansi | oam_err "sync")
 fi
 
-if [[ -x /usr/bin/layman ]] ; then
-    oam_log "layman start"
-    # layman spams the error log
-    layman --sync=ALL --nocolor \
-	   >>$logfile \
-	   2>&1
-fi
+oam-layman
 
 oam_log "eix-update start"
 eix-update --nocolor \
