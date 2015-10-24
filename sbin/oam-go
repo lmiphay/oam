@@ -4,4 +4,4 @@ source /etc/gentoo-oam.conf
 
 echo " { ${OAM_GO} ; } " | bash
 
-exit 1
+exit $?
