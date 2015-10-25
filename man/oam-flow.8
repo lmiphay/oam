@@ -57,7 +57,7 @@ non-zero result then the workflow will be aborted at that point (and the on erro
 handler called if one has been defined).
 
 .P
-Example: in /etc/gentoo-oam.d/local.conf (note dummy scripts for illustration purposes):
+Example 1: in /etc/gentoo-oam.d/local.conf (note dummy scripts for illustration purposes):
 .PP
 .RS 0
 OAM_FLOW='
@@ -79,7 +79,7 @@ OAM_FLOW='
 OAM_ONERROR="localonerrorhandler.sh"
 
 .P
-Example: for an lxc which has bind-mounted access to a host servers portage - in /etc/gentoo-oam.d/my-lxc.conf:
+Example 2: for an lxc which has bind-mounted access to a host servers portage - in /etc/gentoo-oam.d/my-lxc.conf:
 .PP
 .RS 0
 OAM_FLOW='
@@ -94,6 +94,27 @@ OAM_FLOW='
 .RS 0
  '
 .RS 0
+
+.P
+Example 3: for a server (myhost) which also hosts an lxc (mylxc) - in /etc/gentoo-oam.d/myhost.conf:
+.PP
+.RS 0
+OAM_FLOW='
+.RS 0
+        oam-sync
+.RS 0
+        oam-glsa oam-fetch
+.RS 0
+        oam-update
+.RS 0
+        oam-clean oam-qcheck "mylxc:oam-go &"
+.RS 0
+        oam-kernel
+.RS 0
+ '
+.RS 0
+This waits until the host update completes and then runs the lxc update in parallel with
+the host clean/qcheck jobs.
 
 .SH FILES
 

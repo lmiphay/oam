@@ -24,6 +24,23 @@ See: gentoo-oam(8), oam-flow(8), oam-watch(8) for detailed documentation.
 
 See [gentoo-koam](https://github.com/lmiphay/gentoo-koam) for a GUI over gentoo-oam to help cross-server monitoring.
 
+#### Quickstart
+
+```
+# layman -L && layman -a lmiphay
+# emerge gentoo-oam
+# vi /etc/gentoo-oam.conf /etc/gentoo-oam.d/weekly.conf
+# oam-go
+```
+
+After adding the overlay there will be a keyword file at: `/var/lib/layman/lmiphay/gentoo-oam.keywords`
+
+In another terminal monitor progress with:
+
+```
+# oam-watch
+```
+
 #### Workflows
 
 Workflows are a sequence of steps which are executed in sequence, usually stopping at the first failure.
