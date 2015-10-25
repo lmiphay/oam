@@ -3,6 +3,7 @@
 * [Table of Contents](#table-of-contents)
 * [Operations/Admin/Management for gentoo](#operationsadminmanagement-for-gentoo)
 * [Workflows](#workflows)
+* [Quickstart](#quickstart)
 * [Manual Operations](#manual-operations)
 * [Features](#features)
 * [Why should you not use gentoo-oam?](#why-should-you-not-use-gentoo-oam)
