@@ -50,6 +50,9 @@ In another terminal monitor progress with:
 # oam-watch
 ```
 
+When `oam-go` returns, browse to the set of log files generated under: `/var/log/oam/[DATE]` (start with
+the summary.log file).
+
 #### Workflows
 
 Workflows are a sequence of steps which are executed in sequence, (usually) stopping
@@ -83,7 +86,7 @@ The operator must still manually:
 
 * simple workflow configuration on a per-server basis - new workflows can be added
 * dashboard display of currently running oam processes built on [multitail](https://www.vanheusden.com/multitail/)
-* overall summary of a merge (what merged succesfully, what didn't, glsa's, blockers, qcheck differences, unread news items... etc)
+* overall _summary_ of a merge (what merged succesfully, what didn't, glsa's, blockers, qcheck differences, unread news items... etc)
 * logs all operations, errors, process output... etc
 * multi-server support for starting and monitoring operations
 * install via ebuild from the [lmiphay overlay](https://gitweb.gentoo.org/user/lmiphay.git/about/)
