@@ -162,7 +162,7 @@ case "$1" in
             -o ConnectTimeout=5 \
             -c "oam-status rawloop" \
             -m \
-            -h $@ | sed -u -e 's/^.*: //'
+            -h $@ | sed -u -e 's/^.*: {/{/'
         ;;
     parsetest)
 	while read line ; do
