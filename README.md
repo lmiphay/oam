@@ -29,12 +29,20 @@ See [gentoo-koam](https://github.com/lmiphay/gentoo-koam) for a GUI over gentoo-
 
 ```
 # layman -L && layman -a lmiphay
-# emerge gentoo-oam
-# vi /etc/gentoo-oam.conf /etc/gentoo-oam.d/weekly.conf
-# oam-go
 ```
 
 After adding the overlay there will be a keyword file at: `/var/lib/layman/lmiphay/gentoo-oam.keywords`
+
+```
+# emerge gentoo-oam
+```
+
+Review the default settings, make any local changes, and then kick off the default flow:
+
+```
+# vi /etc/gentoo-oam.conf /etc/gentoo-oam.d/weekly.conf
+# oam-go
+```
 
 In another terminal monitor progress with:
 
