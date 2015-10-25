@@ -21,6 +21,7 @@ oamstat()
     end_time=$(tail -1 $oamlog | awk '{print $1}')
     last_cmd=$(tail -1 $oamlog | awk '{for(i=2;i<=NF;++i) printf("%s ",  $i) }')
     last_cmd=${last_cmd% }
+    last_cmd=$(echo $last_cmd | sed -e s:\'::g)
 
     local mergelog=$watch_dir/merge.log
 
