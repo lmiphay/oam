@@ -25,7 +25,7 @@ resulthandler()
     local step="$1"
     local result=$2
 
-    oam_log "result logger: '$flowname/$step' result=$result"
+    oam_log "$flowname/$step result=$result"
 
     if [[ $result -ne 0 && -n "$OAM_ONERROR" ]] ; then
 	oam_log "running error handler: $OAM_ONERROR $flowname '$step' $result"
