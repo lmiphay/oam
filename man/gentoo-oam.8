@@ -156,6 +156,10 @@ build the kernel, modules and rebuild external third party modules
 optionally install the new kernel
 .RE
 .P
+Note that oam-kernel requires that /usr/src/linux be symlinked to the latest kernel version (e.g.
+in the case of gentoo-sources it DEPENDS on: gentoo-sources[symlink] or
+sys-kernel/aufs-sources[symlink]... etc).
+.P
 It will not compile a kernel if any of these conditions are true:
 .RS
 .IP \(bu
