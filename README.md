@@ -101,6 +101,7 @@ The operator must still manually:
 
 #### Known Similar Tools
 
+* [gentoo-upsys](https://github.com/Krishath/gentoo-upsys)
 * [porticron](https://github.com/gentoo/porticron)
 * [gentmaint](http://gentmaint.sourceforge.net/)
 * [glcu](http://www.panhorst.com/glcu/)
