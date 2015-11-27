@@ -1,5 +1,8 @@
 #!/bin/bash
 
+OAM_ROW1_HEIGHT=9
+OAM_ROW2_HEIGHT=9
+
 source /etc/gentoo-oam.conf
 source /usr/share/gentoo-oam/gentoo-oam-functions.sh
 
@@ -31,13 +34,13 @@ oam-genlop tail | \
 	  --basename \
 	  -sw 45,40 -sn 3,4 \
 	  \
-	  -wh 6 /usr/share/gentoo-oam/oam-watch.help \
-	  --retry -wh 13 $watch_dir/oam.log \
+	  -wh ${OAM_ROW1_HEIGHT} /usr/share/gentoo-oam/oam-watch.help \
+	  --retry -wh ${OAM_ROW2_HEIGHT} $watch_dir/oam.log \
 	  -j \
 	  \
-	  -wh 6 -l oam-emergelog \
+	  -wh ${OAM_ROW1_HEIGHT} -l oam-emergelog \
 	  --retry-all \
-	  -wh 13 $watch_dir/error.log \
+	  -wh ${OAM_ROW2_HEIGHT} $watch_dir/error.log \
 	  --mark-change -T \
 	  -i $watch_dir/sync.log \
 	  -I $watch_dir/merge.log \
