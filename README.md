@@ -107,6 +107,7 @@ The operator must still manually:
 * [glcu](http://www.panhorst.com/glcu/)
 * [ug](https://github.com/sidusnare/ug)
 * [update](http://weaver.gentooexperimental.org/update.html)
+* [update-system.sh - tip 2](http://gentoovps.net/gentoo-portage-tips/)
 
 #### Copyright
 
