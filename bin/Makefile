@@ -8,6 +8,7 @@ check:
 	@echo "done"
 
 FILES=\
+	oam-checkconfig \
 	oam-emergelog \
 	oam-genlop \
 	oam-mkset \

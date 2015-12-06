@@ -1,0 +1,108 @@
+#!/usr/bin/python
+import sys
+import os
+import stat
+import grp
+import pwd
+import glob
+
+class CheckConfig:
+    """ Check readability, ownership... etc of specified files and
+        directories.
+    # fix readability
+    ## fix ownership
+
+    # run eix -tTe
+    #  -t, --test-non-matching
+    #  -T, --test-obsolete
+    #  -e, --exact
+    """
+    DEFAULT_TARGETS = [
+        ('file', '/etc/gentoo-oam.conf',  [ ('mode',0o640), ('group','portage') ] ),
+        ('dir',  '/etc/gentoo-oam.d',     [ ('mode',0o750), ('group','portage'), ('owner','root') ] ),
+        ('glob', '/etc/gentoo-oam.d/*',   [ ('mode',0o640), ('group','portage') ] ),
+        ('dir',  '/var/log/oam',          [ ('mode',0o770) ] ),
+        ('file', '/etc/cron.daily/gentoo-oam', [ ('mode',0o755) ] )
+    ]
+
+    def __init__(self):
+        self.result = 0
+
+    def fail(self, message):
+        self.result = 1
+        print(message)
+
+    def mode(self, filename):
+        return stat.S_IMODE(os.stat(filename).st_mode)
+
+    def owner(self, filename):
+        return pwd.getpwuid(os.stat(filename).st_uid)[0]
+
+    def group(self, filename):
+        return grp.getgrgid(os.stat(filename).st_gid)[0]
+
+    def check_exist(self, spec):
+        return os.path.exists(spec[0])
+
+    def check_mode(self, pathspec, required):
+        return self.mode(pathspec) == required
+
+    def check_owner(self, pathspec, required):
+        return self.owner(pathspec) == required
+
+    def check_group(self, pathspec, required):
+        return self.group(pathspec) == required
+
+    CHECKS = {
+        'mode':  (check_mode,  mode),
+        'group': (check_group, group),
+        'owner': (check_owner, owner)
+    }
+
+    def format(self, checktype, val):
+        return str(oct(val)) if checktype=='mode' else str(val)
+
+    def check_target(self, pathspec, checks):
+        for chk, val in checks:
+            if chk in self.CHECKS:
+                if not self.CHECKS.get(chk)[0](self, pathspec, val):
+                    self.fail(pathspec + ' failed check for ' + chk + ' = ' +
+                              self.format(chk, val) +
+                              ', actual=' +
+                              self.format(chk, self.CHECKS.get(chk)[1](self, pathspec)))
+            else:
+                self.fail(checktype + ' is not available')
+
+    def check_file(self, pathspec, checks):
+        if os.path.isfile(pathspec):
+            self.check_target(pathspec, checks)
+        else:
+            self.fail(pathspec + ' is not a file')
+
+    def check_dir(self, pathspec, checks):
+        if os.path.isdir(pathspec[0]):
+            self.check_target(pathspec, checks)
+        else:
+            self.fail(spec[0], 'is not a dir')
+
+    def check_glob(self, pathspec, checks):
+        for filename in glob.glob(pathspec):
+            self.check_target(filename, checks)
+
+    TYPES = {
+        'file':check_file,
+        'dir':check_dir,
+        'glob':check_glob
+    }
+
+    def process(self, targets = DEFAULT_TARGETS):
+        for checktype, pathspec, checks in targets:
+            if checktype in self.TYPES:
+                self.TYPES.get(checktype)(self, pathspec, checks)
+            else:
+                self.fail(checktype + ' is not available')
+
+        return self.result
+
+if __name__ == "__main__":
+    sys.exit(CheckConfig().process())
