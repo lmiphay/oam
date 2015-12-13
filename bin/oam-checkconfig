@@ -7,15 +7,7 @@ import pwd
 import glob
 
 class CheckConfig:
-    """ Check readability, ownership... etc of specified files and
-        directories.
-    # fix readability
-    ## fix ownership
-
-    # run eix -tTe
-    #  -t, --test-non-matching
-    #  -T, --test-obsolete
-    #  -e, --exact
+    """ Check readability, ownership... etc of specified files and directories.
     """
     DEFAULT_TARGETS = [
         ('file', '/etc/gentoo-oam.conf',  [ ('mode',0o640), ('group','portage'), ('owner','root') ] ),
