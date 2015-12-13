@@ -13,6 +13,13 @@ fi
 
 echo "$(oam_ts) summary report for $LOGDATE"
 
+echo "$(oam_ts) checking file permissions and ownership"
+oam-checkconfig | oam_indent
+
+echo "$(oam_ts) checking for obsolete portage configuration entries"
+eix --test-non-matching --test-obsolete --exact | \
+    grep -v 'No non-matching or empty entries' | oam_indent
+
 mergelog=$LOGDATE/merge.log
 blockslog=$LOGDATE/blocks.log
 
