@@ -18,7 +18,7 @@ oam-checkconfig | oam_indent
 
 echo "$(oam_ts) checking for obsolete portage configuration entries"
 eix --test-non-matching --test-obsolete --exact | \
-    grep -v 'No non-matching or empty entries' | oam_indent
+    egrep -v 'No non-matching|No matches found.|The names of all installed packages are in the database.' | sed '/^\s*$/d' | oam_indent
 
 mergelog=$LOGDATE/merge.log
 blockslog=$LOGDATE/blocks.log
@@ -42,7 +42,11 @@ fi
 
 if [[ -f $blockslog ]] ; then
     echo "$(oam_ts) errors/blocked packages"
-    awk '!x[$0]++' $blockslog | oam_indent
+    awk '!x[$0]++' $blockslog | \
+	sed -e 's/ \* //' -e '/^\s*$/d' | \
+	egrep -v 'created log file|The following |postinst:|ebuild scheduled for merge|After world updates,|emerge --depclean.' | \
+	sort | \
+	oam_indent
 fi
 
 PREVDATE=$(oam_prevdate $LOGDATE)
