@@ -18,11 +18,11 @@ class CheckConfig:
     #  -e, --exact
     """
     DEFAULT_TARGETS = [
-        ('file', '/etc/gentoo-oam.conf',  [ ('mode',0o640), ('group','portage') ] ),
+        ('file', '/etc/gentoo-oam.conf',  [ ('mode',0o640), ('group','portage'), ('owner','root') ] ),
         ('dir',  '/etc/gentoo-oam.d',     [ ('mode',0o750), ('group','portage'), ('owner','root') ] ),
-        ('glob', '/etc/gentoo-oam.d/*',   [ ('mode',0o640), ('group','portage') ] ),
-        ('dir',  '/var/log/oam',          [ ('mode',0o770) ] ),
-        ('file', '/etc/cron.daily/gentoo-oam', [ ('mode',0o755) ] )
+        ('glob', '/etc/gentoo-oam.d/*',   [ ('mode',0o640), ('group','portage'), ('owner','root') ] ),
+        ('dir',  '/var/log/oam',          [ ('mode',0o770), ('group','portage'), ('owner','root') ] ),
+        ('file', '/etc/cron.daily/gentoo-oam', [ ('mode',0o755), ('group','root'), ('owner','root') ] )
     ]
 
     def __init__(self):
@@ -54,9 +54,9 @@ class CheckConfig:
         return self.group(pathspec) == required
 
     CHECKS = {
-        'mode':  (check_mode,  mode),
-        'group': (check_group, group),
-        'owner': (check_owner, owner)
+        'mode':  (check_mode,  mode,  'chmod '),
+        'group': (check_group, group, 'chown :'),
+        'owner': (check_owner, owner, 'chown ')
     }
 
     def format(self, checktype, val):
@@ -66,10 +66,11 @@ class CheckConfig:
         for chk, val in checks:
             if chk in self.CHECKS:
                 if not self.CHECKS.get(chk)[0](self, pathspec, val):
-                    self.fail(pathspec + ' failed check for ' + chk + ' = ' +
+                    self.fail('# ' + pathspec + ' failed check for ' + chk + ' = ' +
                               self.format(chk, val) +
                               ', actual=' +
                               self.format(chk, self.CHECKS.get(chk)[1](self, pathspec)))
+                    print(self.CHECKS.get(chk)[2] + self.format(chk, val) + ' ' + pathspec)
             else:
                 self.fail(checktype + ' is not available')
 
@@ -77,13 +78,13 @@ class CheckConfig:
         if os.path.isfile(pathspec):
             self.check_target(pathspec, checks)
         else:
-            self.fail(pathspec + ' is not a file')
+            self.fail('#' + pathspec + ' is not a file (or is not accessible)')
 
     def check_dir(self, pathspec, checks):
         if os.path.isdir(pathspec[0]):
             self.check_target(pathspec, checks)
         else:
-            self.fail(spec[0], 'is not a dir')
+            self.fail(spec[0], 'is not a dir (or is not accessible)')
 
     def check_glob(self, pathspec, checks):
         for filename in glob.glob(pathspec):
