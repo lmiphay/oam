@@ -108,6 +108,7 @@ The operator must still manually:
 * [ug](https://github.com/sidusnare/ug)
 * [update](http://weaver.gentooexperimental.org/update.html)
 * [update-system.sh - tip 2](http://gentoovps.net/gentoo-portage-tips/)
+* [autoupdating on reddit](https://www.reddit.com/r/Gentoo/comments/3w2od1/update_gentoo_autoupdating/)
 
 #### Copyright
 
