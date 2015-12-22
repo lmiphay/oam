@@ -21,7 +21,7 @@ class CheckConfig:
         self.result = 0
 
     def fail(self, message):
-        self.result = 1
+        self.result += 1
         print(message)
 
     def mode(self, filename):
@@ -100,7 +100,9 @@ class CheckConfig:
 if __name__ == "__main__":
     result = CheckConfig().process()
 
-    if len(sys.argv) == 2 and sys.argv[1] == '-e':
-        print('### END ###')
+    if result == 0:
+        print('### PASS ###')
+    else:
+        print('### FAIL ###')
 
     sys.exit(result)
