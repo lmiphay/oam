@@ -98,4 +98,9 @@ class CheckConfig:
         return self.result
 
 if __name__ == "__main__":
-    sys.exit(CheckConfig().process())
+    result = CheckConfig().process()
+
+    if len(sys.argv) == 2 and sys.argv[1] == '-e':
+        print('### END ###')
+
+    sys.exit(result)
