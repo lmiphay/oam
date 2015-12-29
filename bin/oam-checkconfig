@@ -52,7 +52,12 @@ class CheckConfig:
     }
 
     def format(self, checktype, val):
-        return str(oct(val)) if checktype=='mode' else str(val)
+        """ python 3: Octal literals are no longer of the form 0720; use 0o720 instead.
+        """
+        if sys.version_info > (3,0):
+            return '0' + str(oct(val))[2:] if checktype=='mode' else str(val)
+        else:
+            return str(oct(val)) if checktype=='mode' else str(val)
 
     def check_target(self, pathspec, checks):
         for chk, val in checks:
