@@ -14,7 +14,6 @@ class CheckConfig:
         ('dir',  '/etc/gentoo-oam.d',     [ ('mode',0o750), ('group','portage'), ('owner','root') ] ),
         ('glob', '/etc/gentoo-oam.d/*',   [ ('mode',0o640), ('group','portage'), ('owner','root') ] ),
         ('dir',  '/var/log/oam',          [ ('mode',0o770), ('group','portage'), ('owner','root') ] ),
-        ('file', '/etc/cron.daily/gentoo-oam', [ ('mode',0o755), ('group','root'), ('owner','root') ] )
     ]
 
     # we can only check this one when running as root - the default is for the contents of /etc/cron.daily
