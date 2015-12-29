@@ -17,6 +17,12 @@ class CheckConfig:
         ('file', '/etc/cron.daily/gentoo-oam', [ ('mode',0o755), ('group','root'), ('owner','root') ] )
     ]
 
+    # we can only check this one when running as root - the default is for the contents of /etc/cron.daily
+    # to be readable by root or group-root users only.
+    ROOT_TARGETS = DEFAULT_TARGETS + [
+        ('file', '/etc/cron.daily/gentoo-oam', [ ('mode',0o755), ('group','root'), ('owner','root') ] )
+    ]
+
     def __init__(self):
         self.result = 0
 
@@ -75,7 +81,7 @@ class CheckConfig:
         if os.path.isfile(pathspec):
             self.check_target(pathspec, checks)
         else:
-            self.fail('#' + pathspec + ' is not a file (or is not accessible)')
+            self.fail('# ' + pathspec + ' is not a file (or is not accessible)')
 
     def check_dir(self, pathspec, checks):
         if os.path.isdir(pathspec[0]):
@@ -103,7 +109,12 @@ class CheckConfig:
         return self.result
 
 if __name__ == "__main__":
-    result = CheckConfig().process()
+
+    if os.geteuid() == 0:
+        result = CheckConfig().process(CheckConfig.ROOT_TARGETS)
+    else:
+        print('# /etc/cron.daily/gentoo-oam not checked')
+        result = CheckConfig().process(CheckConfig.DEFAULT_TARGETS)
 
     if result == 0:
         print('### PASS ###')
