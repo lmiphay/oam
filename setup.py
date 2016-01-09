@@ -18,5 +18,5 @@ setup(name='oam',
       packages=['oam'],
       scripts=['bin/oam'],
       cmdclass={"install_data": oam_install},
-      data_files=[]
+      data_files=[('screenshots', ['screenshots/oam-watch4.png'])]
       )
