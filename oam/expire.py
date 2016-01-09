@@ -35,7 +35,7 @@ class OAMExpire:
             else:
                 self.logger.log(logging.ERROR, '%s is not a directory', day)
                 break
-         self.logger.log(logging.INFO, 'complete')
+        self.logger.log(logging.INFO, 'complete')
 
     def expire_old(self):
         for daytarfile in glob.glob(self.olddir + '/20*')[:-self.keeplogs]:
