@@ -7,7 +7,7 @@ class oam_install(install_data):
     def run(self):
         install_data.run(self)
         print("Running: " + str(os.environ))
-        subprocess.call(['make', 'install'])
+        subprocess.call(['make', 'DESTDIR=' + os.environ['DESTDIR'], 'install'])
         print("Complete")
 
 setup(name='oam',
