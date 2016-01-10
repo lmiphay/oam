@@ -15,14 +15,16 @@ else:
     if len(sys.argv) == 2 and sys.argv[1] == '-d':
         sys.argv.pop(1)
         loglevel = logging.DEBUG
-        print("sys.path=" + str(sys.path))
     else:
         loglevel = logging.INFO
 
     logging.basicConfig(level=loglevel, format='%(asctime)s %(levelname)s %(message)s')
+    logger = logging.getLogger("oam.main")
+    logger.log(logging.DEBUG, 'main: sys.path=%s', str(sys.path))
+    logger.log(logging.DEBUG, 'main: sys.argv=%s', str(argv))
 
     if len(sys.argv) == 2 and sys.argv[1] == 'expire':
-        app = oam.OAMExpire()
+        app = oam.OAMExpire.create(sys.argv)
         sys.exit(app.run())
     else:
         sys.exit(usage())
