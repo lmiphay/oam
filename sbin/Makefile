@@ -11,7 +11,6 @@ FILES=\
 	oam-clean \
 	oam-depclean \
 	oam-emptytree \
-	oam-expire \
 	oam-fetch \
 	oam-flow \
 	oam-glsa \
