@@ -67,6 +67,8 @@ class OAMExpire:
     def create(argv):
         if len(argv) == 4:
             return OAMExpire(argv[1], int(argv[2]), argv[3] == 'True')
+        elif len(argv) == 2:
+            return OAMExpire()
         elif len(argv) == 2 and argv[1] == '-h':
             sys.exit(OAMExpire.usage())
         else:
