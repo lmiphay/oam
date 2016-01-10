@@ -65,10 +65,18 @@ class OAMExpire:
 
     @staticmethod
     def create(argv):
+        if 'OAM_KEEPLOGS' in os.environ:
+            keep_logs = int(os.environ['OAM_KEEPLOGS'])
+        else:
+            keep_logs = 10
+        if 'OAM_LOGDIR' in os.environ:
+            log_dir = os.environ['OAM_LOGDIR']
+        else:
+            log_dir = '/var/log/oam'
         if len(argv) == 4:
             return OAMExpire(argv[1], int(argv[2]), argv[3] == 'True')
         elif len(argv) == 1:
-            return OAMExpire()
+            return OAMExpire(log_dir, keep_logs)
         elif len(argv) == 2 and argv[1] == '-h':
             sys.exit(OAMExpire.usage())
         else:
