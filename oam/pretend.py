@@ -11,13 +11,16 @@ class Pretend:
 
     def __init__(self, target = 'world'):
         self.target = target
+        self.logger = logging.getLogger("oam.pretend")
         
     def run(self):
+        self.logger.log(logging.DEBUG, 'running pretend for: %s', self.target)
         try:
             print(subprocess.check_output(self.CMD + [self.target],
                                           stderr=subprocess.STDOUT))
         except subprocess.CalledProcessError as e:
-            print('failed with: '+ str(e))
+            self.logger.log(logging.ERROR, 'pretend failed for: %s', self.target)
+            self.logger.log(logging.ERROR, 'failure details: %s', str(e))
 
     @staticmethod
     def usage():
