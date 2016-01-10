@@ -3,30 +3,41 @@
 
 .SH NAME
 
-oam-expire \- prune old log file sets written by gentoo-oam
+oam expire \- prune old log file sets written by gentoo-oam
 
 .SH SYNOPSIS
 
 .B
-oam-expire [-d]
+oam expire [-h] [<logdir> <keeplogs> <dryrun>]
 
 .SH DESCRIPTION
 
-.B oam-expire
+.B oam expire
 is typically called from cron.
 
-It will remove all but the last N sets of logfiles.
+It will tar and compress all but the last N sets of logfiles to the /var/log/oam/old directory.
 
 A set is a directory where the logfiles for one day are written (e.g. /var/log/oam/20150711).
 
-The installation installs a script into /etc/cron.daily which will keep, by default, the last 10 sets of logfiles.
+The installation installs a script into /etc/cron.daily.
 
-The expiry implementation is provided by: /usr/sbin/oam-expire
+The expiry implementation is provided by: '/usr/sbin/oam expire'
 
 See the OAM_KEEPLOGS setting to configure how many log file sets are kept.
 
 .SH SYSTEM SETTINGS
+.P
+These settings are configured in /etc/gentoo-oam.conf, and are loaded into the environment by
+the cron script (/etc/cron.daily/gentoo-oam), prior to running the expiry script.
 
+To respect the /etc/gentoo-oam.conf settings when running '/usr/sbin/oam expire' at the command
+line, source the config file prior to running the script; e.g.:
+
+.PP
+.RS 0
+     $ source /etc/gentoo-oam.conf; /usr/sbin/oam expire
+
+.P
 .TP
 .BI OAM_KEEPLOGS
 The number of sync/update log sets to keep. Defaults to 10
