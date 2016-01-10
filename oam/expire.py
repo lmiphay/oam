@@ -61,7 +61,7 @@ class OAMExpire:
 
     @staticmethod
     def usage():
-        return "usage: " + os.path.basename(sys.argv[0]) + " [-h] <logdir> <keeplogs> <dryrun>"
+        return "usage: " + os.path.basename(sys.argv[0]) + " [-h] [<logdir> <keeplogs> <dryrun>]"
 
     @staticmethod
     def create(argv):
