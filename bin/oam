@@ -23,7 +23,7 @@ else:
     logger.log(logging.DEBUG, 'main: sys.path=%s', str(sys.path))
     logger.log(logging.DEBUG, 'main: sys.argv=%s', str(sys.argv))
 
-    if len(sys.argv) == 2 and sys.argv[1] == 'expire':
+    if len(sys.argv) >= 2 and sys.argv[1] == 'expire':
         app = oam.OAMExpire.create(sys.argv)
         sys.exit(app.run())
     else:

@@ -68,9 +68,9 @@ class OAMExpire:
         if len(argv) == 4:
             return OAMExpire(argv[1], int(argv[2]), argv[3] == 'True')
         elif len(argv) == 2 and argv[1] == '-h':
-            sys.exit(usage())
+            sys.exit(OAMExpire.usage())
         else:
-            sys.exit(usage())
+            sys.exit(OAMExpire.usage())
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
