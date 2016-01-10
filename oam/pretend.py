@@ -21,7 +21,7 @@ class Pretend:
 
     @staticmethod
     def usage():
-        return "usage: " + os.path.basename(sys.argv[0]) + " [-h] [<target>]"
+        return "usage: " + os.path.basename(sys.argv[0]) + " pretend [-h] [<target>]"
 
     @staticmethod
     def create(argv):
