@@ -12,7 +12,7 @@ if len(sys.argv) == 2 and sys.argv[1] == '-h':
     sys.exit(usage())
 else:
 
-    if len(sys.argv) == 2 and sys.argv[1] == '-d':
+    if len(sys.argv) >= 2 and sys.argv[1] == '-d':
         sys.argv.pop(1)
         loglevel = logging.DEBUG
     else:
@@ -24,6 +24,7 @@ else:
     logger.log(logging.DEBUG, 'main: sys.argv=%s', str(sys.argv))
 
     if len(sys.argv) >= 2 and sys.argv[1] == 'expire':
+        sys.argv.pop(1)
         app = oam.OAMExpire.create(sys.argv)
         sys.exit(app.run())
     else:
