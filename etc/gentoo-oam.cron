@@ -1,5 +1,3 @@
 #!/bin/bash
 
-source /etc/gentoo-oam.conf
-
 exec /usr/sbin/oam expire >>/var/log/oam/expire.log

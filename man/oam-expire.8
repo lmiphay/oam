@@ -27,17 +27,6 @@ See the OAM_KEEPLOGS setting to configure how many log file sets are kept.
 
 .SH SYSTEM SETTINGS
 .P
-These settings are configured in /etc/gentoo-oam.conf, and are loaded into the environment by
-the cron script (/etc/cron.daily/gentoo-oam), prior to running the expiry script.
-
-To respect the /etc/gentoo-oam.conf settings when running '/usr/sbin/oam expire' at the command
-line, source the config file prior to running the script; e.g.:
-
-.PP
-.RS 0
-     $ source /etc/gentoo-oam.conf; /usr/sbin/oam expire
-
-.P
 .TP
 .BI OAM_KEEPLOGS
 The number of sync/update log sets to keep. Defaults to 10

@@ -1,12 +1,25 @@
-#!/usr/bin/python
+#!/bin/bash
+"true" '''\'
+set -a
+source /etc/gentoo-oam.conf
+exec "/usr/bin/python" $0 "$@"
+exit 127
+'''
 
 import sys
 import os
 import logging
 import oam
 
+__doc__ = """gentoo-oam main driver program"""
+
 def usage():
     return "usage: " + os.path.basename(sys.argv[0]) + " [-h] [-d] [<cmd>]"
+
+def dumpenv(level):
+    for key in sorted(os.environ):
+        if key.startswith('OAM_'):
+            logger.log(level, '%s=%s', key, os.getenv(key))
 
 if len(sys.argv) == 2 and sys.argv[1] == '-h':
     sys.exit(usage())
@@ -20,19 +33,26 @@ else:
 
     logging.basicConfig(level=loglevel, format='%(asctime)s %(levelname)s %(message)s')
     logger = logging.getLogger("oam.main")
-    logger.log(logging.DEBUG, 'main: sys.path=%s', str(sys.path))
-    logger.log(logging.DEBUG, 'main: sys.argv=%s', str(sys.argv))
+    logger.log(logging.DEBUG, 'sys.path=%s', str(sys.path))
+    logger.log(logging.DEBUG, 'sys.argv=%s', str(sys.argv))
+    dumpenv(logging.DEBUG)
 
-    if len(sys.argv) >= 2 and sys.argv[1] == 'expire':
-        sys.argv.pop(1)
-        app = oam.OAMExpire.create(sys.argv)
-        sys.exit(app.run())
-    elif len(sys.argv) >= 2 and sys.argv[1] == 'pretend':
-        sys.argv.pop(1)
-        app = oam.Pretend.create(sys.argv)
-        sys.exit(app.run())
-    elif len(sys.argv) >= 2 and sys.argv[1] == 'version':
-        print(oam.version.__version__)
-        sys.exit(0)
+    if len(sys.argv) >= 2:
+        if sys.argv[1] == 'expire':
+            sys.argv.pop(1)
+            app = oam.OAMExpire.create(sys.argv)
+            sys.exit(app.run())
+        elif sys.argv[1] == 'pretend':
+            sys.argv.pop(1)
+            app = oam.Pretend.create(sys.argv)
+            sys.exit(app.run())
+        elif sys.argv[1] == 'version':
+            print(oam.version.__version__)
+            sys.exit(0)
+        elif sys.argv[1] == 'env':
+            dumpenv(logging.INFO)
+            sys.exit(0)
+        else:
+            sys.exit(usage())
     else:
         sys.exit(usage())
