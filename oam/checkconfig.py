@@ -111,17 +111,24 @@ class CheckConfig:
 
         return self.result
 
+    def run(self):
+        if os.geteuid() == 0:
+            result = process(CheckConfig.ROOT_TARGETS)
+        else:
+            print('# /etc/cron.daily/gentoo-oam not checked')
+            result = process(CheckConfig.DEFAULT_TARGETS)
+
+        if result == 0:
+            print('### PASS ###')
+        else:
+            print('### FAIL ###')
+
+        return result
+
+    @staticmethod
+    def create(argv):
+        return CheckConfig()
+
 if __name__ == "__main__":
 
-    if os.geteuid() == 0:
-        result = CheckConfig().process(CheckConfig.ROOT_TARGETS)
-    else:
-        print('# /etc/cron.daily/gentoo-oam not checked')
-        result = CheckConfig().process(CheckConfig.DEFAULT_TARGETS)
-
-    if result == 0:
-        print('### PASS ###')
-    else:
-        print('### FAIL ###')
-
-    sys.exit(result)
+    sys.exit(CheckConfig().run())

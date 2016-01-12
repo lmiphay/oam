@@ -4,6 +4,8 @@ __author__ = 'Paul Healy'
 __license__ = 'GPL-2'
 __copyright__ = 'Copyright 2015, Paul Healy under GPL-2'
 
+from oam.checkconfig import CheckConfig
 from oam.expire import OAMExpire
 from oam.pretend import Pretend
+from oam.registry import Registry
 
