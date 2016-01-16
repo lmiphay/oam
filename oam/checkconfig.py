@@ -113,10 +113,10 @@ class CheckConfig:
 
     def run(self):
         if os.geteuid() == 0:
-            result = process(CheckConfig.ROOT_TARGETS)
+            result = self.process(CheckConfig.ROOT_TARGETS)
         else:
             print('# /etc/cron.daily/gentoo-oam not checked')
-            result = process(CheckConfig.DEFAULT_TARGETS)
+            result = self.process(CheckConfig.DEFAULT_TARGETS)
 
         if result == 0:
             print('### PASS ###')
