@@ -11,9 +11,10 @@ class Pretend:
 
     SKIPLINES = {
         'These are the packages that would be merged, in order:',
-        'Calculating dependencies  .... .... done!;'
+        'Calculating dependencies  .... .... done!'
         'Total: 0 packages, Size of downloads: 0 KiB',
-        '* Use eselect news read to view new items.'
+        ' * Use eselect news read to view new items.',
+        ''
         }
 
     def __init__(self, target = 'world'):
