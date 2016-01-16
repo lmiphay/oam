@@ -14,3 +14,5 @@ install:
 	install --mode=0644 oam-flow.8 $(DESTDIR)/usr/share/man/man8/
 	install --mode=0644 oam-watch.8 $(DESTDIR)/usr/share/man/man8/
 	install --mode=0644 oam-expire.8 $(DESTDIR)/usr/share/man/man8/
+	install --mode=0644 oam-pretend.8 $(DESTDIR)/usr/share/man/man8/
+

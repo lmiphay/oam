@@ -1,0 +1,43 @@
+.\" Manpage for gentoo-oam
+.TH man 8 "16 Jan 2016" "1.0" "oam-pretend man page"
+
+.SH NAME
+
+oam pretend \- filter/sort the output of 'emerge --update --pretend world'
+
+.SH SYNOPSIS
+
+.B
+oam pretend [-h]
+
+.SH DESCRIPTION
+
+.B oam pretend
+can be used to see what would be the output of emerge world without actually
+kicking one off.
+
+Currently the 'oam pretend' is hard wired to run this command:
+
+   emerge --update --backtrack=50 --deep --pretend -v
+
+The output of the emerge is lightly filtered to remove noise and also to
+parse a list of the packages which would be installed.
+
+From this list, a sorted package list is produced in a format suitable
+for feeding back into emerge(1).
+
+.SH BUGS
+
+None
+
+.SH SEE ALSO
+
+emerge(1)
+
+.SH AUTHOR
+
+Paul Healy
+
+.SH COPYRIGHT
+
+GNU GENERAL PUBLIC LICENSE Version 2
