@@ -21,7 +21,7 @@ class Pretend:
         self.logger = logging.getLogger("oam.pretend")
 
     def filter(self, line):
-        return line in self.SKIPLINES or lines.startswith('Calculating dependencies')
+        return line in self.SKIPLINES or line.startswith('Calculating dependencies')
         
     def run(self):
         self.logger.log(logging.DEBUG, 'pretend cmd: %s', str(self.CMD))
