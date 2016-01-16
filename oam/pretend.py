@@ -4,7 +4,12 @@ import sys
 import os
 import subprocess
 import logging
+import re
 
+""" A wrapper around emerge --update --pretend world, which filters some noise out and
+    in addition produces an ordered list of the packages which would be merged in a format
+    suitable for feeding back into emerge.
+"""
 class Pretend:
     
     CMD = ['emerge', '--update', '--backtrack=50', '--deep', '--pretend', '-v']
@@ -19,10 +24,24 @@ class Pretend:
     def __init__(self, target = 'world'):
         self.target = target
         self.logger = logging.getLogger("oam.pretend")
+        self.packages = set()
 
     def filter(self, line):
         return line in self.SKIPLINES or line.startswith('Calculating dependencies')
-        
+
+    def add_package_name(self, line):
+        """ parse emerge output for package specifiers; e.g.
+            [ebuild     U ~] media-video/nvidia-settings-355.11::gentoo....
+        """
+        if line.startswith('[ebuild'):
+            self.packages.add(re.sub(r'^\[[^]]+\] ([^:]+).+', r'=\1', line))
+
+    def dump_packages(self):
+        if len(self.packages) > 0:
+            print('Sorted merge list:')
+            for pkg in self.packages:
+                print(pkg)
+
     def run(self):
         self.logger.log(logging.DEBUG, 'pretend cmd: %s', str(self.CMD))
         self.logger.log(logging.DEBUG, 'running pretend for: %s', self.target)
@@ -31,9 +50,11 @@ class Pretend:
                                                 stderr=subprocess.STDOUT).splitlines():
                 if not self.filter(line):
                     print(line)
+                    self.add_package_name(line)
         except subprocess.CalledProcessError as e:
             self.logger.log(logging.ERROR, 'pretend failed for: %s', self.target)
             self.logger.log(logging.ERROR, 'failure details: %s', str(e))
+        self.dump_packages()
 
     @staticmethod
     def usage():
