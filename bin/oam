@@ -48,7 +48,7 @@ else:
             app = oam.OAMExpire.create(sys.argv)
             sys.exit(app.run())
         elif sys.argv[1] == 'pkgsizes':
-            sys.exit(Pkg().sizes())
+            sys.exit(oam.Pkg().sizes())
         elif sys.argv[1] == 'pretend':
             sys.argv.pop(1)
             app = oam.Pretend.create(sys.argv)
