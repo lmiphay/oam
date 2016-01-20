@@ -8,7 +8,6 @@ check:
 	@echo "done"
 
 FILES=\
-	oam-emergelog \
 	oam-genlop \
 	oam-mkset \
 	oam-summary \

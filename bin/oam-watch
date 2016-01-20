@@ -38,7 +38,7 @@ oam-genlop tail | \
 	  --retry -wh ${OAM_ROW2_HEIGHT} $watch_dir/oam.log \
 	  -j \
 	  \
-	  -wh ${OAM_ROW1_HEIGHT} -l oam-emergelog \
+	  -wh ${OAM_ROW1_HEIGHT} -l "oam emergelog" \
 	  --retry-all \
 	  -wh ${OAM_ROW2_HEIGHT} $watch_dir/error.log \
 	  --mark-change -T \

@@ -43,6 +43,8 @@ else:
             sys.argv.pop(1)
             app = oam.CheckConfig.create(sys.argv)
             sys.exit(app.run())
+        elif sys.argv[1] == 'emergelog':
+            sys.exit(oam.EmergeLog().run())
         elif sys.argv[1] == 'expire':
             sys.argv.pop(1)
             app = oam.OAMExpire.create(sys.argv)
