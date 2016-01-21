@@ -5,6 +5,7 @@ __license__ = 'GPL-2'
 __copyright__ = 'Copyright 2015, Paul Healy under GPL-2'
 
 from oam.checkconfig import CheckConfig
+from oam.emergelog import EmergeLog
 from oam.expire import OAMExpire
 from oam.pkg import Pkg
 from oam.pretend import Pretend
