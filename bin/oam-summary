@@ -22,6 +22,7 @@ eix --test-non-matching --test-obsolete --exact | \
 
 mergelog=$LOGDATE/merge.log
 blockslog=$LOGDATE/blocks.log
+kernellog=$LOGDATE/kernel.log
 
 echo "$(oam_ts) merges"
 if [[ -f "$mergelog" ]] ; then
@@ -69,6 +70,14 @@ if [[ -f $blockslog ]] ; then
     echo "$(oam_ts) checking for packages which failed to install"
     egrep '^ \*  \(' $blockslog | sort | uniq | \
 	awk '{print $2}' | sed -e 's:^.::' -e 's:,::' | oam_indent
+fi
+
+if [[ -f $kernellog ]] ; then
+    echo "$(oam_ts) checking for kernel build"
+    kernver=$(egrep 'DEPMOD' $kernellog | awk '{print $2}')
+    if [ -n "$kernver" ] ; then
+	echo "$kernver built" | oam_indent
+    fi
 fi
 
 echo "$(oam_ts) summary report complete for $LOGDATE"
