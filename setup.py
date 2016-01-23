@@ -16,5 +16,9 @@ setup(name='oam',
       packages=['oam'],
       scripts=['bin/oam'],
       cmdclass={"install_data": oam_install},
-      data_files=[('screenshots', ['screenshots/oam-watch4.png'])]
+      data_files=[('share/gentoo-oam',
+                   ['share/gentoo-oam-functions.sh',
+                    'share/gentoo-oam-multitail.conf',
+                    'share/oam-watch.help'
+                   )]
       )

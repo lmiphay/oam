@@ -11,8 +11,7 @@ SUBDIRS=\
 	bin \
 	etc \
 	man \
-	sbin \
-	share
+	sbin
 
 .PHONY: install
 install:
