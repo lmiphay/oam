@@ -20,5 +20,6 @@ setup(name='oam',
                    ['share/gentoo-oam-functions.sh',
                     'share/gentoo-oam-multitail.conf',
                     'share/oam-watch.help'
-                   )]
+                   ]
+      )]
       )
