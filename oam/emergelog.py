@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+from __future__ import print_function
 import sys
 import os
 import subprocess
@@ -16,10 +17,10 @@ class EmergeLog:
 
     def run(self):
         while 1:
-            line = self.proc.stdout.readline()
+            line = self.proc.stdout.readline().decode('utf8').rstrip()
             field = line.split(':', 1)
             if len(field) == 2:
-                print datetime.fromtimestamp(int(field[0])).strftime(self.ts_format), field[1],
+                print(datetime.fromtimestamp(int(field[0])).strftime(self.ts_format), field[1])
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
