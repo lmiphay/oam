@@ -25,15 +25,6 @@ class Pkg:
         for size, pkgs in sorted(rec.iteritems()):
             for p in pkgs:
                 print("%10d %s" % (size, p))
-    
-    def current_pkgs(self):
-        pass
-
-    def delta(self):
-        pass
-
-    def changed(self, package):
-        pass
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
