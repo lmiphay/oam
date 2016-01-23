@@ -1,3 +1,3 @@
 #!/bin/bash
 
-exec /usr/bin/oam expire >>/var/log/oam/expire.log
+exec /usr/bin/oam expire >>/var/log/oam/expire.log 2>&1
