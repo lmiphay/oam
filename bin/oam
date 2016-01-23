@@ -39,7 +39,11 @@ else:
     dumpenv(logging.DEBUG)
 
     if len(sys.argv) >= 2:
-        if sys.argv[1] == 'checkconfig':
+        if sys.argv[1] == 'changed':
+            sys.argv.pop(1)
+            app = oam.Changed.create(sys.argv)
+            sys.exit(app.run())
+        elif sys.argv[1] == 'checkconfig':
             sys.argv.pop(1)
             app = oam.CheckConfig.create(sys.argv)
             sys.exit(app.run())

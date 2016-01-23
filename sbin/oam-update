@@ -20,17 +20,20 @@ revdep-rebuild --nocolor --ignore \
        >>$logfile \
        2> >(oam_err "revdep")
 
-oam_log "python-updater start"
-[[ -x /usr/sbin/python-updater ]] && \
+oam_log "python-updater start: $(oam changed dev-lang/python)"
+if [[ -x /usr/sbin/python-updater ]] ; then
     python-updater -eall \
        > >(oam_stripansi >> $logfile) \
        2> >(oam_stripansi | oam_err "python-updater")
+    oam changed -u dev-lang/python
+fi
 
+oam_log "perl-cleaner start: $(oam changed dev-lang/perl)"
 if [[ "$OAM_PERL_CLEANER" -eq 1 && -x /usr/sbin/perl-cleaner ]] ; then
-    oam_log "perl-cleaner start"
     perl-cleaner --all \
        > >(oam_stripansi >> $logfile) \
        2> >(oam_stripansi | oam_err "perl-cleaner")
+    oam changed -u dev-lang/perl
 fi
 
 [[ -n "$(portageq list_preserved_libs / )" ]] && \
