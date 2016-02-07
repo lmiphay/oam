@@ -43,10 +43,12 @@ fi
 
 if [[ -f $blockslog ]] ; then
     echo "$(oam_ts) errors/blocked packages"
-    awk '!x[$0]++' $blockslog | \
+    cat $blockslog | \
 	sed -e 's/ \* //' -e '/^\s*$/d' | \
 	egrep -v 'created log file|The following |postinst:|ebuild scheduled for merge|After world updates,|emerge --depclean.' | \
-	sort | \
+	egrep -v 'Use --autounmask-write|Carefully examine the list|paying special attention|experimental or unstable packages' | \
+	egrep -v 'It may be possible|prevent one of those|possible that confl|impossible to satisfy|the dependencies of|not be installed|For more information, see|page or refer to' | \
+	egrep -v 'Multiple package instances|into the dependency graph' | \
 	oam_indent
 fi
 
