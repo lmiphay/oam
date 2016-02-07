@@ -50,6 +50,7 @@ if [[ -f $blockslog ]] ; then
 	egrep -v 'It may be possible|prevent one of those|possible that confl|impossible to satisfy|the dependencies of|not be installed|For more information, see|page or refer to' | \
 	egrep -v 'Multiple package instances|into the dependency graph' | \
 	egrep -v '\^\^\^\^\^\^' | \
+	egrep -v 'WARNING: One or more' | \
 	oam_indent
 fi
 
