@@ -49,6 +49,7 @@ if [[ -f $blockslog ]] ; then
 	egrep -v 'Use --autounmask-write|Carefully examine the list|paying special attention|experimental or unstable packages' | \
 	egrep -v 'It may be possible|prevent one of those|possible that confl|impossible to satisfy|the dependencies of|not be installed|For more information, see|page or refer to' | \
 	egrep -v 'Multiple package instances|into the dependency graph' | \
+	egrep -v '\^\^\^\^\^\^' | \
 	oam_indent
 fi
 
