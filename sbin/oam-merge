@@ -8,8 +8,8 @@ tag=${OAM_TAG:-"merge"}
 oam_log "oam ${tag} start $*"
 
 emerge $@ \
-       >>$(oam_logfile merge) \
-       2>>$(oam_logfile blocks)
+       >>$(oam_mergelogfile merge) \
+       2>>$(oam_mergelogfile blocks)
 
 oam_log "oam ${tag} complete"
 

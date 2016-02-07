@@ -90,6 +90,27 @@ oam_logfile()
     echo ${logprefix}/${1}.log
 }
 
+oam_mergelogfile()
+{
+    if [[ -n "$OAM_LOGDATE" ]] ; then
+	local logdate=$OAM_LOGDATE
+    else
+	local logdate=$(date +%Y%m%d)
+	export OAM_LOGDATE=$logdate
+    fi
+
+    local logprefix=$OAM_LOGDIR/$logdate
+    local logdir=$logprefix/$(date +%H%M%S)
+
+    mkdir -p $logdir
+
+    (cd $logprefix && ln -sf ${logdir}/${1}.log ${1}.log)
+
+    echo "$(oam_ts) created log file" >>${logdir}/${1}.log
+
+    echo ${logdir}/${1}.log
+}
+
 oam_prevdate()
 {
     local laterdate=$1
