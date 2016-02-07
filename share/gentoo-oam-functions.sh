@@ -100,11 +100,12 @@ oam_mergelogfile()
     fi
 
     local logprefix=$OAM_LOGDIR/$logdate
-    local logdir=$logprefix/$(date +%H%M%S)
+    local subdir=$(date +%H%M%S)
+    local logdir=$logprefix/$subdir
 
     mkdir -p $logdir
 
-    (cd $logprefix && ln -sf ${logdir}/${1}.log ${1}.log)
+    (cd $logprefix && ln -sf ${subdir}/${1}.log ${1}.log)
 
     echo "$(oam_ts) created log file" >>${logdir}/${1}.log
 
