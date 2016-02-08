@@ -40,7 +40,7 @@ class OAMExpire:
 
     def expire_old(self):
         for daytarfile in glob.glob(self.olddir + '/20*')[:-self.keeplogs]:
-            self.logger.log(logging.DEBUG, 'expire old %s', day)
+            self.logger.log(logging.DEBUG, 'expire old %s', daytarfile)
             if os.path.isfile(daytarfile):
                 if self.dryrun:
                     self.logger.log(logging.INFO, 'dryrun - would remove %s', daytarfile)
