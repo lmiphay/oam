@@ -24,7 +24,7 @@ class OAMExpire:
             tar.add(day)
             
     def process_daydirs(self):
-        for day in glob.glob(self.logdir + '/20*')[:-self.keeplogs]:
+        for day in sorted(glob.glob(self.logdir + '/20*'))[:-self.keeplogs]:
             self.logger.log(logging.DEBUG, 'checking %s', day)
             if os.path.isdir(day):
                 if self.dryrun:
@@ -39,7 +39,7 @@ class OAMExpire:
         self.logger.log(logging.INFO, 'complete')
 
     def expire_old(self):
-        for daytarfile in glob.glob(self.olddir + '/20*')[:-self.keeplogs]:
+        for daytarfile in sorted(glob.glob(self.olddir + '/20*'))[:-self.keeplogs]:
             self.logger.log(logging.DEBUG, 'expire old %s', daytarfile)
             if os.path.isfile(daytarfile):
                 if self.dryrun:
