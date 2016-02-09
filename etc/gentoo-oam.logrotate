@@ -7,15 +7,7 @@
         rotate 9
         compress
         notifempty
+        su root root
         olddir /var/log/oam/old
 }
 
-/var/log/oam/.keep_app-portage_gentoo-oam {
-        monthly
-        rotate 0
-        create
-        ifempty
-        lastaction
-		/usr/sbin/oam expire
-        endscript
-}
