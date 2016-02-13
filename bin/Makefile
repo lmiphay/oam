@@ -8,6 +8,7 @@ check:
 	@echo "done"
 
 FILES=\
+	oam \
 	oam-genlop \
 	oam-mkset \
 	oam-summary \
