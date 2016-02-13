@@ -69,6 +69,12 @@ else:
         elif sys.argv[1] == 'env':
             dumpenv(logging.INFO)
             sys.exit(0)
+        elif sys.argv[1] == 'list-opts':
+            print("-h -d")
+            sys.exit(0)
+        elif sys.argv[1] == 'list-cmds':
+            print("changed checkconfig emergelog env eventparser expire pkgsizes pretend version")
+            sys.exit(0)
         else:
             sys.exit(usage())
     else:
