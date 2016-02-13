@@ -1,0 +1,22 @@
+# -*- sh -*-
+
+_oam() 
+{
+    local cur prev opts_list cmds_list
+    
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+    
+    opts_list=$(oam list-opts)
+    cmds_list=$(oam list-cmds)
+    
+    if [[ ${cur} == -* ]] ; then
+        COMPREPLY=( $(compgen -W "${opts_list}" -- ${cur}) )
+        return 0
+    else
+	COMPREPLY=( $(compgen -W "${cmds_list}" -- $cur) )
+    fi
+}
+
+complete -F _oam oam
