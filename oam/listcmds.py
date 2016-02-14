@@ -10,4 +10,5 @@ from .cmd import cli
 @cli.command(name='list-cmds')
 @click.pass_context
 def listcmds(ctx):
+    """List avaiable sub commands"""
     print(*cli.list_commands(ctx))

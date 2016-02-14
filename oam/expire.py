@@ -78,7 +78,8 @@ class OAMExpire:
 
 @cli.command()
 def expire():
-    """ FIXME - pass in the expected optional arguments..."""
+    """Expire the gentoo-oam logfiles"""
+    # FIXME - pass in the expected optional arguments...
     OAMExpire.create(['oamclick']).run()
 
 if __name__ == "__main__":

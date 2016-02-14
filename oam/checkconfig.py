@@ -133,6 +133,7 @@ class CheckConfig:
 
 @cli.command()
 def checkconfig():
+    """Check modes/owners of oam files/dirs"""
     CheckConfig().run()
 
 if __name__ == "__main__":

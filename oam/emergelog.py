@@ -26,6 +26,7 @@ class EmergeLog:
 
 @cli.command()
 def emergelog():
+    """Tail /var/log/emerge.log with readable times"""
     EmergeLog().run()
 
 if __name__ == "__main__":

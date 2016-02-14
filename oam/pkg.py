@@ -31,6 +31,7 @@ class Pkg:
 
 @cli.command()
 def pkgsizes():
+    """List installed packages ordered by size"""
     Pkg().sizes()
 
 if __name__ == "__main__":

@@ -88,6 +88,7 @@ class Changed:
 @click.option('--update/--no-update', default=False, help='record an update to the package')
 @click.argument('package_name')
 def changed(update, package_name):
+    """Track package versions and updates"""
     return Changed.create([]).run()
 
 if __name__ == "__main__":

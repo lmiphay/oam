@@ -9,6 +9,7 @@ from .cmd import cli
 
 @cli.command()
 def dumpenv(level = logging.INFO):
+    """Show the OAM configuration settings"""
     logger = logging.getLogger("oam.dumpenv")
     for key in sorted(os.environ):
         if key.startswith('OAM_'):
