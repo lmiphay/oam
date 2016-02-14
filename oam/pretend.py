@@ -5,6 +5,8 @@ import os
 import subprocess
 import logging
 import re
+import click
+from .cmd import cli
 
 """ A wrapper around emerge --update --pretend world, which filters some noise out and
     in addition produces an ordered list of the packages which would be merged in a format
@@ -73,6 +75,12 @@ class Pretend:
             return Pretend()
         else:
             sys.exit(Pretend.usage())
+
+@cli.command()
+@click.argument('target')
+def pretend(target):
+    """Run emerge -up world, filtering noise"""
+    Pretend.create(['pretend', target]).run()
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')

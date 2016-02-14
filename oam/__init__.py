@@ -5,7 +5,6 @@ __license__ = 'GPL-2'
 __copyright__ = 'Copyright 2016, Paul Healy under GPL-2'
 
 #from oam.eventparser import EventParser
-from oam.pretend import Pretend
 from oam.registry import Registry
 
 from oam.cmd import cli
@@ -19,5 +18,6 @@ from oam.expire import OAMExpire, expire
 from oam.changed import Changed, changed
 from oam.checkconfig import CheckConfig, checkconfig
 from oam.pkg import Pkg, pkgsizes
+from oam.pretend import Pretend, pretend
 
 #__all__ = ['dumpenv']
