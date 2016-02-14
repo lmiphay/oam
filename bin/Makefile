@@ -9,6 +9,7 @@ check:
 
 FILES=\
 	oam \
+	oamclick \
 	oam-genlop \
 	oam-mkset \
 	oam-summary \
