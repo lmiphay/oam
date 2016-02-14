@@ -8,6 +8,8 @@ import glob
 import collections
 import re
 import yaml
+import click
+from .cmd import cli
 
 """ support to track and manage lists of installed software
     oam changed dev-lang/python
@@ -81,6 +83,12 @@ class Changed:
             return Changed(argv[2], update=True)
         else:
             sys.exit(Changed.usage())
+
+@cli.command()
+@click.option('--update/--no-update', default=False, help='record an update to the package')
+@click.argument('package_name')
+def changed(update, package_name):
+    return Changed.create([]).run()
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')

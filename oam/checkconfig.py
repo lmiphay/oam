@@ -5,6 +5,8 @@ import stat
 import grp
 import pwd
 import glob
+import click
+from .cmd import cli
 
 class CheckConfig:
     """ Check readability, ownership... etc of specified files and directories.
@@ -128,6 +130,10 @@ class CheckConfig:
     @staticmethod
     def create(argv):
         return CheckConfig()
+
+@cli.command()
+def checkconfig():
+    CheckConfig().run()
 
 if __name__ == "__main__":
 

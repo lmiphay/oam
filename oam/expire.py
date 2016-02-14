@@ -6,6 +6,8 @@ import logging
 import glob
 import tarfile
 import shutil
+import click
+from .cmd import cli
 
 class OAMExpire:
 
@@ -73,6 +75,11 @@ class OAMExpire:
             sys.exit(OAMExpire.usage())
         else:
             sys.exit(OAMExpire.usage())
+
+@cli.command()
+def expire():
+    """ FIXME - pass in the expected optional arguments..."""
+    OAMExpire.create(['oamclick']).run()
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
