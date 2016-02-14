@@ -1,11 +1,14 @@
 #!/usr/bin/python
 
+from __future__ import print_function
 import sys
 import os
 import subprocess
 import logging
 import glob
 import collections
+import click
+from .cmd import cli
 
 class Pkg:
 
@@ -25,6 +28,10 @@ class Pkg:
         for size, pkgs in sorted(rec.iteritems()):
             for p in pkgs:
                 print("%10d %s" % (size, p))
+
+@cli.command()
+def pkgsizes():
+    Pkg().sizes()
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')

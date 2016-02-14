@@ -6,7 +6,6 @@ __copyright__ = 'Copyright 2016, Paul Healy under GPL-2'
 
 from oam.emergelog import EmergeLog
 #from oam.eventparser import EventParser
-from oam.pkg import Pkg
 from oam.pretend import Pretend
 from oam.registry import Registry
 
@@ -19,5 +18,6 @@ from oam.version import version
 from oam.expire import OAMExpire, expire
 from oam.changed import Changed, changed
 from oam.checkconfig import CheckConfig, checkconfig
+from oam.pkg import Pkg, pkgsizes
 
 #__all__ = ['dumpenv']
