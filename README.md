@@ -91,6 +91,7 @@ The operator must still manually:
 * multi-server support for starting and monitoring operations
 * install via ebuild from the [lmiphay overlay](https://gitweb.gentoo.org/user/lmiphay.git/about/)
 * pulls in many useful dependencies as part of the install (eix, genlop, multitail, logrotate, ranger, mussh, eclean-kernel)
+* bash shell completion support with [app-shells/bash-completion](http://bash-completion.alioth.debian.org/)
 
 ![oam-watch](screenshots/oam-watch4.png?raw=true "oam-watch sample")
 
