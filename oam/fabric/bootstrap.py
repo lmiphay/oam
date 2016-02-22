@@ -28,7 +28,7 @@ def install_keywords():
         if is_file('/etc/portage/package.keywords'):
             run('mv /etc/portage/package.keywords /etc/portage/pre-oam-package.keywords')
         run('mkdir -p /etc/portage/package.keywords')
-        run('ln -s /var/lib/layman/lmiphay/gentoo-oam.keywords /etc/portage/package.keywords/'
+        run('ln -s /var/lib/layman/lmiphay/gentoo-oam.keywords /etc/portage/package.keywords/')
         if is_file('/etc/portage/pre-oam-package.keywords'):
             run('mv /etc/portage/pre-oam-package.keywords /etc/portage/package.keywords/')
 @task
