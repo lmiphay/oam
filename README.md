@@ -7,7 +7,7 @@
 * [Manual Operations](#manual-operations)
 * [Features](#features)
 * [Why should you not use gentoo-oam?](#why-should-you-not-use-gentoo-oam)
-* [Known Similar Tools](#known-similar-tools)
+* [Prior Art](#prior-art)
 * [Copyright](#copyright)
 
 #### Operations/Admin/Management for gentoo
@@ -100,7 +100,7 @@ The operator must still manually:
 * it is not a way to become familar with gentoo (learn emerge... etc first)
 * you are happy with your current workflow (stick with your own scripts)
 
-#### Known Similar Tools
+#### Prior Art
 
 * [gentoo-upsys](https://github.com/Krishath/gentoo-upsys)
 * [porticron](https://github.com/gentoo/porticron)
