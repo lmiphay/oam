@@ -27,7 +27,7 @@ watch_allfiles=$(echo \
 export OAM_EDITOR OAM_EDITOR_MULTITAB OAM_LOGDIR OAM_TERMINAL watch_dir watch_allfiles
 export PATH=/usr/sbin:$PATH
 
-oam-genlop tail | \
+oam genlop | \
     multitail \
 	  -x "$HOSTNAME/oam/$watch_dir/$(uname -r) gentoo-oam V$(oam_version)" \
 	  --config /usr/share/gentoo-oam/gentoo-oam-multitail.conf \

@@ -9,7 +9,6 @@ check:
 
 FILES=\
 	oam \
-	oam-genlop \
 	oam-mkset \
 	oam-summary \
 	oam-status \
