@@ -8,7 +8,7 @@ import logging
 import inotifyx
 import psutil
 import click
-#from .cmd import cli
+from .cmd import cli
 
 class Genlop:
 
