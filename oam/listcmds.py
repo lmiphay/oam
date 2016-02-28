@@ -12,3 +12,4 @@ from .cmd import cli
 def listcmds(ctx):
     """List avaiable sub commands"""
     print(*cli.list_commands(ctx))
+    return 0
