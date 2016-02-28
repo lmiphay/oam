@@ -84,7 +84,7 @@ class Genlop:
 
     def wait_for_sandbox(self):
         """Wait for sandbox process to appear - genlop bales without it"""
-        for t in xrange(self.sandboxwait):
+        for t in xrange(int(self.sandboxwait)):
             for proc in psutil.process_iter():
                 if proc.name() == 'sandbox':
                     return True
