@@ -95,6 +95,7 @@ class Genlop:
         data = self.genlop_current()
         if data != None:
             print(self.CURRENT.format(**data))
+            sys.stdout.flush()
 
     def log_heartbeat(self):
         """
@@ -110,6 +111,7 @@ class Genlop:
 
         self.hb = {'timestamp': self.timestamp(), 'uptime': os.getloadavg(), 'df': self.disk_used(self.portage_tmpdir) }
         print(self.HEARTBEAT.format(**self.hb))
+        sys.stdout.flush()
 
     def tail(self):
         fd = inotifyx.init()
