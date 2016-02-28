@@ -44,11 +44,11 @@ class Genlop:
 
     def disk_used(self, path):
         p = os.statvfs(path)
-        space_percent = (p.f_blocks - p.f_bfree) / p.f_blocks
+        space_percent = (p.f_blocks - p.f_bfree) / float(p.f_blocks)
         if p.f_files>0:
-            inode_percent = (p.f_files - p.f_ffree) / p.f_files
+            inode_percent = (p.f_files - p.f_ffree) / float(p.f_files)
         else:
-            inode_percent = 0
+            inode_percent = 0.0
         return (space_percent, inode_percent)
 
     def genlop_current(self):
