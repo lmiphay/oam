@@ -12,7 +12,7 @@ from .cmd import cli
 
 class Genlop:
 
-    HEARTBEAT = "{timestamp:s} {uptime[0]:4.2f} {uptime[1]:4.2f} {uptime[2]:4.2f} {df[0]:.1%} {df[1]:.1%}"
+    HEARTBEAT = "{timestamp:s} {uptime[0]:4.2f} {uptime[1]:4.2f} {uptime[2]:4.2f} {df[0]:.0%} {df[1]:.0%}"
 
     """
     20160227:20:16:41 33/33 pkgs
