@@ -103,7 +103,7 @@ class Genlop:
              20150721:18:23:40 0.04 0.14 0.31 13% 1%   x
         """
         if self.monitor_count == 0:
-            print("                    uptimes        df inode")
+            print("                    uptimes        df  inode")
         self.monitor_count += 1
         if self.monitor_count == 10:
             self.monitor_count = 0
