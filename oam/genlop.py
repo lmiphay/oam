@@ -88,7 +88,7 @@ class Genlop:
             for proc in psutil.process_iter():
                 if proc.name() == 'sandbox':
                     return True
-	    time.sleep(0.5)
+	    time.sleep(1.0)
         return False
 
     def log_current(self):
