@@ -118,7 +118,7 @@ class Genlop:
 
             while True:
 		self.log_heartbeat()
-                events = inotifyx.get_events(fd, self.nap)
+                events = inotifyx.get_events(fd, float(self.nap))
                 if len(events) != 0: # not timeout
                     if self.wait_for_sandbox():
 		        self.log_current()
