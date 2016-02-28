@@ -14,7 +14,6 @@ FILES=\
 	oam-fetch \
 	oam-flow \
 	oam-glsa \
-	oam-go \
 	oam-kernel \
 	oam-layman \
 	oam-merge \

@@ -41,7 +41,7 @@ Review the default settings, make any local changes, and then kick off the defau
 
 ```
 # vi /etc/gentoo-oam.conf /etc/gentoo-oam.d/weekly.conf
-# oam-go
+# oam go
 ```
 
 In another terminal monitor progress with:
@@ -50,7 +50,7 @@ In another terminal monitor progress with:
 # oam-watch
 ```
 
-When `oam-go` returns, browse to the set of log files generated under: `/var/log/oam/[DATE]` (start with
+When `oam go` returns, browse to the set of log files generated under: `/var/log/oam/[DATE]` (start with
 the summary.log file).
 
 #### Workflows

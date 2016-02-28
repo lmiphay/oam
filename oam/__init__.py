@@ -18,6 +18,7 @@ from oam.expire import OAMExpire, expire
 from oam.changed import Changed, changed
 from oam.checkconfig import CheckConfig, checkconfig
 from oam.genlop import Genlop, genlop
+from oam.go import gocmd
 from oam.pkg import Pkg, pkgsizes
 from oam.pretend import Pretend, pretend
 
