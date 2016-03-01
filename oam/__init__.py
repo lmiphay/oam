@@ -22,4 +22,6 @@ from oam.go import gocmd
 from oam.pkg import Pkg, pkgsizes
 from oam.pretend import Pretend, pretend
 
+from oam.events import Events, events
+
 #__all__ = ['dumpenv']
