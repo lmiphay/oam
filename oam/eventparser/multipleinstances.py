@@ -19,16 +19,16 @@ class MultipleInstances:
             ".+\(([-:/\w.]+), installed\) pulled.*|"\
             ".+(It may be possible).+"
     TAG = 'MultipleInstances'
-    
+
     def __init__(self):
         self.ev = None
         self.logger = logging.getLogger("oam.eventparser.multipleinstances")
-        
+
     def emit(self):
         if self.ev:
             self.result = self.ev
             self.ev = None
-        
+
     def process(self, line, match):
         self.result = None
         start, pkg_1, pkg_2, finish = match.groups()
@@ -69,7 +69,7 @@ not be installed simultaneously.
 For more information, see MASKED PACKAGES section in the emerge man
 page or refer to the Gentoo Handbook.
 """
-    
+
     def setUp(self):
         self.logger = logging.getLogger("oam.eventparser.multipleinstances.test")
 
@@ -81,9 +81,9 @@ page or refer to the Gentoo Handbook.
             self.logger.log(logging.INFO, "event: %s", str(ev))
         self.assertEqual(report.count(), 1)
         report.report()
-        
+
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO,
                         format='%(asctime)s %(levelname)s %(message)s')
-    
+
     unittest.main()
