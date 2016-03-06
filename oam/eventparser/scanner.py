@@ -15,16 +15,16 @@ class Scanner:
     def __init__(self, report, checker):
         self.report = report
         self.checker = checker
-        self.in_block = False
         self.logger = logging.getLogger("oam.eventparser.scanner")
 
     def parse(self):
         for chk in self.checker:
+            self.in_block = False
             for line, i in self.report.scan():
-                self.logger.log(logging.DEBUG, "line: %d, %s", i, line)
                 match = re.search(chk.RECORD, line)
+                self.logger.log(logging.INFO, "line: %d, %s", i, line)
                 if match:
-                    self.logger.log(logging.DEBUG, "parse-match: %s", str(match.groups()))
+                    self.logger.log(logging.INFO, "parse-match: %s", str(match.groups()))
                     self.groups = match.groups()
                     if self.groups[0]:
                         self.in_block = True
@@ -33,8 +33,9 @@ class Scanner:
                     elif self.in_block:
                         ev = chk.process(line, match)
                         if ev: yield ev
-                if match or self.in_block:
+                if self.in_block:
                     self.report.consume(i, chk.TAG)
+            if chk.ev != None: yield chk.ev
 
 class ScannerTestCase(unittest.TestCase):
 

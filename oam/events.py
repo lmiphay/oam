@@ -10,28 +10,33 @@ import collections
 import click
 from .cmd import cli
 
+from .eventparser.buildfail import BuildFail
+from .eventparser.multipleinstances import MultipleInstances
+from .eventparser.skippedconflict import SkippedConflict
+
 from .eventparser.report import Report
 from .eventparser.scanner import Scanner
 
 class Events:
 
-    def __init__(self, datedir):
+    def __init__(self, blocks_logfile):
         self.logger = logging.getLogger("oam.events")
-        self.datedir = datedir
-        self.report = Report.from_file(datedir)
-        self.scanner = Scanner(self.report, [BuildFail()])
+        self.blocks_logfile = blocks_logfile
+        self.report = Report.from_file(blocks_logfile)
+        self.scanner = Scanner(self.report, [BuildFail(), MultipleInstances(), SkippedConflict()])
+        #self.scanner = Scanner(self.report, [MultipleInstances()])
 
     def run(self):
         for ev in self.scanner.parse():
             self.report.add_event(ev)
-            self.logger.log(logging.DEBUG, "event: %s", str(ev))
+            self.logger.log(logging.INFO, "event: %s", str(ev))
         self.report.report()
 
 @cli.command()
-@click.argument('datedir')
-def events(datedir):
+@click.argument('blocks_logfile')
+def events(blocks_logfile):
     """Report errors encountered during merges"""
-    Events(datedir).run()
+    Events(blocks_logfile).run()
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
