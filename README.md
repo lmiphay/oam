@@ -50,15 +50,18 @@ In another terminal monitor progress with:
 # oam-watch
 ```
 
-When `oam go` returns, browse to the set of log files generated under: `/var/log/oam/[DATE]` (start with
-the summary.log file).
+When `oam go` returns, browse to the set of log files generated under:
+`/var/log/oam/[DATE]` (start with the summary.log file).
 
 #### Workflows
 
-Workflows are a sequence of steps which are executed in sequence, (usually) stopping
-at the first failure.
+Workflows are a sequence of steps which are executed in sequence, stopping
+at the first failure (usually).
 
-For example the default weekly workflow will run these steps:
+Each step consists of one or more tasks. Generally all tasks in a step must
+complete successfully before the next step starts.
+
+For example the `weekly` workflow will run these steps:
 
 <dl>
 <dt>sync  </dt> <dd><pre>emaint --auto sync, layman --sync=ALL, eix-update/eix-remote</pre></dd>
@@ -70,13 +73,11 @@ For example the default weekly workflow will run these steps:
 <dt>qcheck</dt> <dd><pre>qcheck --all</pre></dd>
 <dl>
 
-From workflow specific configuration a complete step can be skipped,
-or where it makes sense one of components of a step
-(e.g. eclean-kernel, perl-cleaner... etc).
+Steps (or tasks) can be skipped for a particular server (by configuration).
 
 #### Manual Operations
 
-The operator must still manually:
+You must still manually:
 
 + resolve keyword or use flag blockers (see the blocks.log file for a starting point)
 + run `dispatch-conf` when prompted
