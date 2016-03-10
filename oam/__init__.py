@@ -12,6 +12,7 @@ from oam.dumpenv import dumpenv
 from oam.listcmds import listcmds
 from oam.listopts import listopts
 from oam.version import version
+from oam.watch import watch
 
 from oam.emergelog import EmergeLog, emergelog
 from oam.expire import OAMExpire, expire

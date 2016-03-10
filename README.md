@@ -47,7 +47,7 @@ Review the default settings, make any local changes, and then kick off the defau
 In another terminal monitor progress with:
 
 ```
-# oam-watch
+# oam watch
 ```
 
 When `oam go` returns, browse to the set of log files generated under:
