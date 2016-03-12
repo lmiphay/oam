@@ -10,7 +10,7 @@ from .cmd import cli
 import glob
 import time
 import datetime
-import version
+from version import __version__
 
 """
 """
@@ -34,7 +34,7 @@ class Watch(object):
 
     def title(self):
         return self.HOSTNAME + '/oam/' + self.watch_dir + '/' + \
-            self.KERNEL_VER + ' gentoo-oam V' + version.__version__
+            self.KERNEL_VER + ' gentoo-oam V' + __version__
 
     def lastdate(self):
         datedir = glob.glob(os.getenv('OAM_LOGDIR', '/var/log/oam') + '/2*')
