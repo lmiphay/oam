@@ -87,7 +87,7 @@ class Watch(object):
 @click.option('--col1', default=Watch.COL1_WIDTH, envvar='OAM_ROW1_HEIGHT')
 @click.option('--col2', default=Watch.COL2_WIDTH, envvar='OAM_ROW2_HEIGHT')
 def watch(row1, row2, col1, col2):
-    """"""
+    """Dashboard overview of current system update"""
     return Watch(row1, row2, col1, col2).run()
 
 if __name__ == "__main__":
