@@ -11,8 +11,7 @@ FILES=\
 	oam \
 	oam-mkset \
 	oam-summary \
-	oam-status \
-	oam-watch
+	oam-status
 
 .PHONY: install
 install:

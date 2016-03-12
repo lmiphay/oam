@@ -73,10 +73,13 @@ class Watch(object):
                 '--label', 'blocks ', '-I', self.watch_dir + '/blocks.log',
                 '-t', 'sync/merge/blocks/kernel ',
                 '-I', self.watch_dir + '/kernel.log',
-                '-I', self.watch_dir + '/summary.log',
-                os.getenv('OAM_MULTITAIL_EXTRA_OPT', '')
+                '-I', self.watch_dir + '/summary.log'# ,
+                # os.getenv('OAM_MULTITAIL_EXTRA_OPT', '')
         ]
-        subprocess.call(cmd)
+        #subprocess.call(cmd)
+        genlop = subprocess.Popen(['oam', 'genlop'], stdout=subprocess.PIPE)
+        multitail = subprocess.Popen(cmd, stdin=genlop.stdout)
+        return multitail.wait()
 
 @cli.command()
 @click.option('--row1', default=Watch.ROW1_HEIGHT, envvar='OAM_ROW1_HEIGHT')
@@ -85,7 +88,7 @@ class Watch(object):
 @click.option('--col2', default=Watch.COL2_WIDTH, envvar='OAM_ROW2_HEIGHT')
 def watch(row1, row2, col1, col2):
     """"""
-    Watch(row1, row2, col1, col2).run()
+    return Watch(row1, row2, col1, col2).run()
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG,
