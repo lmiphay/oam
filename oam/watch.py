@@ -37,7 +37,7 @@ class Watch(object):
             self.KERNEL_VER + ' gentoo-oam V' + __version__
 
     def lastdate(self):
-        datedir = glob.glob(os.getenv('OAM_LOGDIR', '/var/log/oam') + '/2*')
+        datedir = sorted(glob.glob(os.getenv('OAM_LOGDIR', '/var/log/oam') + '/2*'))
         if len(datedir)>1:
             return datedir[-1]
         else:
