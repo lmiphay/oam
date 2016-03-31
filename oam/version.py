@@ -6,7 +6,10 @@ from .cmd import cli
 
 __version__ = '5.0.0'
 
+def get_version():
+    return __version__
+
 @cli.command()
 def version():
     """Print gentoo-oam version"""
-    print(__version__)
+    print(get_version())

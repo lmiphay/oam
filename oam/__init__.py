@@ -11,7 +11,7 @@ from oam.cmd import cli
 from oam.dumpenv import dumpenv
 from oam.listcmds import listcmds
 from oam.listopts import listopts
-from oam.version import version
+from oam.version import version, get_version
 from oam.watch import watch
 
 from oam.emergelog import EmergeLog, emergelog
@@ -20,6 +20,7 @@ from oam.changed import Changed, changed
 from oam.checkconfig import CheckConfig, checkconfig
 from oam.genlop import Genlop, genlop
 from oam.go import gocmd
+from oam.news import News, checknews, countnewnews
 from oam.pkg import Pkg, pkgsizes
 from oam.pretend import Pretend, pretend
 
