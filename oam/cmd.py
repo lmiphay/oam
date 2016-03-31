@@ -21,6 +21,6 @@ def cli(ctx, debug):
     logger.log(logging.DEBUG, 'sys.argv=%s', str(sys.argv))
 
     if ctx.invoked_subcommand is None:
-        logger.log(logging.DEBUG, 'no subcommand')
+        sys.exit('no subcommand? --help will list available subcommands.')
     else:
         logger.log(logging.DEBUG, 'subcommand: %s', ctx.invoked_subcommand)
