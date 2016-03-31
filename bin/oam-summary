@@ -61,7 +61,7 @@ if [[ -f $LOGDATE/qcheck.log && -f $PREVDATE/qcheck.log ]] ; then
 fi
 
 echo "$(oam_ts) checking for unread news items"
-oam_checknews | oam_indent
+oam checknews | oam_indent
 
 if [[ -f "$mergelog" ]] ; then
     echo "$(oam_ts) merges: $(grep 'Size of downloads:' $mergelog | head -1)"
