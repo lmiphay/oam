@@ -17,9 +17,7 @@ elif [[ -f /etc/portage/make.conf ]] ; then
 fi
 
 watch_allfiles=$(echo \
-	oam.log \
-	error.log \
-	$watch_dir/{blocks,glsa,kernel,merge,summary,sync}.log \
+	$watch_dir/{blocks,error,glsa,kernel,merge,oam,summary,sync}.log \
 	/etc/portage/package.{keywords,use} \
 	$makeconf)
 
