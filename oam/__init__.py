@@ -14,10 +14,11 @@ from oam.listopts import listopts
 from oam.version import version, get_version
 from oam.watch import watch
 
-from oam.emergelog import EmergeLog, emergelog
-from oam.expire import OAMExpire, expire
 from oam.changed import Changed, changed
 from oam.checkconfig import CheckConfig, checkconfig
+from oam.emergelog import EmergeLog, emergelog
+from oam.daylog import DayLog, daylog
+from oam.expire import OAMExpire, expire
 from oam.genlop import Genlop, genlop
 from oam.go import gocmd
 from oam.news import News, checknews, countnewnews
