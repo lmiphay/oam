@@ -16,6 +16,7 @@ from oam.watch import watch
 
 from oam.changed import Changed, changed
 from oam.checkconfig import CheckConfig, checkconfig
+from oam.createlxc import CreateLxc, createlxc
 from oam.emergelog import EmergeLog, emergelog
 from oam.daylog import DayLog, daylog
 from oam.expire import OAMExpire, expire
