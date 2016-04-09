@@ -12,8 +12,14 @@ import click
 from .cmd import cli
 
 """ support to track and manage lists of installed software
+
     oam changed dev-lang/python
-    oam changed -u dev-lang/perl
+       This will compare the currently installed version of the package
+       against the last version stored by this module. It will return 0
+       if the version differ, and 1 otherwise.
+
+    oam changed --update dev-lang/perl
+       Saves the currently installed version(s) to a module private area.
 """
 class Changed:
 
