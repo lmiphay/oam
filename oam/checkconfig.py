@@ -127,10 +127,6 @@ class CheckConfig:
 
         return result
 
-    @staticmethod
-    def create(argv):
-        return CheckConfig()
-
 @cli.command()
 def checkconfig():
     """Check modes/owners of oam files/dirs"""
