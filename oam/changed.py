@@ -71,7 +71,7 @@ class Changed:
         
     @staticmethod
     def usage():
-        return "usage: " + os.path.basename(sys.argv[0]) + "  [-u] <package>"
+        return "usage: " + os.path.basename(sys.argv[0]) + "  [--update] <package>"
 
     @staticmethod
     def create(argv):

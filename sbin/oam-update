@@ -25,7 +25,7 @@ if [[ -x /usr/sbin/python-updater ]] ; then
     python-updater -eall \
        > >(oam_stripansi >> $logfile) \
        2> >(oam_stripansi | oam_err "python-updater")
-    oam changed -u dev-lang/python
+    oam changed --update dev-lang/python
 fi
 
 oam_log "perl-cleaner start: $(oam changed dev-lang/perl)"
@@ -33,7 +33,7 @@ if [[ "$OAM_PERL_CLEANER" -eq 1 && -x /usr/sbin/perl-cleaner ]] ; then
     perl-cleaner --all \
        > >(oam_stripansi >> $logfile) \
        2> >(oam_stripansi | oam_err "perl-cleaner")
-    oam changed -u dev-lang/perl
+    oam changed --update dev-lang/perl
 fi
 
 [[ -n "$(portageq list_preserved_libs / )" ]] && \
