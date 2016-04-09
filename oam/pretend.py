@@ -61,29 +61,17 @@ class Pretend:
             self.logger.log(logging.ERROR, 'failure details: %s', str(e))
         self.dump_packages()
 
-    @staticmethod
-    def usage():
-        return "usage: " + os.path.basename(sys.argv[0]) + " pretend [-h] [<target>]"
-
-    @staticmethod
-    def create(argv):
-        if len(argv) == 2 and argv[1] == '-h':
-            sys.exit(Pretend.usage())
-        elif len(argv) == 2:
-            return Pretend(argv[1])
-        elif len(argv) == 1:
-            return Pretend()
-        else:
-            sys.exit(Pretend.usage())
-
 @cli.command()
 @click.argument('target')
 def pretend(target):
-    """Run emerge -up world, filtering noise"""
-    Pretend.create(['pretend', target]).run()
+    """Run emerge -up <target>, filtering noise"""
+    Pretend(target).run()
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
 
-    sys.exit(Pretend.create(sys.argv).run())
+    if len(sys.argv)>1:
+        sys.exit(Pretend(sys.argv[1]).run())
+    else:
+        sys.exit(Pretend().run())
         
