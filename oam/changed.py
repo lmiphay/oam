@@ -69,29 +69,20 @@ class Changed:
             else:
                 return 1
         
-    @staticmethod
-    def usage():
-        return "usage: " + os.path.basename(sys.argv[0]) + "  [--update] <package>"
-
-    @staticmethod
-    def create(argv):
-        if len(argv) == 2 and argv[1] == '-h':
-            sys.exit(Changed.usage())
-        elif len(argv) == 2:
-            return Changed(argv[1])
-        if len(argv) == 3 and argv[1] == '-u':
-            return Changed(argv[2], update=True)
-        else:
-            sys.exit(Changed.usage())
-
 @cli.command()
 @click.option('--update/--no-update', default=False, help='record an update to the package')
 @click.argument('package_name')
 def changed(update, package_name):
     """Track package versions and updates"""
-    return Changed.create([]).run()
+    return Changed(package_name, update=update).run()
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
 
-    sys.exit(Changed.create(sys.argv).run())
+    if len(sys.argv)==2:
+        sys.exit(Changed(sys.argv[1]).run())
+    if len(sys.argv)==3:
+        sys.exit(Changed(sys.argv[1], int(sys.argv[2])==True).run())
+    else:
+        sys.exit("usage: changed pkg_name [0/1]")
+
