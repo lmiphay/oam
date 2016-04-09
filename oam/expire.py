@@ -61,28 +61,15 @@ class OAMExpire:
         else:
             self.logger.log(logging.ERROR, '%s is missing', self.olddir)
 
-    @staticmethod
-    def usage():
-        return "usage: " + os.path.basename(sys.argv[0]) + " [-h] [<logdir> <keeplogs> <dryrun>]"
-
-    @staticmethod
-    def create(argv):
-        if len(argv) == 4:
-            return OAMExpire(argv[1], int(argv[2]), argv[3] == 'True')
-        elif len(argv) == 1:
-            return OAMExpire(os.getenv('OAM_LOGDIR', '/var/log/oam'), int(os.getenv('OAM_KEEPLOGS', 10)))
-        elif len(argv) == 2 and argv[1] == '-h':
-            sys.exit(OAMExpire.usage())
-        else:
-            sys.exit(OAMExpire.usage())
-
 @cli.command()
-def expire():
+@click.option('--logdir', default=os.getenv('OAM_LOGDIR', '/var/log/oam'), help='location of logs directory')
+@click.option('--keeplogs', default=int(os.getenv('OAM_KEEPLOGS', 10)), help='number of iterations of logs to keep')
+@click.option('--dryrun/--no-dryrun', default=False, help='whether files should actually be removed')
+def expire(logdir, keeplogs, dryrun):
     """Expire the gentoo-oam logfiles"""
-    # FIXME - pass in the expected optional arguments...
-    OAMExpire.create(['oamclick']).run()
+    OAMExpire(logdir, keeplogs, dryrun).run()
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
 
-    sys.exit(OAMExpire.create(sys.argv).run())
+    sys.exit(OAMExpire(len(sys.argv)>1).run())
