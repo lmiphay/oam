@@ -10,7 +10,7 @@ import re
 import datetime
 from .cmd import cli
 from .serverslog import ServersLog
-import fabric
+from fabric.api import task, run, execute, settings, env
 
 def is_lxc():
     """Return True if the server is an lxc, False otherwise"""
@@ -20,13 +20,13 @@ def is_docker():
     """Return True if the server is a docker, False otherwise"""
     return fabric.contrib.files.contains('/proc/1/cgroup', '/docker/')
 
-@fabric.api.task
+@task
 def fab_remote(cmd, logger):
-    with fabric.api.settings(warn_only=True):
-        result = fabric.api.run(cmd,
-                                stdout=logger.out(env.host),
-                                stderr=logger.err(env.host),
-                                combine_stderr=False)
+    with settings(warn_only=True):
+        result = run(cmd,
+                     stdout=logger.out(env.host),
+                     stderr=logger.err(env.host),
+                     combine_stderr=False)
         if result.failed:
             logger.fail(env.host, result)
         return result
@@ -38,11 +38,12 @@ class FabRemote(object):
         self.logger = ServersLog(servers)
 
     def drive(self, step):
+        self.logger.set_logname(step['log'])
         return execute(fab_remote,
                        step['cmd'],
-                       self.logger.step(step['log']),
+                       self.logger,
                        hosts=self.servers)
-q
+
 @cli.command()
 @click.option('--log', default='fabremote', help='log all output using this facility')
 @click.argument('servers')        # csv list of servers (no spaces)
@@ -53,4 +54,4 @@ def fabremote(log, servers, cmd):
         'cmd': ' '.join(cmd),
         'log': log
         }
-    return Fabremote(servers.split(',')).drive(step)
+    return FabRemote(servers.split(',')).drive(step)

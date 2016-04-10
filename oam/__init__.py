@@ -18,6 +18,7 @@ from oam.changed import Changed, changed
 from oam.checkconfig import CheckConfig, checkconfig
 from oam.createlxc import CreateLxc, createlxc
 from oam.emergelog import EmergeLog, emergelog
+from oam.fabremote import FabRemote, fabremote
 from oam.daylog import DayLog, daylog, lastday
 from oam.expire import OAMExpire, expire
 from oam.genlop import Genlop, genlop
