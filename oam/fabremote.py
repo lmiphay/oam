@@ -48,9 +48,9 @@ class FabRemote(object):
 @click.argument('servers')
 @click.argument('cmd')
 def fabremote(log, servers, cmd):
-    """"""
+    """Run cmd on each of the specified servers"""
     step = {
         'cmd': cmd,
         'log': log
         }
-    return Fabremote(servers).drive(step)
+    return Fabremote(servers.split(',')).drive(step)
