@@ -23,10 +23,13 @@ def is_docker():
 @fabric.api.task
 def fab_remote(cmd, logger):
     with fabric.api.settings(warn_only=True):
-        return fabric.api.run(cmd,
-                              stdout=logger.out(env.host),
-                              stderr=logger.err(env.host),
-                              combine_stderr=False)
+        result = fabric.api.run(cmd,
+                                stdout=logger.out(env.host),
+                                stderr=logger.err(env.host),
+                                combine_stderr=False)
+        if result.failed:
+            logger.fail(env.host, result)
+        return result
 
 class FabRemote(object):
 
@@ -35,22 +38,19 @@ class FabRemote(object):
         self.logger = ServersLog(servers)
 
     def drive(self, step):
-        result = execute(fab_remote,
-                         step['cmd'],
-                         self.logger.step(step['log']),
-                         hosts=self.servers)
-        if result.failed:
-            logger.fail(result)
-        return result
-
+        return execute(fab_remote,
+                       step['cmd'],
+                       self.logger.step(step['log']),
+                       hosts=self.servers)
+q
 @cli.command()
-@click.option('--log', default='fabremote', help='')
-@click.argument('servers')
-@click.argument('cmd')
+@click.option('--log', default='fabremote', help='log all output using this facility')
+@click.argument('servers')        # csv list of servers (no spaces)
+@click.argument('cmd', nargs=-1)  # the command to run on the above servers
 def fabremote(log, servers, cmd):
     """Run cmd on each of the specified servers"""
     step = {
-        'cmd': cmd,
+        'cmd': ' '.join(cmd),
         'log': log
         }
     return Fabremote(servers.split(',')).drive(step)
