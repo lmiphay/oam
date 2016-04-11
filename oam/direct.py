@@ -24,7 +24,7 @@ class Direct(object):
 
     def __init__(self, servers):
         self.servers = servers
-        self.logger = ServersLog()
+        self.logger = ServersLog('direct')
 
     def drive(self, step):
         self.logger.set_logname(step['log'])
@@ -36,7 +36,8 @@ class Direct(object):
         return proc.returncode
 
 @cli.command()
-@click.option('--log', default='direct', help='log all output using this facility')
+@click.option('--log', default='direct',
+              help='log all output using this facility')
 @click.argument('cmd', nargs=-1)  # the command to run
 def direct(log, cmd):
     """Run cmd on each of the local server"""

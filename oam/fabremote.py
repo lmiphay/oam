@@ -35,7 +35,7 @@ class FabRemote(object):
 
     def __init__(self, servers):
         self.servers = servers
-        self.logger = ServersLog(servers)
+        self.logger = ServersLog('fab.remote')
 
     def drive(self, step):
         self.logger.set_logname(step['log'])
@@ -45,7 +45,8 @@ class FabRemote(object):
                        hosts=self.servers)
 
 @cli.command()
-@click.option('--log', default='fabremote', help='log all output using this facility')
+@click.option('--log', default='fabremote',
+              help='log all output using this facility')
 @click.argument('servers')        # csv list of servers (no spaces)
 @click.argument('cmd', nargs=-1)  # the command to run on the above servers
 def fabremote(log, servers, cmd):

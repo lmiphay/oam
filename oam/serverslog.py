@@ -12,14 +12,20 @@ from .cmd import cli
 from .daylog import DAYLOG
 
 class ServersLog(object):
+    """Name/open normal-log and error-log files"""
 
-    def __init__(self, servers):
+    LOGROOT = os.getenv('OAM_LOGDIR', '/var/log/oam')
+    HOSTNAME = os.uname()[1]
+
+    def __init__(self, default_logname = 'unknown'):
         self.logger = logging.getLogger("oam.serverslog")
-        self.servers = servers
-        self.logname = None
+        self.daydir = '{}/{}'.format(self.LOGROOT, DAYLOG.current_day())
+        self.logname = default_logname
 
     def hostdir(self, host):
-        dirname = '/var/log/oam/{}/{}'.format(DAYLOG.current_day(), host)
+        if host == None:
+            host = self.HOSTNAME
+        dirname = '{}/{}'.format(self.daydir, host)
         if not os.path.isdir(dirname):
             os.makedirs(dirname)
         return dirname
@@ -31,7 +37,7 @@ class ServersLog(object):
         return open('{}/{}.log'.format(self.hostdir(host), self.logname), 'a')
 
     def err(self, host):
-        return open('{}/error.log'.format(self.hostdir(host)), 'a')
+        return open('{}/error-{}.log'.format(self.hostdir(host), self.logname), 'a')
 
     def fail(self, host, result):
         self.logger.error('%s %s %s', host, str(result.result_code), result.stderr)
