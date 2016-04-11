@@ -22,16 +22,15 @@ def is_docker():
 
 class Direct(object):
 
-    def __init__(self, servers):
-        self.servers = servers
+    def __init__(self):
         self.logger = ServersLog('direct')
 
     def drive(self, step):
         self.logger.set_logname(step['log'])
         proc = subprocess.Popen(step['cmd'].split(' '),
                                 bufsize=1, # line buffered
-                                stdout=logger.out(),
-                                stderr=logger.err())
+                                stdout=self.logger.out(),
+                                stderr=self.logger.err())
         proc.wait()
         return proc.returncode
 
@@ -45,4 +44,7 @@ def direct(log, cmd):
         'cmd': ' '.join(cmd),
         'log': log
         }
-    return Direct().drive(step)
+    if len(step['cmd'])<1:
+        sys.exit("no command?")
+    else:
+        return Direct().drive(step)

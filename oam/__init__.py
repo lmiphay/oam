@@ -17,6 +17,7 @@ from oam.watch import watch
 from oam.changed import Changed, changed
 from oam.checkconfig import CheckConfig, checkconfig
 from oam.createlxc import CreateLxc, createlxc
+from oam.direct import Direct, direct
 from oam.emergelog import EmergeLog, emergelog
 from oam.fabremote import FabRemote, fabremote
 from oam.daylog import DayLog, daylog, lastday

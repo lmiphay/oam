@@ -33,10 +33,10 @@ class ServersLog(object):
     def set_logname(self, logname):
         self.logname = logname
 
-    def out(self, host):
+    def out(self, host=None):
         return open('{}/{}.log'.format(self.hostdir(host), self.logname), 'a')
 
-    def err(self, host):
+    def err(self, host=None):
         return open('{}/error-{}.log'.format(self.hostdir(host), self.logname), 'a')
 
     def fail(self, host, result):
