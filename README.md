@@ -103,6 +103,7 @@ You must still manually:
 
 #### Prior Art
 
+* [ansible portage module](http://docs.ansible.com/ansible/portage_module.html)
 * [gentoo-upsys](https://github.com/Krishath/gentoo-upsys)
 * [porticron](https://github.com/gentoo/porticron)
 * [gentmaint](http://gentmaint.sourceforge.net/)
