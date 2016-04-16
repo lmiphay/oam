@@ -51,20 +51,26 @@ class Pretend:
         self.logger.log(logging.DEBUG, 'pretend cmd: %s', str(self.CMD))
         self.logger.log(logging.DEBUG, 'running pretend for: %s', self.target)
         try:
-            for line in subprocess.check_output(self.CMD + [self.target],
-                                                stderr=subprocess.STDOUT).splitlines():
+            proc = subprocess.Popen(self.CMD + [self.target],
+                                    bufsize=1,
+                                    stdout=subprocess.PIPE,
+                                    stderr=subprocess.STDOUT)
+            for line in proc.stdout:
                 if not self.filter(line):
                     print(line)
                     self.add_package_name(line)
-        except subprocess.CalledProcessError as e:
+            result = proc.wait()
+            if result != 0:
+                self.logger.log(logging.ERROR, 'pretend returned: %d', result)
+        except (OSError, ValueError) as e:
             self.logger.log(logging.ERROR, 'pretend failed for: %s', self.target)
-            self.logger.log(logging.ERROR, 'failure details: %s', str(e))
+            self.logger.log(logging.ERROR, 'failure: %s', str(e))
         self.dump_packages()
 
 @cli.command()
 @click.argument('target')
 def pretend(target):
-    """Run emerge -up <target>, filtering noise"""
+    """emerge -up <target> (filtering noise)"""
     Pretend(target).run()
 
 if __name__ == "__main__":
