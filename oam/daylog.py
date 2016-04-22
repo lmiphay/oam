@@ -36,10 +36,10 @@ class DayLog(object):
             return None
 
     def day_runs(self):
-        return sorted(filter(re.compile(r'\d+').match, os.listdir(self.log_dir)))
+        return sorted(filter(re.compile(r'\d{8}').match, os.listdir(self.log_dir)))
 
     def timed_runs(self):
-        return sorted(filter(re.compile(r'\d+').match, os.listdir("{}/{}".format(self.log_dir, self.current_day()))))
+        return sorted(filter(re.compile(r'\d{6}').match, os.listdir("{}/{}".format(self.log_dir, self.current_day()))))
 
 DAYLOG = DayLog()
 
