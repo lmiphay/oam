@@ -25,6 +25,7 @@ from oam.expire import OAMExpire, expire
 from oam.genlop import Genlop, genlop
 from oam.go import gocmd
 from oam.news import News, checknews, countnewnews
+from oam.obsolete import obsolete
 from oam.pkg import Pkg, pkgsizes
 from oam.pretend import Pretend, pretend
 
