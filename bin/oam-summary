@@ -17,8 +17,7 @@ echo "$(oam_ts) checking file permissions and ownership"
 oam checkconfig | oam_indent
 
 echo "$(oam_ts) checking for obsolete portage configuration entries"
-eix --test-non-matching --test-obsolete --exact | \
-    egrep -v 'No non-matching|No matches found.|The names of all installed packages are in the database.' | sed '/^\s*$/d' | oam_indent
+oam obsolete | oam_indent
 
 mergelog=$LOGDATE/merge.log
 blockslog=$LOGDATE/blocks.log
