@@ -20,7 +20,7 @@ from oam.createlxc import CreateLxc, createlxc
 from oam.direct import Direct, direct
 from oam.emergelog import EmergeLog, emergelog
 from oam.fabremote import FabRemote, fabremote
-from oam.daylog import DayLog, daylog, lastday
+from oam.daylog import DayLog, daylog, dayruns, lastday, logdir, timedruns
 from oam.expire import OAMExpire, expire
 from oam.genlop import Genlop, genlop
 from oam.go import gocmd
