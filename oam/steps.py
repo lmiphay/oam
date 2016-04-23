@@ -71,7 +71,7 @@ steps = {
 flows = {
     'sync'  : ['sync', 'layman', 'eix', 'glsa', 'fetch' ],
     'update': ['portage', 'update', 'revdep', 'python', 'perl', 'preserved'],
-    'clean' : ['eclean-distfiles', 'eclean-kernel'. 'qcheck']
+    'clean' : ['eclean-distfiles', 'eclean-kernel', 'qcheck']
     }
 
 flows['weekly'] = flows['sync'] + flows['update'] + flows['clean']
