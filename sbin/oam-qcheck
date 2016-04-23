@@ -4,14 +4,11 @@ source /etc/gentoo-oam.conf
 source /usr/share/gentoo-oam/gentoo-oam-functions.sh
 
 oam_log "qcheck start"
+
 # --all dropped by qcheck in:
 # https://github.com/gentoo/portage-utils/commit/5331295005f585ec0ae1aea4dcfc4d10bc521a19#diff-42eac4505ebe54af84ee2118fa3dee67
-(
-    qcheck --nomtime --nocolor | \
-	egrep 'AKF|MD5-DIGEST' | \
-	sort > $(oam_logfile qcheck)
-) \
-       2> >(oam_err "qcheck")
+
+( oam qcheck | sort > $(oam_logfile qcheck) ) 2> >(oam_err "qcheck")
 
 oam_log "qcheck complete"
 

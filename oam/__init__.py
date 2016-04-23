@@ -28,6 +28,7 @@ from oam.news import News, checknews, countnewnews
 from oam.obsolete import obsolete
 from oam.pkg import Pkg, pkgsizes
 from oam.pretend import Pretend, pretend
+from oam.qcheck import QCheck, qcheck
 
 from oam.events import Events, events
 
