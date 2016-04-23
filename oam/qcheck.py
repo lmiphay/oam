@@ -15,8 +15,6 @@ from .cmd import cli
     looking for these type of lines only:
  AFK: /usr/share/icons/hicolor/192x192/apps
  MD5-DIGEST: /usr/lib64/gtk-3.0/3.0.0/immodules.cache
-
- Todo: sort results?
 """
 class QCheck(object):
 
@@ -26,13 +24,15 @@ class QCheck(object):
     def __init__(self):
         pass
 
+    def is_interesting(self, line):
+        return len(line)>1 and any(line.startswith(s) for s in self.FILTER)
+
     def its(self):
         """Return a list potential problems with installed packages"""
-        rdr = subprocess.Popen(self.CMD, stdout=subprocess.PIPE)
-        for line in rdr.stdout:
-            if len(line)>1 and any(line.startswith(s) for s in self.FILTER):
+        for line in sorted(subprocess.Popen(self.CMD, stdout=subprocess.PIPE).stdout.readlines()):
+            if self.is_interesting(line):
                 yield line.strip()
-
+          
 @cli.command()
 def qcheck():
     """check integrity of installed packages"""
