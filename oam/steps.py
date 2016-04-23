@@ -4,7 +4,7 @@ import logging
 OAM_VERBOSE="--verbose --verbose-conflicts"
 OAM_EMERGE_OPTS="--backtrack=50 --deep "
 
-steps = {
+tasks = {
     'sync': {
         'cmd': 'emaint --auto sync',
         'log': 'sync',               # portage step checks this log to see if portage should be merged first
@@ -63,7 +63,7 @@ steps = {
         'exclude': ['lxcs']
         },
     'qcheck': {
-        'cmd': "qcheck --all --nomtime --nocolor | egrep 'AKF|MD5-DIGEST' | sort",
+        'cmd': "qcheck --nomtime --nocolor | egrep 'AKF|MD5-DIGEST' | sort",
         'log': 'qcheck'
         },
     }
