@@ -10,7 +10,7 @@ steps = {
         'log': 'sync',               # portage step checks this log to see if portage should be merged first
         'exclude': ['lxcs']
         },
-    'layman':
+    'layman': {
         'cmd': 'layman --sync=ALL --nocolor',
         'log': 'layman'
         },
