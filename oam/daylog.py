@@ -29,7 +29,7 @@ class DayLog(object):
         return self.starting_day
 
     def last_day(self):
-        datedir = self.timed_runs()
+        datedir = self.day_runs()
         if len(datedir) > 0:
             return datedir[-1]
         else:
