@@ -24,6 +24,7 @@ from oam.daylog import DayLog, daylog, dayruns, lastday, logdir, timedruns
 from oam.expire import OAMExpire, expire
 from oam.genlop import Genlop, genlop
 from oam.go import gocmd
+from oam.merges import Merges, mergesummary
 from oam.news import News, checknews, countnewnews
 from oam.obsolete import obsolete
 from oam.pkg import Pkg, pkgsizes
