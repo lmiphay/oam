@@ -14,13 +14,14 @@ from oam.listopts import listopts
 from oam.version import version, get_version
 from oam.watch import watch
 
+from oam.blocks import Blocks, blocksummary
 from oam.changed import Changed, changed
 from oam.checkconfig import CheckConfig, checkconfig
 from oam.createlxc import CreateLxc, createlxc
 from oam.direct import Direct, direct
 from oam.emergelog import EmergeLog, emergelog
 from oam.fabremote import FabRemote, fabremote
-from oam.daylog import DayLog, daylog, dayruns, lastday, logdir, timedruns
+from oam.daylog import DayLog, daylog, dayruns, day_runs, lastday, last_day, logdir, timedruns, today
 from oam.expire import OAMExpire, expire
 from oam.genlop import Genlop, genlop
 from oam.go import gocmd
@@ -30,6 +31,7 @@ from oam.obsolete import obsolete
 from oam.pkg import Pkg, pkgsizes
 from oam.pretend import Pretend, pretend
 from oam.qcheck import QCheck, qcheck
+from oam.summary import Summary, summary
 
 from oam.events import Events, events
 

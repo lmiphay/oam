@@ -46,6 +46,9 @@ class DayLog(object):
         else:
             return []
 
+    def runfiles(self, name):
+        return sorted(glob.glob('{}/*/{}'.format(self.day_dir, name)))
+
 DAYLOG = DayLog()
 
 @cli.command()
