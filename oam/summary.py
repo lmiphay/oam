@@ -11,7 +11,7 @@ import click
 from .cmd import cli
 from .merges import Merges
 from .blocks import Blocks
-from .daylog import Daylog, last_day
+from .daylog import DayLog, last_day
 
 DEFAULT_TEMPLATE = 'txt_summary.template'
 TEMPLATE_DIR = '/usr/share/gentoo-oam'
