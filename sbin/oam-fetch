@@ -3,7 +3,12 @@
 source /etc/gentoo-oam.conf
 source /usr/share/gentoo-oam/gentoo-oam-functions.sh
 
-OAM_TAG=fetch \
-       oam-merge --fetchonly --update $OAM_EMERGE_OPTS $@ world
+oam_log "oam fetch start $*"
+
+emerge --fetchonly --update $OAM_EMERGE_OPTS $@ world \
+       2>>$(oam_mergelogfile blocks) \
+       | grep -v '\.\.\.' >>$(oam_mergelogfile merge)
+
+oam_log "oam fetch complete"
 
 exit 0
