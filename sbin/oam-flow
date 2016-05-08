@@ -62,11 +62,11 @@ execstage()
     
     for step in ${stage[@]} ; do
 	if [[ $step =~ (.*)\& ]] ; then
-	    oam_log "oam-flow running '$step' detached"
+	    oam_log "oam-flow step '$step' (detached)"
 	    execstep "${step/&/}" &
-	    disown $!
+	    disown -h %+
 	else
-	    oam_log "oam-flow running '$step' with wait for completion"
+	    oam_log "oam-flow step '$step' (waiting)"
 	    execstep "$step" &
 	    pid+=($!)
 	fi
@@ -76,7 +76,12 @@ execstage()
     local i
 
     for ((i=0; i<${#pid[@]}; i++)) ; do
-	wait ${pid[$i]} || result=1
+	wait ${pid[$i]}
+	status=$?
+	if [ "$status" -ne 0 ] ; then
+	    oam_log "oam-flow step '${stage[$i]}' returned $status - failing stage"
+	    result=1
+	fi
     done
 
     return $result
@@ -87,11 +92,12 @@ oam_log "oam-flow $flowname start"
 [ -z "${OAM_FLOW}" ] && oam_die "OAM_FLOW is empty - exiting"
 
 while read -r -a line; do
+    oam_log "parse: checking ${line[@]}"
     if [ "${#line}" -gt 0 ] ; then
-	oam_log "running ${line[@]}"
+	oam_log "parse: running ${line[@]}"
 	declare -a operation
 	eval "IFS=$'\n\t' operation=(${line[@]})"
-	execstage operation || oam_die "$flowname ( ${line[@]} )  failed - exiting ($?)"
+	execstage operation || oam_die "parse: $flowname ( ${line[@]} )  failed - exiting ($?)"
     fi
 done <<<"$(printf '%s' "${OAM_FLOW}")" >>$(oam_logfile ${flowname}) 2>&1 
 
