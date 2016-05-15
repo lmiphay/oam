@@ -20,6 +20,12 @@ def is_docker():
     """Return True if the server is a docker, False otherwise"""
     return '/docker/' in open('/proc/1/cgroup').read()
 
+COMPATIBLE_MATCHES = ['localhost', os.uname()[1], '']
+
+def target_matches(target):
+    """Return True if we can run a process on the specified target"""
+    return target in COMPATIBLE_MATCHES
+
 class Direct(object):
 
     def __init__(self):
@@ -27,7 +33,7 @@ class Direct(object):
 
     def drive(self, step):
         self.logger.set_logname(step['log'])
-        proc = subprocess.Popen(step['cmd'].split(' '),
+        proc = subprocess.Popen(step['cmd'],
                                 bufsize=1, # line buffered
                                 stdout=self.logger.out(),
                                 stderr=self.logger.err())
@@ -36,15 +42,14 @@ class Direct(object):
 
 @cli.command()
 @click.option('--log', default='direct',
-              help='log all output using this facility')
-@click.argument('cmd', nargs=-1)  # the command to run
+              help='log output to this facility')
+@click.argument('cmd')  # the command to run
 def direct(log, cmd):
-    """Run cmd on each of the local server"""
-    step = {
-        'cmd': ' '.join(cmd),
-        'log': log
-        }
-    if len(step['cmd'])<1:
+    """Run cmd on the local server
+       Example:
+       $ oam direct --log build 'emerge --update world'
+    """
+    if len(cmd)<1:
         sys.exit("no command?")
     else:
-        return Direct().drive(step)
+        return Direct().drive(step = { 'cmd': cmd, 'log': log })
