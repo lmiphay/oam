@@ -15,7 +15,7 @@ SUBDIRS=\
 
 .PHONY: install
 install:
-	install -d $(DESTDIR)/etc $(DESTDIR)/etc/cron.daily
+	install -d $(DESTDIR)/etc
 	install --owner=root --group=oam --mode=0750 -d $(DESTDIR)/etc/gentoo-oam.d
 	install --owner=root --group=oam --mode=0770 -d $(DESTDIR)/var/log/oam
 	install --owner=root --group=oam --mode=0770 -d $(DESTDIR)/var/log/oam/old

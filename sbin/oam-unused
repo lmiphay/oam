@@ -46,6 +46,15 @@ case "$1" in
 	$0 newuse
 	$0 depclean
 	$0 list
+	if [ -f "$cleanpkgs" ] ; then
+	    cat $cleanpkgs
+	else
+	    echo "Failed to run depclean check - please check logs"
+	    exit 1
+	fi
+	;;
+    periodic)
+	$0 run | mail -s 'Candidate depclean package list' root
 	;;
     *)
 	echo "usage: $(basename $0) newuse|depclean|list|remove|run"
