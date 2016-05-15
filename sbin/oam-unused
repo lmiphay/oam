@@ -10,7 +10,7 @@ logfile=$(oam_logfile merge)
 oam_log "oam-unused start $*"
 
 case "$1" in
-    build|newuse)
+    newuse|build)
 	oam-newuse
 	;;
     depclean)
@@ -18,30 +18,37 @@ case "$1" in
 	       >$deplog 2>&1
 	if grep "Dependencies could not be completely resolved" $deplog ; then
 	    echo "depclean check failed - see $deplog" | oam_err "depclean"
+	    exit 1
 	fi
 	;;
     list)
+	if [ ! -f "$depclean" ] ; then
+	    $0 depclean
+	fi
 	grep "All selected packages:" $deplog | \
 	    sed -E -e 's/All selected packages://' -e "s/ /\n/g" | \
 	    sort >$cleanpkgs
 	oam_log "oam-unused pkg candidates for removal are in $cleanpkgs"
 	;;
-    run)
-	$0 newuse
-	$0 depclean
-	$0 list
-	;;
     remove)
-	oam_log "oam-unused in 5 seconds, removing $(cat $cleanpkgs)"
-	sleep 5
+	if [ ! -f "$cleanpkgs" ] ; then
+	    $0 list
+	fi
+	oam_log "oam-unused in 10 seconds, removing $(cat $cleanpkgs)"
+	sleep 10
 	emerge --depclean --verbose $(cat $cleanpkgs) >>$logfile 2>&1
 	oam_log "revdep-rebuild start"
 	revdep-rebuild --nocolor --ignore \
 		       >>$logfile \
 		       2> >(oam_err "revdep")
 	;;
+    run)
+	$0 newuse
+	$0 depclean
+	$0 list
+	;;
     *)
-	echo "usage: $(basename $0) newuse|depclean|list|remove"
+	echo "usage: $(basename $0) newuse|depclean|list|remove|run"
 	;;
 esac
 
