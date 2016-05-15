@@ -54,7 +54,7 @@ case "$1" in
 	fi
 	;;
     periodic)
-	$0 run | mail -s 'Candidate depclean package list' root
+	$0 run | mail -s 'Candidate depclean package list: $cleanpkgs' root
 	;;
     *)
 	echo "usage: $(basename $0) newuse|depclean|list|remove|run"
