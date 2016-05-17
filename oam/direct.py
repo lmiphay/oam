@@ -31,7 +31,7 @@ class Direct(object):
     def __init__(self):
         self.logger = ServersLog('direct')
 
-    def drive(self, step):
+    def run(self, step):
         self.logger.set_logname(step['log'])
         proc = subprocess.Popen(step['cmd'],
                                 bufsize=1, # line buffered
@@ -52,4 +52,4 @@ def direct(log, cmd):
     if len(cmd)<1:
         sys.exit("no command?")
     else:
-        return Direct().drive(step = { 'cmd': cmd, 'log': log })
+        return Direct().run(step = { 'cmd': cmd, 'log': log })
