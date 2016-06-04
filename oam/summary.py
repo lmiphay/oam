@@ -42,7 +42,7 @@ def server_context():
 class Summary(object):
 
     def __init__(self, daydir):
-        self.day = Daylog(daydir)
+        self.day = DayLog(daydir)
         self.context = {}
 
     def save(self, filename):
