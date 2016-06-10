@@ -22,7 +22,7 @@ case "$1" in
 	fi
 	;;
     list)
-	if [ ! -f "$depclean" ] ; then
+	if [ ! -f "$deplog" ] ; then
 	    $0 depclean
 	fi
 	grep "All selected packages:" $deplog | \
