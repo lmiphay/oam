@@ -66,12 +66,13 @@ class Watch(object):
                 '-wh', self.row2, 'oam.log',                              # win2: oam activity log
                 '-j',                                                     # win3: stdin - genlop piped
 
-                '-wh', self.row1, '-l', 'oam emergelog',                  # win4: /var/log/emerge.log
-                '--retry-all',
+                '--retry',
                 '-wh', self.row2, 'error.log',                            # win5: general error log
+                '-wh', self.row1, '-l', 'oam emergelog',                  # win4: /var/log/emerge.log
 
                 '--mark-change', '-T',
 
+                '--retry-all',
                 '-i', 'sync.log',                                         # win6: misc logs
                 '-I', 'merge.log',
                 '--label', 'blocks ', '-I', 'blocks.log',
