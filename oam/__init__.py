@@ -36,4 +36,9 @@ from oam.summary import Summary, summary
 
 from oam.events import Events, events
 
+from oam.facts            import facts
+from oam.fact.profile     import profile
+from oam.fact.server      import server
+from oam.fact.synchistory import synchistory
+
 #__all__ = ['dumpenv']
