@@ -5,6 +5,7 @@ from __future__ import print_function
 import pprint
 import click
 import importlib
+import yaml
 from .cmd import cli
 
 FACT = ['oam.fact.profile', 'oam.fact.server', 'oam.fact.synchistory']
@@ -25,6 +26,11 @@ def get_facts():
     return result
 
 @cli.group(invoke_without_command=True)
-def facts():
+@click.option('--outfile', help='write facts to file')
+def facts(outfile):
     """Server/build information"""
-    print(pprint.pformat(get_facts()))
+    if outfile:
+        yaml.dump(get_facts(), open(outfile, 'w'), default_flow_style=False)
+    else:
+        print(pprint.pformat(get_facts()))
+    return 0
