@@ -31,6 +31,7 @@ from oam.obsolete import obsolete
 from oam.pkg import Pkg, pkgsizes
 from oam.pretend import Pretend, pretend
 from oam.qcheck import QCheck, qcheck
+from oam.report import Report, report
 from oam.runner import Runner, runner
 from oam.summary import Summary, summary
 
