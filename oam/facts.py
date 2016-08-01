@@ -3,12 +3,14 @@
 
 from __future__ import print_function
 import pprint
+import time
 import click
 import importlib
 import yaml
 from .cmd import cli
 
 FACT = [
+    'oam.fact.logdate',
     'oam.fact.merges',
     'oam.fact.profile',
     'oam.fact.runs',
@@ -25,7 +27,7 @@ def get_facts():
     if len(FACTMOD) == 0:
         import_facts()
 
-    result = {}
+    result = {'timestamp': time.strftime('%Y%m%d:%H:%M:%S') }
     for mod in FACTMOD:
         result.update(mod.fact())
 
