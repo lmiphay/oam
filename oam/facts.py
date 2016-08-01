@@ -10,6 +10,7 @@ import yaml
 from .cmd import cli
 
 FACT = [
+    'oam.fact.blocks',
     'oam.fact.logdate',
     'oam.fact.merges',
     'oam.fact.profile',

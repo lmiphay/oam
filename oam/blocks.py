@@ -92,8 +92,8 @@ class Blocks(object):
             else:
                 if not self.handle_failed(line):
                     self.handle_misc(line)
-        else:
-            print('drop:', line.strip())
+        #else:
+        #    print('drop:', line.strip())
 
     def process_file(self, filename):
         """Process one file for blocked packages"""
