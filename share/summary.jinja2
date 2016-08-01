@@ -3,3 +3,5 @@ Running kernel: {{ kernel }}
 Last sync'd on: {{ lastsync }}
 gentoo profile: {{ profile }}
 runs on the day: {{ runs }}
+merges: {% for merge in merges %}
+   {{ merge }} {% endfor %}

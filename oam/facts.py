@@ -8,7 +8,13 @@ import importlib
 import yaml
 from .cmd import cli
 
-FACT = ['oam.fact.profile', 'oam.fact.runs', 'oam.fact.server', 'oam.fact.synchistory']
+FACT = [
+    'oam.fact.merges',
+    'oam.fact.profile',
+    'oam.fact.runs',
+    'oam.fact.server',
+    'oam.fact.synchistory'
+]
 FACTMOD = []
 
 def import_facts():
