@@ -7,3 +7,9 @@ gentoo profile: {{ profile }}
 runs on the day: {{ runs }}
 merges: {% for merge in merges %}
    {{ merge }} {% endfor %}
+Build failures: {% for fail in build_fails %}
+   {{ fail }} {% endfor %}
+Keyword/Useflag changes required: {% for ku in keyword_useflag %}
+   {{ ku }} {% endfor %}
+Blockers: {% for block in errors %}
+   {{ block }} {% endfor %}
