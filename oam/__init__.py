@@ -39,6 +39,7 @@ from oam.events import Events, events
 
 from oam.facts            import facts
 from oam.fact.blocks      import blocks
+from oam.fact.kernbuilt   import kernbuilt
 from oam.fact.merges      import merges
 from oam.fact.profile     import profile
 from oam.fact.runs        import runs
