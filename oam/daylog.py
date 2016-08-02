@@ -22,6 +22,7 @@ def day_runs():
     return sorted(filter(re.compile(r'\d{8}').match, os.listdir(LOG_DIR)))
 
 def last_day():
+    """Return the more recent day we have an oam run for; e.g. 20160801"""
     datedir = day_runs()
     if len(datedir) > 0:
         return datedir[-1]
@@ -32,22 +33,22 @@ class DayLog(object):
 
     def __init__(self, day=today()):
         self.day = day
-        self.day_dir = "{}/{}".format(LOG_DIR, day)
+        self.daydir = "{}/{}".format(LOG_DIR, day)
 
     def day_dir(self):
-        return self.day_dir
+        return self.daydir
 
     def current_day(self):
         return self.day
 
     def timed_runs(self):
-        if os.path.isdir(self.day_dir):
-            return sorted(filter(re.compile(r'\d{6}').match, os.listdir(self.day_dir)))
+        if os.path.isdir(self.daydir):
+            return sorted(filter(re.compile(r'\d{6}').match, os.listdir(self.daydir)))
         else:
             return []
 
     def runfiles(self, name):
-        return sorted(glob.glob('{}/*/{}'.format(self.day_dir, name)))
+        return sorted(glob.glob('{}/*/{}'.format(self.daydir, name)))
 
 DAYLOG = DayLog()
 
