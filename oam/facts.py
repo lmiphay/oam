@@ -14,6 +14,7 @@ FACT = [
     'oam.fact.kernbuilt',
     'oam.fact.logdate',
     'oam.fact.merges',
+    'oam.fact.obsolete',
     'oam.fact.profile',
     'oam.fact.runs',
     'oam.fact.server',

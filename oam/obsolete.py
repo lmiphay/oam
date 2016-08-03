@@ -32,6 +32,13 @@ class Obsolete(object):
             if len(line)>1 and not any(line.startswith(s) for s in self.FILTER):
                 yield line.strip()
 
+# installed package list that currently requires keywording
+# add: enalyze --no-color rebuild keywords --pretend --exact
+
+# use flag settings that are currently required by installed packages
+# add: enalyze --no-color rebuild use --pretend --exact
+#    : maybe filter - abi_x86_32, -linguas_*, -sane_backends_*
+
 @cli.command()
 def obsolete():
     """check for obsolete portage configuration entries"""
