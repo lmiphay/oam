@@ -17,7 +17,8 @@ FACT = [
     'oam.fact.profile',
     'oam.fact.runs',
     'oam.fact.server',
-    'oam.fact.synchistory'
+    'oam.fact.synchistory',
+    'oam.fact.unreadnews'
 ]
 FACTMOD = []
 

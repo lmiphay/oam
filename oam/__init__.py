@@ -45,5 +45,6 @@ from oam.fact.profile     import profile
 from oam.fact.runs        import runs
 from oam.fact.server      import server
 from oam.fact.synchistory import synchistory
+from oam.fact.unreadnews  import unreadnews
 
 #__all__ = ['dumpenv']
