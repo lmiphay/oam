@@ -11,6 +11,7 @@ from .cmd import cli
 
 FACT = [
     'oam.fact.blocks',
+    'oam.fact.checkconfig',
     'oam.fact.kernbuilt',
     'oam.fact.logdate',
     'oam.fact.merges',

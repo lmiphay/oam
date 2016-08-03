@@ -1,4 +1,7 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+from __future__ import print_function
 import sys
 import os
 import stat
@@ -30,10 +33,17 @@ class CheckConfig:
 
     def __init__(self):
         self.result = 0
+        self.msg = None
 
+    def report(self, message):
+        if self.msg != None:
+            self.msg.append(message)
+        else:
+            print(message)
+            
     def fail(self, message):
         self.result += 1
-        print(message)
+        self.report(message)
 
     def mode(self, filename):
         return stat.S_IMODE(os.stat(filename).st_mode)
@@ -78,7 +88,7 @@ class CheckConfig:
                               self.format(chk, val) +
                               ', actual=' +
                               self.format(chk, self.CHECKS.get(chk)[1](self, pathspec)))
-                    print(self.CHECKS.get(chk)[2] + self.format(chk, val) + ' ' + pathspec)
+                    self.report(self.CHECKS.get(chk)[2] + self.format(chk, val) + ' ' + pathspec)
             else:
                 self.fail(checktype + ' is not available')
 
@@ -113,17 +123,22 @@ class CheckConfig:
 
         return self.result
 
+    def its(self):
+        self.msg = []
+        self.run()
+        return self.msg
+
     def run(self):
         if os.geteuid() == 0:
             result = self.process(CheckConfig.ROOT_TARGETS)
         else:
-            print('# /etc/cron.daily/gentoo-oam not checked')
+            self.report('# /etc/cron.daily/gentoo-oam not checked')
             result = self.process(CheckConfig.DEFAULT_TARGETS)
 
         if result == 0:
-            print('### PASS ###')
+            self.report('### PASS ###')
         else:
-            print('### FAIL ###')
+            self.report('### FAIL ###')
 
         return result
 
