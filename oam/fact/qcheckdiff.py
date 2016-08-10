@@ -8,33 +8,24 @@ import logging
 import click
 
 from oam.facts import facts
-from oam.daylog import last_day, DayLog
+from oam.daylog import last_day, prev_day, DayLog, LOG_DIR
 
-def fact(day = last_day()):
-    """Return the differences between current and previous qcheck run"""
-    prefdate = ''
-    prevdir = '{}/qcheck.log'
-    daydir = '{}/qcheck.log'
+def fact(day=last_day()):
+    """Return the differences between specified and previous-to-it qcheck run"""
+    prevqcheck_file = '{}/{}/qcheck.log'.format(LOG_DIR, prev_day(day))
+    daycheck_file = '{}/{}/qcheck.log'.format(LOG_DIR, day)
+    result = []
     if os.path.isfile(prevqcheck_file) and os.path.isfile(daycheck_file):
-        cmd = 'diff -u {} {} '.format(prevqcheck_file, daycheck_file)
-        return { 'qcheck_diff': subprocess.check_output(cmd, shell=True).splitlines() }
-    else:
-        return { 'qcheck_diff': '' }
+        cmd = 'diff -u {} {}'.format(prevqcheck_file, daycheck_file)
+        try:
+            result = subprocess.check_output(cmd, shell=True).splitlines()
+        except subprocess.CalledProcessError as ex:
+            result = ex.output.splitlines()
+    return { 'qcheck_diff': result }
 
 @facts.command()
-def qcheckdiff():
-    """Differences between current and previous qcheck run"""
-    print(fact()['qcheck_diff'])
+@click.option('--day', default=last_day(), help='day qcheck log to process')
+def qcheckdiff(day):
+    """Diff between current and previous qcheck run"""
+    print(fact(day)['qcheck_diff'])
     return 0
-
-#PREVDATE=$(oam_prevdate $LOGDATE)
-#if [[ -f $LOGDATE/qcheck.log && -f $PREVDATE/qcheck.log ]] ; then
-#    diff -u $PREVDATE/qcheck.log $LOGDATE/qcheck.log 
-#fi
-
-#oam_prevdate()
-#{
-#    local laterdate=$1
-#
-#    (cd $OAM_LOGDIR && ls -d1 20* |grep --before-context=1 $laterdate | head -1)
-#}

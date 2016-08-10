@@ -44,6 +44,7 @@ from oam.fact.kernbuilt   import kernbuilt
 from oam.fact.merges      import merges
 from oam.fact.obsolete    import obsolete
 from oam.fact.profile     import profile
+from oam.fact.qcheckdiff  import qcheckdiff
 from oam.fact.runs        import runs
 from oam.fact.server      import server
 from oam.fact.synchistory import synchistory

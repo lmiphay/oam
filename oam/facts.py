@@ -8,6 +8,7 @@ import click
 import importlib
 import yaml
 from .cmd import cli
+from oam.daylog import last_day
 
 FACT = [
     'oam.fact.blocks',
@@ -17,6 +18,7 @@ FACT = [
     'oam.fact.merges',
     'oam.fact.obsolete',
     'oam.fact.profile',
+    'oam.fact.qcheckdiff',
     'oam.fact.runs',
     'oam.fact.server',
     'oam.fact.synchistory',
@@ -28,22 +30,23 @@ def import_facts():
     global FACTMOD
     FACTMOD = map(importlib.import_module, FACT)
 
-def get_facts():
+def get_facts(day):
     if len(FACTMOD) == 0:
         import_facts()
 
     result = {'timestamp': time.strftime('%Y%m%d:%H:%M:%S') }
     for mod in FACTMOD:
-        result.update(mod.fact())
+        result.update(mod.fact(day))
 
     return result
 
 @cli.group(invoke_without_command=True)
+@click.option('--day', default=last_day(), help='day logs to process')
 @click.option('--outfile', help='write facts to file')
-def facts(outfile):
+def facts(day, outfile):
     """Server/build information"""
     if outfile:
-        yaml.dump(get_facts(), open(outfile, 'w'), default_flow_style=False)
+        yaml.dump(get_facts(day), open(outfile, 'w'), default_flow_style=False)
     else:
-        print(pprint.pformat(get_facts()))
+        print(pprint.pformat(get_facts(day)))
     return 0
