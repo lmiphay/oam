@@ -104,6 +104,11 @@ done <<<"$(printf '%s' "${OAM_FLOW}")" >>$(oam_logfile ${flowname}) 2>&1
 oam_log "oam-flow generating merge summary"
 oam-summary $OAM_LOGDATE >>$(oam_logfile summary)
 
+oam_log "oam-flow generating summary2 report"
+fact_file="$OAM_LOGDIR/$OAM_LOGDATE/summary.yaml"
+oam facts --outfile=${fact_file}
+oam report summary.jinja2 ${fact_file} >$OAM_LOGDIR/$OAM_LOGDATE/summary2.txt
+
 oam_log "oam-flow $flowname complete"
 
 exit 0
