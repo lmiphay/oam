@@ -7,7 +7,7 @@ import click
 from oam.facts import facts
 from oam.daylog import last_day, DayLog
 
-def fact(day = last_day()):
+def fact(day=last_day()):
     """Return a string represent the day a report is being run for"""
     return { 'logdate': os.path.basename(day) }
 

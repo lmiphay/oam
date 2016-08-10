@@ -8,7 +8,7 @@ from oam.facts import facts
 
 LAST_SYNC = '/usr/portage/metadata/timestamp.chk'
 
-def fact():
+def fact(day=None):
     """Return the time/date of the last portage sync"""
     if os.path.exists(LAST_SYNC):
         return { 'lastsync': open(LAST_SYNC, 'r').read().strip() }

@@ -7,7 +7,7 @@ import logging
 import click
 from oam.facts import facts
 
-def fact():
+def fact(day=None):
     """Return information on the server"""
     host = os.uname()
     return { 'hostname': host[1], 'kernel': host[2] }

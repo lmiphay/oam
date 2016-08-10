@@ -9,7 +9,7 @@ from oam.facts import facts
 
 COMMAND = 'eselect profile show'
 
-def fact():
+def fact(day=None):
     """Return the current gentoo profile"""
     output = subprocess.check_output(COMMAND, shell=True).splitlines()
     if len(output) == 2:

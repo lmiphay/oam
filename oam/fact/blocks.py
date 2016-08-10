@@ -8,7 +8,7 @@ from oam.facts import facts
 from oam.daylog import last_day, DayLog
 from oam.blocks import Blocks
 
-def fact(day = last_day()):
+def fact(day=last_day()):
     """Return a list of blocks"""
     runfiles = DayLog(day).runfiles('blocks.log')
     blockers = Blocks().run(runfiles)

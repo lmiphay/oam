@@ -8,7 +8,7 @@ import click
 from oam.facts import facts
 from oam.news import News
 
-def fact(day = None):
+def fact(day=None):
     """Return a list of the unread news items"""
     return {
         'unread_news': [ x for x in News().get_unread() ]

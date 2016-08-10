@@ -8,7 +8,7 @@ import click
 from oam.facts import facts
 from oam.daylog import last_day, DayLog
 
-def fact(day = last_day()):
+def fact(day=last_day()):
     """Return a list of runs made for the day"""
     return { 'runs': DayLog(day).timed_runs() }
 

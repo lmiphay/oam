@@ -8,7 +8,7 @@ import click
 from oam.facts import facts
 from oam.daylog import last_day, DayLog
 
-def fact(day = last_day()):
+def fact(day=last_day()):
     """Return the version of the newly built kernel (if any)"""
     kernel_log = '{}/kernel.log'.format(DayLog(day).day_dir())
     kernel_ver = None
@@ -24,6 +24,6 @@ def fact(day = last_day()):
 @facts.command()
 @click.option('--day', default=last_day(), help='day logs to process')
 def kernbuilt(day):
-    """"""
+    """Return kernel version build on specified day (if any)"""
     print(fact(day)['kernel_built'])
     return 0

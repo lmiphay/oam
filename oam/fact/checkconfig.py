@@ -8,7 +8,7 @@ import click
 from oam.facts import facts
 from oam.checkconfig import CheckConfig
 
-def fact(day = None):
+def fact(day=None):
     """Return a list configuration problems"""
     return {
         'check_config': [ x for x in CheckConfig().its() ]
