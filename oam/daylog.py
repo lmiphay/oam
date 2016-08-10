@@ -22,12 +22,21 @@ def day_runs():
     return sorted(filter(re.compile(r'\d{8}').match, os.listdir(LOG_DIR)))
 
 def last_day():
-    """Return the more recent day we have an oam run for; e.g. 20160801"""
+    """Return the most recent day we have an oam run for; e.g. 20160801"""
     datedir = day_runs()
     if len(datedir) > 0:
         return datedir[-1]
     else:
         return None
+
+def prev_day(start_day):
+    """Return the previous day to start dat for which we have an oam run for; e.g. 20160801"""
+    datedir = day_runs()
+    if start_day in datedir:
+        prev_index = datedir.index(start_day) - 1
+        if prev_index >= 0:
+            return datedir[prev_index]
+    return None
 
 class DayLog(object):
 
