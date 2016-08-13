@@ -22,6 +22,8 @@ revdep-rebuild --nocolor --ignore \
 
 oam_log "python-updater start: $(oam changed dev-lang/python)"
 if [[ -x /usr/sbin/python-updater ]] ; then
+    # Todo filter:
+    # python-updater /usr/sbin/python-updater: line 752: /var/db/pkg/x11-themes/sound-theme-freedesktop-0.8/RDEPEND: No such file or directory
     python-updater -eall \
        > >(oam_stripansi >> $logfile) \
        2> >(oam_stripansi | oam_err "python-updater")
@@ -30,6 +32,9 @@ fi
 
 oam_log "perl-cleaner start: $(oam changed dev-lang/perl)"
 if [[ "$OAM_PERL_CLEANER" -eq 1 && -x /usr/sbin/perl-cleaner ]] ; then
+    # Todo filter:
+    # perl-cleaner Can't open machine/ansi.h: No such file or directory
+    # perl-cleaner Can't open gnu/stubs-x32.h: No such file or directory
     perl-cleaner --all \
        > >(oam_stripansi >> $logfile) \
        2> >(oam_stripansi | oam_err "perl-cleaner")
