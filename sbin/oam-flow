@@ -105,7 +105,7 @@ oam_log "oam-flow generating merge summary"
 oam-summary $OAM_LOGDATE >>$(oam_logfile summary)
 
 oam_log "oam-flow generating summary2 report"
-logdir="$OAM_LOGDIR/$(oam_logdate)"
+logdir="$(oam_logdate)"
 fact_file="$logdir/summary.yaml"
 oam facts --outfile=${fact_file}
 oam report summary.jinja2 ${fact_file} >${logdir}/summary2.txt
