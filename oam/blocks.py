@@ -39,7 +39,7 @@ FILTER = (
     'page or refer to the Gentoo Handbook.|'
     'Multiple package instances|'
     'into the dependency graph|'
-    '.*\^+\s*$|'
+    ' +\^|'
     '^# required by .+$|'
     'WARNING: One or more'
 )
@@ -49,7 +49,7 @@ FILTER = (
 class Blocks(object):
 
     def __init__(self):
-        self.filter_re = re.compile(FILTER[0]) # not strictly necessary, but to be safe
+        self.filter_re = re.compile(FILTER) # not strictly necessary, but to be safe
         self.seen = set()                      # used to avoid repeating messages
         self.kw_use = []                       # keyword/use changes required
         self.failed = set()                    # packages which failed to build/install
@@ -84,6 +84,7 @@ class Blocks(object):
 
     def process_line(self, line):
         """Process one line looking for block info"""
+        #print('process:{}<<'.format(line))
         if not self.filter_re.search(line): # drop noise lines early
             if re.search(IS_KEYWORD_USE_CHANGE, line):
                 if line not in self.seen:
