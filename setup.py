@@ -11,7 +11,8 @@ setup(name='oam',
       data_files=[('share/gentoo-oam',
                    ['share/gentoo-oam-functions.sh',
                     'share/gentoo-oam-multitail.conf',
-                    'share/oam-watch.help'
+                    'share/oam-watch.help',
+                    'share/summary.jinja2'
                    ]
       )]
       )
