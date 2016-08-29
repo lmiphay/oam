@@ -101,14 +101,14 @@ while read -r -a line; do
     fi
 done <<<"$(printf '%s' "${OAM_FLOW}")" >>$(oam_logfile ${flowname}) 2>&1 
 
-oam_log "oam-flow generating merge summary"
-oam-summary $OAM_LOGDATE >>$(oam_logfile summary)
+oam_log "oam-flow generating merge summary (original)"
+oam-summary $OAM_LOGDATE >>$(oam_logfile summary_orig)
 
-oam_log "oam-flow generating summary2 report"
+oam_log "oam-flow generating summary report"
 logdir="$(oam_logdate)"
 fact_file="$logdir/summary.yaml"
 oam facts --outfile=${fact_file}
-oam report summary.jinja2 ${fact_file} >${logdir}/summary2.txt
+oam report summary.jinja2 ${fact_file} >$(oam_logfile summary)
 
 oam_log "oam-flow $flowname complete"
 
