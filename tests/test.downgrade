@@ -1,0 +1,1 @@
+./bin/oam report share/summary.jinja2 tests/downgrade.summary

@@ -6,8 +6,10 @@ Kernel built: {{ kernel_built }}
 Last sync'd on: {{ lastsync }}
 gentoo profile: {{ profile }}
 runs on the day: {{ runs }}
-merges: {% for merge in merges %}
+Merges: {% for merge in merges %}
    {{ merge }} {% endfor %}
+Downgrades: {% for package, detail in downgrades.iteritems() %}
+   {{ package }} : from {{ detail.from_version }}, to {{ detail.to_version }} {% endfor %}
 Build failures: {% for fail in build_fails %}
    {{ fail }} {% endfor %}
 Keyword/Useflag changes required: {% for ku in keyword_useflag %}
