@@ -22,6 +22,7 @@ from oam.direct import Direct, direct
 from oam.emergelog import EmergeLog, emergelog
 from oam.fabremote import FabRemote, fabremote
 from oam.daylog import DayLog, daylog, dayruns, day_runs, lastday, last_day, logdir, timedruns, today
+from oam.flowrunner import FlowRunner
 from oam.expire import OAMExpire, expire
 from oam.genlop import Genlop, genlop
 from oam.go import gocmd
@@ -32,6 +33,7 @@ from oam.pkg import Pkg, pkgsizes
 from oam.pretend import Pretend, pretend
 from oam.qcheck import QCheck, qcheck
 from oam.report import Report, report
+from oam.run import runcmd
 from oam.runner import Runner, runner
 from oam.summary import Summary, summary
 
