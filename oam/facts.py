@@ -41,13 +41,16 @@ def get_facts(day):
 
     return result
 
+def write_facts(day, outfile):
+    yaml.dump(get_facts(day), open(outfile, 'w'), default_flow_style=False)
+
 @cli.group(invoke_without_command=True)
 @click.option('--day', default=last_day(), help='day logs to process')
 @click.option('--outfile', help='write facts to file')
 def facts(day, outfile):
     """Server/build information"""
     if outfile:
-        yaml.dump(get_facts(day), open(outfile, 'w'), default_flow_style=False)
+        write_facts(day, outfile)
     else:
         print(pprint.pformat(get_facts(day)))
     return 0

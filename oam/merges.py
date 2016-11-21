@@ -71,9 +71,9 @@ class Merges(object):
                 print(msg)
 
 @cli.command()
-@click.option('--proposed', default=False, envvar='show proposed merges only')
-@click.option('--actual', default=False, envvar='show actual merges only')
-@click.option('--summary', default=False, envvar='show summary only')
+@click.option('--proposed', default=False, help='show proposed merges only')
+@click.option('--actual', default=False, help='show actual merges only')
+@click.option('--summary', default=False, help='show summary only')
 @click.argument('mergefiles', nargs=-1)
 def mergesummary(proposed, actual, summary, mergefiles):
     """Summarise merge activity"""

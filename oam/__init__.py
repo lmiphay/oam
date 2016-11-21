@@ -35,11 +35,11 @@ from oam.qcheck import QCheck, qcheck
 from oam.report import Report, report
 from oam.run import runcmd
 from oam.runner import Runner, runner
-from oam.summary import Summary, summary
+from oam.summary import summary
 
 from oam.events import Events, events
 
-from oam.facts            import facts
+from oam.facts            import write_facts
 from oam.fact.blocks      import blocks
 from oam.fact.checkconfig import checkconfig
 from oam.fact.kernbuilt   import kernbuilt
