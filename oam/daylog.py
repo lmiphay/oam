@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 from __future__ import print_function
 import sys
 import os
@@ -14,6 +12,9 @@ import re
 from .cmd import cli
 
 LOG_DIR = os.getenv('OAM_LOGDIR', '/var/log/oam')
+
+def timestamp():
+    return time.strftime('%Y%m%d:%H:%M:%S')
 
 def today():
     return datetime.datetime.fromtimestamp(time.time()).strftime('%Y%m%d')
@@ -37,6 +38,22 @@ def prev_day(start_day):
         if prev_index >= 0:
             return datedir[prev_index]
     return None
+
+def get_logfile(ident):
+    """ Return a fully qualified filename of the form /var/log/oam/<TODAY>/<ident.log>
+        Directory and file created as required.
+    """
+    dirname = '{}/{}'.format(LOG_DIR, today())
+    if not os.path.isdir(dirname):
+        os.makedirs(dirname)
+
+    filename = '{}/{}.log'.format(dirname, ident)
+
+    if not os.path.isfile(filename):
+        with open(filename, 'w') as wtr:
+            wtr.write('{} created log file\n'.format(timestamp()))
+
+    return filename
 
 class DayLog(object):
 
@@ -98,4 +115,11 @@ def timedruns():
 def lasttimedruns():
     """Return the list of runs for the last day"""
     print(DayLog(last_day()).timed_runs())
+    return 0
+
+@cli.command()
+@click.argument('ident') # help='create a log file <ident>.log'
+def logfile(ident):
+    """Return the list of runs for the last day"""
+    print(get_logfile(ident))
     return 0
