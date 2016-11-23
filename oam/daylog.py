@@ -39,11 +39,20 @@ def prev_day(start_day):
             return datedir[prev_index]
     return None
 
-def get_logfile(ident):
-    """ Return a fully qualified filename of the form /var/log/oam/<TODAY>/<ident.log>
-        Directory and file created as required.
+def get_logfile(ident, mergelog=False):
+    """ Return a fully qualified filename of the form:
+        1. /var/log/oam/<TODAY>/<ident.log> (if mergelog is False)
+        2. /var/log/oam/<TODAY>/<HOUR_MINUTES>/<ident.log> (if mergelog is True)
+        Directory and file created as required. 
+        If mergelog is True, then a symbolic link is created pointing to the file
+        from /var/log/oam/<TODAY>/<ident.log>
     """
-    dirname = '{}/{}'.format(LOG_DIR, today())
+    daydir = '{}/{}'.format(LOG_DIR, today())
+    if mergelog:
+        subdir = time.strftime('%H%M%S')
+        dirname = '{}/{}/{}'.format(LOG_DIR, subdir, today())
+    else
+        dirname = daydir
     if not os.path.isdir(dirname):
         os.makedirs(dirname)
 
@@ -52,6 +61,12 @@ def get_logfile(ident):
     if not os.path.isfile(filename):
         with open(filename, 'w') as wtr:
             wtr.write('{} created log file\n'.format(timestamp()))
+
+    if mergelog:
+        symlink = '{}/{}.log'.format(daydir, ident)
+        if os.path.islink(symlink):
+            os.remove(symlink)
+        os.symlink(os.path.relpath(filename, daydir), symlink)
 
     return filename
 
