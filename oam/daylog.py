@@ -51,7 +51,7 @@ def get_logfile(ident, mergelog=False):
     if mergelog:
         subdir = time.strftime('%H%M%S')
         dirname = '{}/{}/{}'.format(LOG_DIR, subdir, today())
-    else
+    else:
         dirname = daydir
     if not os.path.isdir(dirname):
         os.makedirs(dirname)
