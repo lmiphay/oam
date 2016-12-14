@@ -3,8 +3,7 @@
 from __future__ import print_function
 import sys
 import os
-import re
-import subprocess
+import logging
 import yaml
 import jinja2
 import click
@@ -17,6 +16,7 @@ TEMPLATE_DIR = '/usr/share/gentoo-oam'
 class Report(object):
 
     def __init__(self):
+        self.logger = logging.getLogger("oam.report")
         self.context = {}
 
     def load(self, filename):
@@ -25,8 +25,11 @@ class Report(object):
 
     def build(self, factfiles):
         """Build a context for subsequent rendering"""
-        for ff in factfiles:
-            self.load(ff)
+        for filename in factfiles:
+            if os.path.exists(filename):
+                self.load(filename)
+            else:
+                self.logger.log(logging.ERROR, '%s is missing', filename)
         return self
 
     def render(self, template):
