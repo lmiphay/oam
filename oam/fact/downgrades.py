@@ -1,7 +1,7 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
+import logging
 import pprint
 import re
 import click
@@ -19,7 +19,11 @@ def package_name(line):
 
 def downgrade_version(line):
     split = catpkgsplit(package_name(line))
-    return '{}-{}'.format(split[2], split[3])
+    if len(split)>=4:
+        return '{}-{}'.format(split[2], split[3])
+    else:
+        logging.getLogger("oam.fact.downgrades").log(logging.ERROR, 'downgrade_version failed to parse line: %s', line)
+        return ''
 
 def previous_version(line):
     return re.sub(r'^\[[^]]+\] [^:]+[^ ]+ \[([^\] ]+)\].+', r'\1', line).strip()
