@@ -6,7 +6,7 @@ import pprint
 import re
 import click
 
-from portage.versions import catpkgsplit
+import portage
 
 from oam.facts import facts
 from oam.daylog import last_day, DayLog
@@ -18,7 +18,7 @@ def package_name(line):
     return re.sub(r'^\[[^]]+\] ([^:]+).+', r'\1', line).strip()
 
 def downgrade_version(line):
-    split = catpkgsplit(package_name(line))
+    split = portage.catpkgsplit(package_name(line))
     if len(split)>=4:
         return '{}-{}'.format(split[2], split[3])
     else:
