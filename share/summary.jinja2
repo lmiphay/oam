@@ -1,6 +1,7 @@
 Timestamp: {{ timestamp }}
 Log date: {{ logdate }}
 Server hostname: {{ hostname }}
+Portage installed/available: {{ installed_version }}/{{ best_available }} (Upgrade available={{ update_available }})
 Running kernel: {{ kernel }}
 Kernel built: {{ kernel_built }}
 Last sync'd on: {{ lastsync }}
@@ -8,6 +9,8 @@ gentoo profile: {{ profile }}
 runs on the day: {{ runs }}
 Merges: {% for merge in merges %}
    {{ merge }} {% endfor %}
+Preserved Libraries: {% for lib in preserved_libs %}
+   {{ lib }} {% endfor %}
 Downgrades: {% for package, detail in downgrades.iteritems() %}
    {{ package }} : from {{ detail.from_version }}, to {{ detail.to_version }} {% endfor %}
 Build failures: {% for fail in build_fails %}
