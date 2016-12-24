@@ -8,7 +8,7 @@ tag=${OAM_TAG:-"merge"}
 oam_log "oam ${tag} start $*"
 
 cmdlog=$(oam_mergelogfile cmd)
-echo "$@" >>$cmdlog
+echo "emerge $@" >>$cmdlog
 
 emerge $@ \
        >>$(oam_mergelogfile merge) \
