@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 from __future__ import print_function
 import sys
 import os
@@ -7,8 +5,10 @@ import subprocess
 import logging
 import glob
 import collections
+import pprint
 import click
 from .cmd import cli
+import portage
 
 class Pkg:
 
@@ -29,12 +29,56 @@ class Pkg:
             for p in pkgs:
                 print("%10d %s" % (size, p))
 
+    def best_available(self, atom):
+        return portage.db['/']['porttree'].dbapi.xmatch("bestmatch-visible", atom)
+
+    def current_version(self, atom):
+        return portage.best(portage.db['/']['vartree'].dbapi.match(atom))
+
+    def is_update_available(self, atom):
+        return self.best_available(atom) != self.current_version(atom)
+
+    def preserved_libs(self):
+        return portage.db['/']["vartree"].dbapi._plib_registry.getPreservedLibs()
+
 @cli.command()
 def pkgsizes():
     """List installed packages ordered by size"""
     Pkg().sizes()
 
-if __name__ == "__main__":
-    logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
+@cli.command()
+def preservedlibs():
+    """Return a list of preserved libraries (if any)"""
+    print(pprint.pformat(Pkg().preserved_libs()))
+    return 0
 
-    sys.exit(Pkg().sizes())
+@cli.command()
+@click.argument('atoms', nargs=-1)
+def bestavailable(atoms):
+    """List the best available versions in portage for the specified packages"""
+    p = Pkg()
+    for atom in atoms:
+        print(pprint.pformat(p.best_available(atom)))
+    return 0
+
+@cli.command()
+@click.argument('atoms', nargs=-1)
+def currentversion(atoms):
+    """List the installed versions for the specified packages"""
+    p = Pkg()
+    for atom in atoms:
+        print(pprint.pformat(p.current_version(atom)))
+    return 0
+
+@cli.command()
+@click.argument('atom')
+def updateavailable(atom):
+    """Print Yes/No is there is an update available for the specified package"""
+    avail = Pkg().is_update_available(atom)
+    if avail:
+        print('Yes')
+    else:
+        print('No')
+    return 0
+
+

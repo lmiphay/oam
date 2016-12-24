@@ -29,7 +29,7 @@ from oam.go import gocmd
 from oam.merges import Merges, mergesummary
 from oam.news import News, checknews, countnewnews
 from oam.obsolete import obsolete
-from oam.pkg import Pkg, pkgsizes
+from oam.pkg import Pkg, pkgsizes, preservedlibs, bestavailable, currentversion, updateavailable
 from oam.pretend import Pretend, pretend
 from oam.qcheck import QCheck, qcheck
 from oam.report import Report, report
