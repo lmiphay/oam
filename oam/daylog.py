@@ -70,6 +70,12 @@ def get_logfile(ident, mergelog=False):
 
     return filename
 
+def get_logstream(ident, mergelog=False):
+    return open(get_logfile(ident, mergelog), 'a')
+
+def get_errstream():
+    return open(get_logfile('error', mergelog=False), 'a')
+
 class DayLog(object):
 
     def __init__(self, day=today()):
