@@ -18,6 +18,7 @@ FACT = [
     'oam.fact.logdate',
     'oam.fact.merges',
     'oam.fact.obsolete',
+    'oam.fact.portageinfo',
     'oam.fact.profile',
     'oam.fact.qcheckdiff',
     'oam.fact.runs',
