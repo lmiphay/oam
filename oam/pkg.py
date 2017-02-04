@@ -30,10 +30,10 @@ class Pkg:
                 print("%10d %s" % (size, p))
 
     def best_available(self, atom):
-        return portage.db['/']['porttree'].dbapi.xmatch("bestmatch-visible", atom)
+        return str(portage.db['/']['porttree'].dbapi.xmatch("bestmatch-visible", atom))
 
     def current_version(self, atom):
-        return portage.best(portage.db['/']['vartree'].dbapi.match(atom))
+        return str(portage.best(portage.db['/']['vartree'].dbapi.match(atom)))
 
     def is_update_available(self, atom):
         return self.best_available(atom) != self.current_version(atom)
@@ -58,7 +58,7 @@ def bestavailable(atoms):
     """List the best available versions in portage for the specified packages"""
     p = Pkg()
     for atom in atoms:
-        print(pprint.pformat(p.best_available(atom)))
+        print(p.best_available(atom))
     return 0
 
 @cli.command()
