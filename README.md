@@ -112,6 +112,7 @@ You must still manually:
 * [update](http://weaver.gentooexperimental.org/update.html)
 * [update-system.sh - tip 2](http://gentoovps.net/gentoo-portage-tips/)
 * [autoupdating on reddit](https://www.reddit.com/r/Gentoo/comments/3w2od1/update_gentoo_autoupdating/)
+* [linux config scripts](https://github.com/jappeace/linux-config/tree/master/scripts)
 
 #### Copyright
 
