@@ -9,7 +9,8 @@ setup(name='oam',
       packages=['oam',
                 'oam/dsl',
                 'oam/eventparser',
-                'oam/fact'
+                'oam/fact',
+                'oam/tasks'
       ],
       scripts=['bin/oam'],
       data_files=[('share/gentoo-oam',
