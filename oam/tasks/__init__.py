@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from invoke import task, Collection
-
+import invoke
 import update
 
-ns = Collection(update, updateall=update.update)
+ns = invoke.Collection(update, updateall=update.update)
