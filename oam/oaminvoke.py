@@ -3,35 +3,25 @@
 from __future__ import print_function
 import os
 import logging
+import pprint
 import click
 from .cmd import cli
 
 import invoke
-
-@invoke.task
-def sync(ctx):
-    ctx.run('echo sync!')
-    
-@invoke.task
-def summary(ctx):
-    ctx.run('echo summary!')
-    
-@invoke.task(default=True, pre=[sync], post=[summary])
-def update(ctx):
-    ctx.run('echo update!')
+import oam.tasks
 
 @cli.command(name='invoke')
+@click.option('--l', '-l', is_flag=True, default=None, help='list availble tasks')
 @click.argument('tasks', nargs=-1)
-def oaminvoke(tasks):
+def oaminvoke(l, tasks):
     """Sequentially invoke one or more tasks"""
     logger = logging.getLogger("oam.invoke")
+
+    if not l is None:
+        pprint.pprint(oam.tasks.ns.task_names)
+        return 0
     
-    ns = invoke.Collection()
-    ns.add_task(update)
-    ns.add_task(sync)
-    ns.add_task(summary)
-    
-    executor = invoke.Executor(ns)
+    executor = invoke.Executor(oam.tasks.ns)
     
     for task in tasks:
         logger.log(logging.INFO, 'invoking %s', task)
