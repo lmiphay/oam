@@ -1,4 +1,4 @@
-#!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 from __future__ import print_function
 import sys
@@ -17,10 +17,14 @@ class Obsolete(object):
 
     CMD = ['eix', '--test-non-matching', '--test-obsolete', '--exact']
     FILTER = {'No non-matching',
-              'No matches found.',
-              'The names of all installed packages are in the database.',
+              'No matches found',
+              'The names of all installed packages are in the database',
               '--'
               }
+    SECTION = [
+        'Non-matching entries in /etc/portage/package.keywords',
+        'The following installed packages are not in the database'
+    ]
 
     def __init__(self):
         pass
