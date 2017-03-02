@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
@@ -146,7 +145,3 @@ class CheckConfig:
 def checkconfig():
     """Check modes/owners of oam files/dirs"""
     CheckConfig().run()
-
-if __name__ == "__main__":
-
-    sys.exit(CheckConfig().run())

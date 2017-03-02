@@ -1,4 +1,4 @@
-#!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 from __future__ import print_function
 import os
@@ -133,9 +133,3 @@ class Genlop:
 def genlop():
     """Watch emerge.log for merge activity"""
     Genlop().tail()
-
-if __name__ == "__main__":
-    logging.basicConfig(level=logging.DEBUG,
-                        format='%(asctime)s %(levelname)s %(message)s')
-
-    sys.exit(Genlop().tail())

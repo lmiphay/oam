@@ -1,4 +1,4 @@
-#!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 import sys
 import os
@@ -81,14 +81,4 @@ class Changed:
 def changed(update, package_name):
     """Track package versions and updates"""
     return Changed(package_name, update=update).run()
-
-if __name__ == "__main__":
-    logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
-
-    if len(sys.argv)==2:
-        sys.exit(Changed(sys.argv[1]).run())
-    if len(sys.argv)==3:
-        sys.exit(Changed(sys.argv[1], int(sys.argv[2])==True).run())
-    else:
-        sys.exit("usage: changed pkg_name [0/1]")
 

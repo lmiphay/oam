@@ -1,4 +1,4 @@
-#!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 import sys
 import os
@@ -102,8 +102,3 @@ def watch(row1, row2, col1, col2):
         return Watch(row1, row2, col1, col2).run()
     else:
         sys.exit("No log directory found")
-
-if __name__ == "__main__":
-    logging.basicConfig(level=logging.DEBUG,
-                        format='%(asctime)s %(levelname)s %(message)s')
-    sys.exit(Watch().run())

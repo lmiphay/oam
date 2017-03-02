@@ -1,4 +1,4 @@
-#!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 import logging
 import unittest
@@ -63,5 +63,3 @@ class RegistryTestCase(unittest.TestCase):
     def tearDown(self):
         del self.registry
                       
-if __name__ == '__main__':
-    unittest.main()

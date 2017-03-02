@@ -1,4 +1,4 @@
-#!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 import sys
 import os
@@ -72,12 +72,3 @@ class Pretend:
 def pretend(target):
     """emerge -up <target> (filtering noise)"""
     Pretend(target).run()
-
-if __name__ == "__main__":
-    logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
-
-    if len(sys.argv)>1:
-        sys.exit(Pretend(sys.argv[1]).run())
-    else:
-        sys.exit(Pretend().run())
-        
