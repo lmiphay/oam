@@ -29,7 +29,7 @@ class Genlop:
         self.logger = logging.getLogger("oam.genlop")
         self.monitor_count = 0
         self.nap = os.getenv('OAM_HEARTBEATSLEEP', 5)
-	self.sandboxwait = os.getenv('OAM_SANDBOXWAIT', 8)
+        self.sandboxwait = os.getenv('OAM_SANDBOXWAIT', 8)
         self.portage_tmpdir = self.tmpdir()
         self.hb = {}
 
