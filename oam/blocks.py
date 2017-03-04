@@ -41,7 +41,12 @@ FILTER = (
     'into the dependency graph|'
     ' +\^|'
     '^# required by .+$|'
-    'WARNING: One or more'
+    'WARNING: One or more|'
+    'Error: The above package|'
+    'installed at the same|'
+    'For more information|'
+    'section of the Gentoo|'
+    'Blocked_packages'
 )
 
 """ Process one or more block.log files and summarise any problems
