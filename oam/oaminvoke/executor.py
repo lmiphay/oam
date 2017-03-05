@@ -7,15 +7,15 @@ import invoke
 class Executor(invoke.Executor):
 
     def __init__(self, collection, config=None, core=None):
-        super(OamExecutor, self).__init__(collection, config, core)
+        super(Executor, self).__init__(collection, config, core)
 
     def expand_calls(self, calls, config):
         ret = []
         for call in calls:
             if isinstance(call, invoke.Task):
                 call = invoke.Call(task=call)
-            print('Creating OamContext')
-            call.context = OamContext(config=self.config_for(call, config))
+            print('Creating oaminvoke.Context')
+            call.context = oam.oaminvoke.Context(config=self.config_for(call, config))
             ret.extend(self.expand_calls(call.pre, config))
             ret.append(call)
             ret.extend(self.expand_calls(call.post, config))
