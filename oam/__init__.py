@@ -20,7 +20,6 @@ from oam.checkconfig import CheckConfig, checkconfig
 from oam.createlxc import CreateLxc, createlxc
 from oam.direct import Direct, direct
 from oam.emergelog import EmergeLog, emergelog
-from oam.fabremote import FabRemote, fabremote
 from oam.daylog import DayLog, daylog, dayruns, day_runs, get_logfile, get_logstream, get_errstream, lastday, last_day, logdir, logfile, timedruns, today
 from oam.flowrunner import FlowRunner
 from oam.expire import OAMExpire, expire
