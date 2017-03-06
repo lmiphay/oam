@@ -116,7 +116,7 @@ You must still manually:
 
 #### Copyright
 
-Copyright (c) 2013-2016 Paul Healy
+Copyright (c) 2013-2017 Paul Healy
 
 Permission granted to redistribute it and/or modify it under the terms of the
 GNU General Public License version 2.
