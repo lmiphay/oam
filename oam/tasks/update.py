@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 
+import logging
 from invoke import task
-from oam.options import oam_config
+import merge
 
 @task(name='update-package')
 def update_package(ctx, atom='sys-apps/portage'):
     if is_update_available(atom):
-        ctx.run('/usr/bin/emerge --oneshot --verbose --verbose-conflicts {}'.format(atom))
+        merge.emerge(ctx, opts='--oneshot', target=atom)
 
 @task(name='revdep-rebuild')
 def revdep_rebuild(ctx):
@@ -26,12 +27,12 @@ def perl_cleaner(ctx):
 @task(name='preserved-rebuild')
 def preserved_rebuild(ctx):
     if len(preserved_libs())>0:
-        ctx.run('/usr/bin/emerge --keep-going --verbose @preserved-rebuild')
-        
+        merge.emerge(ctx, opts='--keep-going', target='@preserved-rebuild')
+
 @task
-def emerge(ctx, options=oam_config('emerge_opts'), target='--update world'):
-    ctx.run('/usr/bin/emerge {} {}'.format(options, target))
-        
-@task(default=True, pre=[update_package], post=[revdep_rebuild, python_updater, perl_cleaner, preserved_rebuild])
 def update(ctx):
-    ctx.run('/usr/bin/emerge --update --keep-going {} world'.format(oam_config('emerge_opts')))
+    merge.emerge(ctx, opts='--update --keep-going', target='world')
+
+@task(default=True, pre=[update_package, update, revdep_rebuild, python_updater, perl_cleaner, preserved_rebuild])
+def all(ctx):
+    logging.info('update done')
