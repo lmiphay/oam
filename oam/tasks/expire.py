@@ -2,7 +2,7 @@
 
 import logging
 
-from invoke import task
+from invoke import task, call
 
 @task
 def expire(ctx, oamdir='/var/log/oam', keeplogs=10, debug=''): # or: debug='echo'
