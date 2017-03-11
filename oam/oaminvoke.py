@@ -13,7 +13,7 @@ import oam.tasks
 @cli.command(name='invoke')
 @click.option('--l', '-l', is_flag=True, default=None, help='list availble tasks')
 @click.argument('tasks', nargs=-1)
-def oaminvoke(l, tasks):
+def xoaminvoke(l, tasks):
     """Sequentially invoke one or more tasks"""
     logger = logging.getLogger("oam.invoke")
 
