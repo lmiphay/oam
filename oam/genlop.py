@@ -82,9 +82,9 @@ class Genlop:
             return {'timestamp': self.timestamp(),
                     'num':info[3], 'total':info[6], 'pkg':info[8], 'gone':' '.join(info[19:eta]), 'left':' '.join(info[eta+1:])}
 
-    def wait_for_sandbox(self):
+    def wait_for_sandbox(self, wait_time):
         """Wait for sandbox process to appear - genlop bales without it"""
-        for t in xrange(int(self.sandboxwait)):
+        for t in xrange(int(wait_time)):
             for proc in psutil.process_iter():
                 if proc.name() == 'sandbox':
                     return True
@@ -113,17 +113,22 @@ class Genlop:
         print(self.HEARTBEAT.format(**self.hb))
         sys.stdout.flush()
 
+    def log_currentcompile(self, wait_time):
+        if self.wait_for_sandbox(wait_time):
+	    self.log_current()
+
     def tail(self):
         fd = inotifyx.init()
         try:
             wd = inotifyx.add_watch(fd, '/var/log/emerge.log', inotifyx.IN_MODIFY)
 
+            self.log_currentcompile(1) # only wait for a second for the sandbox
+
             while True:
 		self.log_heartbeat()
                 events = inotifyx.get_events(fd, float(self.nap))
                 if len(events) != 0: # not timeout
-                    if self.wait_for_sandbox():
-		        self.log_current()
+                    self.log_currentcompile(self.sandboxwait)
 
             inotifyx.rm_watch(fd, wd)
         finally:
