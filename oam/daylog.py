@@ -76,6 +76,13 @@ def get_logstream(ident, mergelog=False):
 def get_errstream():
     return open(get_logfile('error', mergelog=False), 'a')
 
+def get_oamlogfile():
+    return open(get_logfile('oam', mergelog=False), 'a')
+
+def oamlog_write(msg):
+    with get_oamlogfile() as f:
+        f.write('{} {}\n'.format(timestamp(), msg))
+
 class DayLog(object):
 
     def __init__(self, day=today()):
