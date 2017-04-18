@@ -24,7 +24,7 @@ from oam.daylog import DayLog, daylog, dayruns, day_runs, get_logfile, get_logst
 from oam.flowrunner import FlowRunner
 from oam.expire import OAMExpire, expire
 from oam.genlop import Genlop, genlop
-from oam.go import gocmd
+from oam.go import gocmd, bg
 from oam.merges import Merges, mergesummary
 from oam.news import News, checknews, countnewnews
 from oam.obsolete import obsolete
