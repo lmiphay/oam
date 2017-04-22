@@ -22,7 +22,7 @@ def python_updater(ctx):
 @task(name='perl-cleaner')
 def perl_cleaner(ctx):
     if check_for_executable('/usr/sbin/perl-cleaner'):
-        ctx.run('/usr/sbin/perl-cleaner -all')
+        ctx.run('/usr/sbin/perl-cleaner --all')
     
 @task(name='preserved-rebuild')
 def preserved_rebuild(ctx):
