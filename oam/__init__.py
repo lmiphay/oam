@@ -32,6 +32,7 @@ from oam.pkg import Pkg, pkgsizes, preservedlibs, bestavailable, currentversion,
 from oam.pretend import Pretend, pretend
 from oam.qcheck import QCheck, qcheck
 from oam.report import Report, report
+from oam.review import Review, review
 from oam.run import runcmd
 from oam.runner import Runner, runner
 from oam.status import status
