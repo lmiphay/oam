@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
@@ -14,7 +13,7 @@ from oam.merges import Merges
 def fact(day=last_day()):
     """Return a list of merges made for the day"""
     runfiles = DayLog(day).runfiles('merge.log')
-    return { 'merges': list(Merges().run(runfiles).actual()) }
+    return { 'merges': sorted(list(Merges().run(runfiles).actual())) }
 
 @facts.command()
 def merges():
