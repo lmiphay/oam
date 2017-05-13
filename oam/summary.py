@@ -18,7 +18,7 @@ from .report import Report
 @click.option('--daydir', default=last_day())
 @click.option('--force-facts-regen', default=False,
               help='force facts regeneration if it already exists')
-def summary(template, daydir, force_summary_regen):
+def summary(template, daydir, force_facts_regen):
     """Summarise merge activity"""
     logger = logging.getLogger("oam.summary")
 
