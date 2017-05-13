@@ -10,8 +10,12 @@ import glob
 import click
 from .cmd import cli
 
-class CheckConfig:
-    """ Check readability, ownership... etc of specified files and directories.
+EXPIRE_LOG = '{}/expire.log'.format(os.getenv('OAM_LOGDIR', '/var/log/oam'))
+
+class CheckConfig(object):
+    """ Check:
+        1. readability, ownership... etc of specified files and directories.
+        2. try and detect if cron is running (presence of /var/log/oam/expire.log)
     """
 
     USER  = 'root' # expect to find files owned by this user
@@ -127,12 +131,19 @@ class CheckConfig:
         self.run()
         return self.msg
 
+    def cron_has_run(self):
+        return os.path.exists(EXPIRE_LOG)
+
     def run(self):
         if os.geteuid() == 0:
             result = self.process(CheckConfig.ROOT_TARGETS)
         else:
             self.report('# /etc/cron.daily/gentoo-oam not checked')
             result = self.process(CheckConfig.DEFAULT_TARGETS)
+
+        if not self.cron_has_run():
+            result = False
+            self.report('### cron has not run yet ###')
 
         if result == 0:
             self.report('### PASS ###')
