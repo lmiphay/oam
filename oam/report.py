@@ -10,14 +10,15 @@ import click
 from .cmd import cli
 
 TEMPLATE_DIR = '/usr/share/gentoo-oam'
+DEFAULT_TEMPLATE = 'summary.jinja2'
 
 """ Generate a report
 """
 class Report(object):
 
-    def __init__(self):
+    def __init__(self, context={}):
         self.logger = logging.getLogger("oam.report")
-        self.context = {}
+        self.context = context
 
     def load(self, filename):
         self.context.update(yaml.load(open(filename, 'r')))
@@ -32,7 +33,7 @@ class Report(object):
                 self.logger.log(logging.ERROR, '%s is missing', filename)
         return self
 
-    def render(self, template):
+    def render(self, template=DEFAULT_TEMPLATE):
         env = jinja2.Environment()
         env.loader = jinja2.FileSystemLoader([os.path.dirname(template), TEMPLATE_DIR])
         return env.get_template(os.path.basename(template)).render(self.context)

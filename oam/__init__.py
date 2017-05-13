@@ -34,6 +34,7 @@ from oam.qcheck import QCheck, qcheck
 from oam.report import Report, report
 from oam.run import runcmd
 from oam.runner import Runner, runner
+from oam.status import status
 from oam.summary import summary
 
 from oam.events import Events, events
