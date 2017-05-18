@@ -24,6 +24,9 @@ class EmergeLog(object):
     def last_line(self):
         return subprocess.check_output(['tail', '-1', self.logfile])
 
+    def package_name(self, line, field_num):
+        return line.split(' ')[field_num].strip('()') # -e 's/::.*//'
+
     def status(self, line):
         pass
 
@@ -31,7 +34,7 @@ class EmergeLog(object):
         self.proc = subprocess.Popen(['tail', '-F', self.logfile], stdout=subprocess.PIPE)
         while 1:
             line = self.proc.stdout.readline().decode('utf8').rstrip()
-            field = line.split(':', 1)
+            field = line.split(':  ', 1)
             if len(field) == 2:
                 print(self.timestamp(field[0]), field[1])
             else:
