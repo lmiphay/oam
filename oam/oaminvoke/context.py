@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
-
-import os
+import logging
 import invoke
-
+import oam.lib
 from oam.logdest import logdest
 
 class Context(invoke.Context):
@@ -12,19 +10,27 @@ class Context(invoke.Context):
     def __init__(self, config=None):
         super(Context, self).__init__(config)
 
-    # new flags: if_installed, pretend
     def run(self, command, **kwargs):
-        oamlog_write(command)
-        print('in oaminvoke.Context run')
-        kwargs['out_stream'], kwargs['err_stream'] = logdest(command)
-        runner_class = self.config.get('runner', invoke.Local)
-        return runner_class(context=self).run(command, **kwargs)
+        """ add oam flags: if_installed, pretend """
+        logging.info('run %s', command)
 
-    # new flags: if_new_rev=atom
+        pretend = kwargs.pop('pretend', False)
+        if_installed = kwargs.pop('if_new_rev', False)
+
+        if pretend or (if_installed and not oam.lib.check_for_executable(command.split()[0])):
+            return Result(command=command)
+        else:
+            kwargs['out_stream'], kwargs['err_stream'] = logdest(command)
+            runner_class = self.config.get('runner', invoke.Local)
+            return runner_class(context=self).run(command, **kwargs)
+
     def emerge(self, args, **kwargs):
-        return self.run(cmd, kwargs)
+        """ add oam flag: if_new_rev=bool """
+        command = '/usr/bin/emerge {}'.format(args)
+        logging.info('emerge %s', command)
 
-    # flags: force
-    def rebuild_preserved(self, args):
-        if len(preserved_libs())>0:
-            self.emerge(opts='--keep-going', target='@preserved-rebuild')
+        if_new_rev = kwargs.pop('if_new_rev', None)
+        if if_new_rev and oam.lib.is_update_available(args.split()[-1]):
+            return self.run(cmd, kwargs)
+        else:
+            return Result(command=command)
