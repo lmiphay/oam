@@ -26,6 +26,7 @@ LOGDEST = [
 ANSI = r'\x1b\[([0-9,A-Z]{1,2}(;[0-9]{1,2})?(;[0-9]{3})?)?[m|K]?'
 
 def dats(ins, outs):
+    """filter out ansi escape code sequences"""
     ansi_filter = re.compile(ANSI)
     for line in ins:
         line = ansi_filter.sub('', line)
@@ -33,6 +34,7 @@ def dats(ins, outs):
         outs.flush()
 
 def dedot(ins, outs):
+    """pass through any line which doesn't contain '...'"""
     for line in ins:
         if not '...' in line:
             outs.write(line)
