@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
-import os
 import logging
 import pprint
 import click
 from .cmd import cli
 
-import invoke
 import oam.tasks
+import oam.oaminvoke
 
 @cli.command()
 @click.option('--l', '-l', is_flag=True, default=None, help='list availble tasks')
@@ -21,7 +19,7 @@ def inv(l, tasks):
         pprint.pprint(oam.tasks.ns.task_names)
         return 0
     
-    executor = invoke.Executor(oam.tasks.ns)
+    executor = oam.oaminvoke.Executor(oam.tasks.ns)
     
     for task in tasks:
         logger.log(logging.INFO, 'invoking %s', task)

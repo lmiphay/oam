@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import os
-import logging
 import StringIO
 import csv
 
-import invoke
 from invoke import task
 
 FLOW = StringIO.StringIO(os.getenv('OAM_FLOW', ''))
@@ -15,14 +13,8 @@ FLOW = StringIO.StringIO(os.getenv('OAM_FLOW', ''))
 # [x.start() for x in threads]
 # [x.join() for x in threads]
 
-@task
+@task(default=True)
 def flow(ctx, stream=FLOW):
     for line in stream.readlines():
         for command in csv.reader([line], delimiter=' ', quotechar='"'):
-            logging.info('run step %s', command)
-            ctx.run(command)
-            logging.info('step %s complete', command)
-
-@task(flow)
-def all(ctx):
-    logging.info('flow done')
+            ctx.run(command, echo=True)

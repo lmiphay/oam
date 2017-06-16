@@ -1,18 +1,15 @@
 # -*- coding: utf-8 -*-
 
-import logging
+import os
+import glob
 
-from invoke import task, call
+from invoke import task
 
-@task
-def expire(ctx, oamdir='/var/log/oam', keeplogs=10, debug=''): # or: debug='echo'
-    ctx.run("cd {} && ls -d1tr 2* | head -n -{} | xargs --verbose -d '\n' {} rm -rf".format(oamdir,
-                                                                                            keeplogs,
-                                                                                            debug))
-@task(call(expire, debug='echo'))
-def dryrun(ctx):
-    logging.info('dryrun done')
+OAM_LOGDIR   = os.getenv('OAM_LOGDIR', '/var/log/oam')
+OAM_KEEPLOGS = int(os.getenv('OAM_KEEPLOGS', '10'))
 
-@task(default=True, pre=[expire])
-def all(ctx):
-    logging.info('expiry done')
+@task(default=True)
+def expire(ctx):
+    with ctx.cd(OAM_LOGDIR):
+        for day in glob.glob('2*')[0:-OAM_KEEPLOGS]:
+            shutil.rmtree(day)
