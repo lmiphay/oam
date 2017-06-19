@@ -9,6 +9,7 @@ import expire
 import fetch
 import flow
 import glsa
+import kernel
 import layman
 import newuse
 import sync
@@ -23,6 +24,7 @@ ns.add_collection(expire)
 ns.add_collection(fetch)
 ns.add_collection(flow)
 ns.add_collection(glsa)
+ns.add_collection(kernel)
 ns.add_collection(layman)
 ns.add_collection(newuse)
 ns.add_collection(sync)
