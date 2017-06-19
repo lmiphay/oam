@@ -17,7 +17,7 @@ def step(ctx, task):
     """executes one single oam task"""
     oam.oaminvoke.Executor(oam.tasks.ns).execute((task, {}))
 
-@task(help={'tasks': 'a string, containging a space delimited list of tasks to execute in parallel'})
+@task(help={'tasks': 'a string with a space delimited list of tasks to execute in parallel'})
 def stage(ctx, tasks):
     """parallel execution of the tasks in a stage.
        see: https://github.com/pyinvoke/invoke/issues/63
@@ -27,11 +27,11 @@ def stage(ctx, tasks):
         if command.startswith('oam-'):
             threads.append(Thread(name=command, target=step, args=(ctx, command['oam-':])))
         else:
-            threads.append(Thread(name=command, target=ctx.run, args=(ctx, command, echo=True)))
+            threads.append(Thread(name=command, target=ctx.run, args=(ctx, command)))
     [x.start() for x in threads]
     [x.join() for x in threads]
 
-@task(help={'stream': 'the specific flow to execute, a multi-task stage per line'})
+@task(default=True, help={'stream': 'the specific flow to execute, a multi-task stage per line'})
 def flow(ctx, stream=FLOW):
     """sequential flow runner"""
     for line in stream.readlines():
