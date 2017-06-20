@@ -2,8 +2,9 @@
 
 import logging
 import invoke
+
 import oam.lib
-from oam.logdest import logdest
+import oam.logdest
 
 class Context(invoke.Context):
 
@@ -20,7 +21,7 @@ class Context(invoke.Context):
         if pretend or (if_installed and not oam.lib.check_for_executable(command.split()[0])):
             return Result(command=command)
         else:
-            kwargs['out_stream'], kwargs['err_stream'] = logdest(command)
+            kwargs['out_stream'], kwargs['err_stream'] = oam.logdest.LOGSUPERVISOR.logdest(command)
             runner_class = self.config.get('runner', invoke.Local)
             return runner_class(context=self).run(command, **kwargs)
 
