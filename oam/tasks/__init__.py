@@ -12,6 +12,7 @@ import glsa
 import kernel
 import layman
 import newuse
+import skel
 import sync
 import update
 
@@ -27,5 +28,6 @@ ns.add_collection(glsa)
 ns.add_collection(kernel)
 ns.add_collection(layman)
 ns.add_collection(newuse)
+ns.add_collection(skel)
 ns.add_collection(sync)
 ns.add_collection(update)
