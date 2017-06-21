@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import logging
 import pprint
 import click
 from .cmd import cli
@@ -31,7 +30,6 @@ def inv(l, vanilla, tasks):
     """
     Sequentially invoke one or more tasks
     """
-    logger = logging.getLogger("oam.invoke")
 
     if not l is None:
         pprint.pprint(oam.tasks.ns.task_names)
@@ -42,6 +40,9 @@ def inv(l, vanilla, tasks):
     if not vanilla:
         oam_wire()
 
-    program.run(tasks)
+    # tasks is a tuple so convert to a list and prepend a dummy program name entry
+    program.run(argv=['oaminvoke'] + list(tasks))
+
+    # program.run will have called sys.exit(1) (or so) if there was an error
 
     return 0

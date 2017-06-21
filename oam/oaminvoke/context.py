@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-import logging
+from __future__ import print_function
+
 import invoke
 
 import oam.lib
@@ -12,26 +13,32 @@ class Context(invoke.Context):
         super(Context, self).__init__(config)
 
     def run(self, command, **kwargs):
-        """ add oam flags: if_installed, pretend """
-        logging.info('run %s', command)
-
+        """ add oam flags: if_installed, pretend, echo_result """
         pretend = kwargs.pop('pretend', False)
         if_installed = kwargs.pop('if_new_rev', False)
+        echo_result = kwargs.pop('echo_result', False)
 
         if pretend or (if_installed and not oam.lib.check_for_executable(command.split()[0])):
             return Result(command=command)
         else:
-            kwargs['out_stream'], kwargs['err_stream'] = oam.logdest.LOGSUPERVISOR.logdest(command)
+            kwargs['out_stream'], kwargs['err_stream'] = oam.logdest.logdest(command)
+
             runner_class = self.config.get('runner', invoke.Local)
-            return runner_class(context=self).run(command, **kwargs)
+
+            result = runner_class(context=self).run(command, **kwargs)
+
+            if echo_result:
+                print(result.stdout)
+
+            return result
 
     def emerge(self, args, **kwargs):
         """ add oam flag: if_new_rev=bool """
-        command = '/usr/bin/emerge {}'.format(args)
-        logging.info('emerge %s', command)
-
         if_new_rev = kwargs.pop('if_new_rev', None)
+
+        command = '/usr/bin/emerge {}'.format(args)
+
         if if_new_rev and oam.lib.is_update_available(args.split()[-1]):
-            return self.run(cmd, kwargs)
+            return self.run(command, kwargs)
         else:
             return Result(command=command)

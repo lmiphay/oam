@@ -3,7 +3,7 @@
 import re
 import io
 from enum import Enum
-from oam.daylog import oamlog_write, get_errstream, timestamp
+from oam.daylog import oamlog_write, get_errstream, timestamp, get_logfile
 
 Tag = Enum('Tag', 'deansi dedot default multi timestamp dats')
 
@@ -57,35 +57,41 @@ class LogSupervisor(object):
         return wrapstream
 
     def wrap(self, stream, tags):
-        for tag in tabs.split(','):
+        for tag in tags.split(','):
             if tag == 'dedot':
                 stream = self.do_wrap(stream, dedot)
             elif tag == 'dats':
                 stream = self.do_wrap(stream, dats)
         return stream
 
-    def logdest(cmd):
+    def logdest(self, cmd):
         """Return a tuple of two open streams which can be used to log
            stdout, stderr from the cmd.
         """
-        dest = classify(cmd)
+        dest = self.classify(cmd)
         mergelog = 'multi' in dest[3]
         tags = dest[3].split(' ')
 
         stdout = open(get_logfile(dest[1], mergelog=mergelog), 'a')
-        stdout = wrap(stdout, ','.join(tags[1:]))
+        stdout = self.wrap(stdout, ','.join(tags[1:]))
         if dest[2] == '-':
             stderr = stdout
         else:
             stderr = open(get_logfile(dest[2], mergelog=mergelog), 'a')
-            stderr = wrap(stderr, ','.join([tags[0], tags[2]]))
+            stderr = self.wrap(stderr, ','.join([tags[0], tags[2]]))
 
         return stdout, stderr
 
-    def classify(cmd):
+    def classify(self, cmd):
         for match in LOGDEST:
-            if LOGDEST[0] in cmd:
+            if match[0] in cmd:
                 return match
         return LOGDEST[-1]
 
 LOGSUPERVISOR = LogSupervisor()
+
+def logdest(cmd):
+    return LOGSUPERVISOR.logdest(cmd)
+
+def finish():
+    return LOGSUPERVISOR.finish()
