@@ -23,8 +23,10 @@ class Context(invoke.Context):
         else:
             kwargs['out_stream'], kwargs['err_stream'] = oam.logdest.logdest(command)
 
-            if not 'capture_buffer_size' in kwargs:
-                kwargs['capture_buffer_size'] = 200 # TBD
+            if 'capture_buffer_size' in kwargs and kwargs['capture_buffer_size'] == -1:
+                kwargs['capture_buffer_size'] = None
+            elif not 'capture_buffer_size' in kwargs or not kwargs['capture_buffer_size']:
+                kwargs['capture_buffer_size'] = 200
 
             runner_class = self.config.get('runner', invoke.Local)
 
