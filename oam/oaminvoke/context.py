@@ -23,12 +23,15 @@ class Context(invoke.Context):
         else:
             kwargs['out_stream'], kwargs['err_stream'] = oam.logdest.logdest(command)
 
+            if not 'capture_buffer_size' in kwargs:
+                kwargs['capture_buffer_size'] = 200 # TBD
+
             runner_class = self.config.get('runner', invoke.Local)
 
             result = runner_class(context=self).run(command, **kwargs)
 
             if echo_result:
-                print(result.stdout)
+                print(result.stdout) # note now setting 'capture_buffer_size'
 
             return result
 
