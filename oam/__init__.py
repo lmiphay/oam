@@ -5,7 +5,6 @@ __license__ = 'GPL-2'
 __copyright__ = 'Copyright 2016, Paul Healy under GPL-2'
 
 #from oam.eventparser import EventParser
-from oam.registry import Registry
 
 from oam.cmd import cli
 from oam.dumpenv import dumpenv
