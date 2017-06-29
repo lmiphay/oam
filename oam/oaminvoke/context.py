@@ -19,7 +19,7 @@ class Context(invoke.Context):
         echo_result = kwargs.pop('echo_result', False)
 
         if pretend or (if_installed and not oam.lib.check_for_executable(command.split()[0])):
-            return Result(command=command)
+            return invoke.Result(command=command)
         else:
             kwargs['out_stream'], kwargs['err_stream'] = oam.logdest.logdest(command)
 
@@ -43,7 +43,10 @@ class Context(invoke.Context):
 
         command = '/usr/bin/emerge {}'.format(args)
 
-        if if_new_rev and oam.lib.is_update_available(args.split()[-1]):
-            return self.run(command, kwargs)
+        if if_new_rev:
+            if oam.lib.is_update_available(args.split()[-1]):
+                return self.run(command, **kwargs)
+            else:
+                return invoke.Result(command=command)
         else:
-            return Result(command=command)
+            return self.run(command, **kwargs)
