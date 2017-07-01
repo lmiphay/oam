@@ -16,6 +16,8 @@ FLOW = StringIO.StringIO(os.getenv('OAM_FLOW', ''))
 
 @task(help={'task': 'Name of the oam task to run'})
 def step(ctx, task):
+    if task.endswith('&'):
+        task = task[:-1] # strip detached marker (for now)
     """executes one single oam task"""
     invoke.Executor(oam.tasks.ns).execute((task, {}))
 
@@ -29,6 +31,7 @@ def stage(ctx, tasks):
         if command.startswith('oam-'):
             threads.append(threading.Thread(name=command, target=step, args=(ctx, command['oam-':])))
         else:
+            # todo: handle remote server execution here
             threads.append(threading.Thread(name=command, target=ctx.run, args=(ctx, command)))
     [x.start() for x in threads]
     [x.join() for x in threads]
