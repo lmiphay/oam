@@ -17,7 +17,7 @@ FLOW = StringIO.StringIO(os.getenv('OAM_FLOW', ''))
 @task(help={'task': 'Name of the oam task to run'})
 def step(ctx, task):
     """executes one single oam task"""
-    oam.oaminvoke.Executor(oam.tasks.ns).execute((task, {}))
+    invoke.Executor(oam.tasks.ns).execute((task, {}))
 
 @task(help={'tasks': 'a string with a space delimited list of tasks to execute in parallel'})
 def stage(ctx, tasks):
@@ -41,4 +41,4 @@ def flow(ctx, stream=FLOW):
 
 @task
 def show(ctx):
-    print(FLOW)
+    print(os.getenv('OAM_FLOW', ''))
