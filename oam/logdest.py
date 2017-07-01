@@ -2,6 +2,7 @@
 
 import re
 import io
+from threading import Thread
 from enum import Enum
 from oam.daylog import oamlog_write, get_errstream, timestamp, get_logfile
 
@@ -52,7 +53,7 @@ class LogSupervisor(object):
     def do_wrap(self, stream, target):
         wrapstream = io.StringIO()
         thd = Thread(target=target, args=[wrapstream, stream])
-        self.threads.add(thd)
+        self.threads.append(thd)
         thd.start()
         return wrapstream
 
