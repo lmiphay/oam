@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
+import os
 
 import invoke
 
@@ -11,6 +12,7 @@ class Context(invoke.Context):
 
     def __init__(self, config=None):
         super(Context, self).__init__(config)
+        self.opts = os.getenv('OAM_EMERGE_OPTS', '--backtrack=50 --deep --verbose --verbose-conflicts')
 
     def run(self, command, **kwargs):
         """ add oam flags: if_installed, pretend, echo_result """
@@ -41,7 +43,7 @@ class Context(invoke.Context):
         """ add oam flag: if_new_rev=bool """
         if_new_rev = kwargs.pop('if_new_rev', None)
 
-        command = '/usr/bin/emerge {}'.format(args)
+        command = '/usr/bin/emerge {} {}'.format(self.opts, args)
 
         if if_new_rev:
             if oam.lib.is_update_available(args.split()[-1]):
