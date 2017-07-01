@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
+
 import os
 import StringIO
 import csv
@@ -25,9 +27,9 @@ def stage(ctx, tasks):
     threads = []
     for task in csv.reader([tasks], delimiter=' ', quotechar='"'):
         if command.startswith('oam-'):
-            threads.append(Thread(name=command, target=step, args=(ctx, command['oam-':])))
+            threads.append(threading.Thread(name=command, target=step, args=(ctx, command['oam-':])))
         else:
-            threads.append(Thread(name=command, target=ctx.run, args=(ctx, command)))
+            threads.append(threading.Thread(name=command, target=ctx.run, args=(ctx, command)))
     [x.start() for x in threads]
     [x.join() for x in threads]
 
@@ -36,3 +38,7 @@ def flow(ctx, stream=FLOW):
     """sequential flow runner"""
     for line in stream.readlines():
         stage(ctx, line)
+
+@task
+def show(ctx):
+    print(FLOW)
