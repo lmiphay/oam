@@ -7,17 +7,21 @@ import invoke
 
 import oam.lib
 import oam.logdest
+import oam.log
+
+OAM_EMERGE_OPTS = '--backtrack=50 --deep --verbose --verbose-conflicts'
 
 class Context(invoke.Context):
 
     def __init__(self, config=None):
         super(Context, self).__init__(config)
-        self.opts = os.getenv('OAM_EMERGE_OPTS', '--backtrack=50 --deep --verbose --verbose-conflicts')
+        self.opts = os.getenv('OAM_EMERGE_OPTS', OAM_EMERGE_OPTS)
+        self.logger = oam.log.getLogger('inv')
 
     def run(self, command, **kwargs):
         """ add oam flags: if_installed, pretend, echo_result """
         pretend = kwargs.pop('pretend', False)
-        if_installed = kwargs.pop('if_new_rev', False)
+        if_installed = kwargs.pop('if_installed', False)
         echo_result = kwargs.pop('echo_result', False)
 
         if pretend or (if_installed and not oam.lib.check_for_executable(command.split()[0])):
@@ -31,6 +35,8 @@ class Context(invoke.Context):
                 kwargs['capture_buffer_size'] = 200
 
             runner_class = self.config.get('runner', invoke.Local)
+
+            self.logger.info(command)
 
             result = runner_class(context=self).run(command, **kwargs)
 
