@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import sys
 import os
 import logging
@@ -7,31 +9,54 @@ import re
 import datetime
 from .cmd import cli
 
-def todays_dir():
-    return datetime.datetime.fromtimestamp(time.time()).strftime('%Y%m%d')
-
-def logdir():
-    return os.getenv('OAM_LOGDIR', '/var/log/oam') + todays_dir()
-
-def get_logfile(facility):
-    dirname = logdir()
-    if not os.path.isdir(dirname):
-        os.makedirs(dirname)
-    filename = dirname + '/' + facility + '.log'
-    if not os.path.isfile(filename):
-        logmsg(filename, "created log file")
-    return filename
+import oam.path
 
 """
+Usage:
+      self.logger = oam.logging.getLogger(__name__)
 """
-class Log(object):
 
-    def __init__(self, facility='oam'):
-        self.logger = logging.getLogger("oam.log")
-        self.fh = logging.FileHandler(get_logfile(facility))
-        self.form = logging.Formatter(fmt='%(asctime)s %(message)s')
-        self.fh.setFormatter(self.form)
-        self.logger.addHandler(self.fh)
+OAM_LOGGER = None
 
-    def msg(self, tag, msgtext):
-        self.logger.info('oam %(tag)s %(msgtext)s', tag=tag, msgtest=msgtext)
+def getLogger(ident=''):
+    global OAM_LOGGER
+
+    if OAM_LOGGER is None:
+        logging.getLogger('').handlers = []
+        logging.basicConfig(filename=oam.path.log_file(),
+                            format='%(asctime)s %(levelname)s %(name)s - %(message)s',
+                            datefmt='%Y%m%d:%H:%M:%S',
+                            level=logging.INFO)
+        OAM_LOGGER = logging.getLogger()
+
+    if ident == '':
+        return OAM_LOGGER
+    else:
+        return logging.getLogger(ident)
+
+def critical(msg, *args, **kwargs):
+    getLogger().critical(msg, *args, **kwargs)
+
+def error(msg, *args, **kwargs):
+    getLogger().error(msg, *args, **kwargs)
+
+def debug(msg, *args, **kwargs):
+    getLogger().debug(msg, *args, **kwargs)
+
+def info(msg, *args, **kwargs):
+    getLogger().info(msg, *args, **kwargs)
+
+def warning(msg, *args, **kwargs):
+    getLogger().warning(msg, *args, **kwargs)
+
+def setLevel(lvl):
+    getLogger().setLevel(lvl)
+
+@cli.command()
+@click.argument('msgs', nargs=-1)
+def log(msgs):
+    """log msgs to the default oam.log"""
+    info(' '.join(msgs))
+    logging.info('foo')
+    return 0
+
