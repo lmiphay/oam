@@ -23,7 +23,7 @@ def oam_wire():
     Call.make_context = oam_make_context
 
 @cli.command()
-@click.option('--l', '-l', is_flag=True, default=None, help='list availble tasks')
+@click.option('--l', '-l', is_flag=True, default=None, help='list available tasks')
 @click.option('--vanilla', is_flag=True, default=False, help='run vanilla invoke')
 @click.argument('tasks', nargs=-1)
 def inv(l, vanilla, tasks):
@@ -31,7 +31,7 @@ def inv(l, vanilla, tasks):
     Sequentially invoke one or more tasks
     """
 
-    if not l is None:
+    if l is not None:
         pprint.pprint(oam.tasks.ns.task_names)
         return 0
     
