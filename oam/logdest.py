@@ -16,7 +16,7 @@ LOGDEST = [
     ('glsa-check'           'glsa',   '-',       '- -     -'),
     ('emerge --fetchonly',  'merge',  'blocks',  '- dedot multi'),
     ('emerge',              'merge',  'blocks',  '- -     multi'),
-    ('revdep-rebuild',      'merge',  'error'    '- -     -'),
+    ('revdep-rebuild',      'merge',  'error',   '- -     -'),
     ('python-updater',      'merge',  'error',   '- -     -'),
     ('perl-cleaner',        'merge',  'error',   '- -     -'),
     ('eclean',              'clean',  'error',   '- dats  -'),
