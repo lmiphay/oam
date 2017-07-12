@@ -78,7 +78,11 @@ class Watch(object):
                 '--label', 'blocks ', '-I', 'blocks.log',
                 '-t', 'sync/merge/blocks/kernel ',                        # set title in statusline
                 '-I', 'kernel.log',
-                '-I', 'summary.log'
+                '-I', 'summary.log',
+                '-I', 'clean.log',
+                '-I', 'misc.log',
+                '-I', 'glsa.log',
+                '-I', 'qcheck.log'
         ]
 
         extra_opt = os.getenv('OAM_MULTITAIL_EXTRA_OPT', None)
