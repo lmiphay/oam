@@ -8,14 +8,12 @@ import invoke
 import oam.lib
 import oam.logdest
 import oam.log
-
-OAM_EMERGE_OPTS = '--backtrack=50 --deep --verbose --verbose-conflicts'
+import oam.settings
 
 class Context(invoke.Context):
 
     def __init__(self, config=None):
         super(Context, self).__init__(config)
-        self.opts = os.getenv('OAM_EMERGE_OPTS', OAM_EMERGE_OPTS)
         self.logger = oam.log.getLogger('inv')
 
     def run(self, command, **kwargs):
@@ -49,7 +47,7 @@ class Context(invoke.Context):
         """ add oam flag: if_new_rev=bool """
         if_new_rev = kwargs.pop('if_new_rev', None)
 
-        command = '/usr/bin/emerge {} {}'.format(self.opts, args)
+        command = '/usr/bin/emerge {} {}'.format(oam.settings.get_setting('OAM_EMERGE_OPTS'), args)
 
         if if_new_rev:
             if oam.lib.is_update_available(args.split()[-1]):
