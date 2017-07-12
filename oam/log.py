@@ -54,7 +54,7 @@ def setLevel(lvl):
 
 @cli.command()
 @click.argument('msgs', nargs=-1)
-def log(msgs):
+def logmsg(msgs):
     """log msgs to the default oam.log"""
     info(' '.join(msgs))
     logging.info('foo')
