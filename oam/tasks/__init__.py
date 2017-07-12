@@ -4,6 +4,7 @@ import invoke
 
 import clean
 import depclean
+import eix
 import emptytree
 import expire
 import fetch
@@ -20,6 +21,7 @@ ns = invoke.Collection()
 
 ns.add_collection(clean)
 ns.add_collection(depclean)
+ns.add_collection(eix)
 ns.add_collection(emptytree)
 ns.add_collection(expire)
 ns.add_collection(fetch)
