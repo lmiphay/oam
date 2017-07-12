@@ -30,7 +30,7 @@ def perl_cleaner(ctx):
     
 @task(name='preserved-rebuild', aliases=['pr'])
 def preserved_rebuild(ctx, force=False):
-    if force or len(oam.lib.preserved_libs())>0:
+    if force or oam.lib.preserved_libs():
         ctx.emerge('--keep-going @preserved-rebuild')
 
 PRE = [update_package]
