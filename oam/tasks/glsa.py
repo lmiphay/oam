@@ -12,10 +12,10 @@ class IssueChecker(invoke.watchers.StreamWatcher):
         self.count = 0
 
     def submit(self, stream):
-        for line in stream.readlines():
-            if '[N]' in line:
-                logger.warn('GLSA: %s', line)
-                self.count += 1
+        if '[N]' in stream:
+            logger.warn('GLSA: %s', stream)
+            self.count += 1
+        return []
 
     def report(self):
         if self.count>0:
