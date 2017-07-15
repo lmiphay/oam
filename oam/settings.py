@@ -2,6 +2,7 @@
 
 from __future__ import print_function
 import os
+import sys
 
 OAM_EMERGE_OPTS = os.getenv('OAM_EMERGE_OPTS', '--backtrack=50 --deep --verbose --verbose-conflicts')
 OAM_GO = os.getenv('OAM_GO', 'oam-flow weekly')
@@ -21,4 +22,4 @@ def dump():
             print(var, '=', getattr(oam.settings, var))
 
 def get_setting(name, default_value=None):
-    return getattr(oam.settings, var, default_value)
+    return getattr(sys.modules[__name__], name, default_value)
