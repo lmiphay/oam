@@ -91,7 +91,7 @@ You must still manually:
 * logs all operations, errors, process output... etc
 * multi-server support for starting and monitoring operations
 * install via ebuild from the [lmiphay overlay](https://gitweb.gentoo.org/user/lmiphay.git/about/)
-* pulls in many useful dependencies as part of the install (eix, genlop, multitail, logrotate, ranger, mussh, eclean-kernel)
+* pulls in many useful dependencies as part of the install (eix, genlop, multitail, logrotate, ranger)
 * bash shell completion support with [app-shells/bash-completion](http://bash-completion.alioth.debian.org/)
 
 ![oam-watch](screenshots/oam-watch4.png?raw=true "oam-watch sample")
@@ -113,6 +113,7 @@ You must still manually:
 * [update-system.sh - tip 2](http://gentoovps.net/gentoo-portage-tips/)
 * [autoupdating on reddit](https://www.reddit.com/r/Gentoo/comments/3w2od1/update_gentoo_autoupdating/)
 * [linux config scripts](https://github.com/jappeace/linux-config/tree/master/scripts)
+* [gentoo-sources-compilation-helper](https://github.com/rewtnull/gentoo-sources-compilation-helper)
 
 #### Copyright
 
