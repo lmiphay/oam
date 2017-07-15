@@ -13,13 +13,13 @@ class IssueChecker(invoke.watchers.StreamWatcher):
 
     def submit(self, stream):
         if '[N]' in stream:
-            logger.warn('GLSA: %s', stream)
+            logging.warn('GLSA: %s', stream)
             self.count += 1
         return []
 
     def report(self):
         if self.count>0:
-            logger.warn('GLSA: found %d issues', count)
+            logging.warn('GLSA: found %d issues', count)
 
 # glsa dumps these lines to stderr, while the actual report goes to stdout.
 #
