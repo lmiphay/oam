@@ -25,6 +25,8 @@ See: gentoo-oam(8), oam-flow(8), oam-watch(8) for detailed documentation.
 
 See [gentoo-koam](https://github.com/lmiphay/gentoo-koam) for a GUI over gentoo-oam to help cross-server monitoring.
 
+Stub [docs](http://gentoo-oam.readthedocs.io/en/latest/) in progress.
+
 #### Quickstart
 
 ```
