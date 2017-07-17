@@ -18,7 +18,7 @@ setup(name='oam',
                     'share/gentoo-oam-multitail.conf',
                     'share/oam-watch.help',
                     'share/summary.jinja2'
-                   ]
-      ),
-                  ('/etc', ['etc/gentoo-oam.yaml'])]
-      )
+                   ]),
+                  ('/etc', ['etc/gentoo-oam.yaml'])
+      ]
+)
