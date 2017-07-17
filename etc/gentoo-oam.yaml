@@ -1,0 +1,7 @@
+flows:
+  weekly:
+    - sync
+    - [ glsa, fetch ]
+    - update
+    - [ clean, qcheck ]
+    - kernel
