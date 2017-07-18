@@ -11,6 +11,8 @@ gentoo-oam documentation
    :maxdepth: 2
    :caption: Contents:
 
+   changelog
+
 Operations/Admin/Management for gentoo
 --------------------------------------
 
@@ -23,6 +25,8 @@ The philosophy is to:
 + provide a dashboard view of the progress of actions and results (to spot issues early)
 + provide an editor preloaded with logs and portage config files ("vim -p" tabs)
 + provide a quick glance summary of merges, blocks and new news items
+
+See :doc:`changelog` for changes in this version.
 
 Quickstart
 ----------
