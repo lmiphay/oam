@@ -1,4 +1,5 @@
 #### Table of Contents
+[![Documentation Status](https://readthedocs.org/projects/gentoo-oam/badge/?version=latest)](http://gentoo-oam.readthedocs.io/en/latest/?badge=latest)
 
 * [Table of Contents](#table-of-contents)
 * [Operations/Admin/Management for gentoo](#operationsadminmanagement-for-gentoo)
