@@ -6,8 +6,10 @@ import click
 
 from .cmd import cli
 
+import oam.log
 import oam.tasks
 import oam.oaminvoke
+import oam.settings
 
 import invoke
 from invoke.tasks import Call
@@ -24,18 +26,20 @@ def oam_wire():
     """
     Call.make_context = oam_make_context
 
-def run_flow(flow):
+def run_flow(program, flow):
     for step in flow:
         if type(step)==str:
-            program.run(argv=['oaminvflow'] + list(step))
+            oam.log.info('step - {}'.format(step))
+            program.run(argv=['oaminvflow'] + [step])
         else:
-            run_flow(step)
+            oam.log.info('phase - {}'.format(step))
+            run_flow(program, step)
 
-def run_flows(flownames):
+def run_flows(program, flownames):
     for flowname in flownames:
         flow = settings.get_flow(flowname)
         if flow is not None:
-            run_flow(flow)
+            run_flow(program, flow)
         else:
             raise ValueError('flow {} not found'.format(flowname))
 
@@ -59,7 +63,7 @@ def inv(l, vanilla, tasks, flow):
         oam_wire()
 
     if flow:
-        run_flows(tasks)
+        run_flows(program, tasks)
     else:
         # tasks is a tuple so convert to a list and prepend a dummy program name entry
         program.run(argv=['oaminvoke'] + list(tasks))
