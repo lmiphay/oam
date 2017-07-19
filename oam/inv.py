@@ -49,7 +49,7 @@ def run_flows(program, flownames):
 @click.option('--flow', is_flag=True, default=True, help='arguments are flows (not steps)')
 @click.option('--step', is_flag=True, default=False, help='arguments are steps (not flows)')
 @click.argument('tasks', nargs=-1)
-def inv(l, vanilla, tasks, flow):
+def inv(l, vanilla, flow, step, tasks):
     """
     Sequentially invoke one or more tasks, or flows
     """
