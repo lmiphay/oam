@@ -7,16 +7,10 @@
 gentoo-oam documentation
 ========================
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
-
-   changelog
-
 Operations/Admin/Management for gentoo
 --------------------------------------
 
-``gentoo-oam`` aims to reduce some of the repetition of normal regular maintainance tasks on a gentoo server.
+``gentoo-oam`` can reduce some of the repetition of normal regular maintainance tasks on a gentoo server.
 
 The philosophy is to:
 
@@ -51,7 +45,6 @@ In another terminal monitor progress with:
 
 When the ``oam inv weekly`` command returns, browse to the set of log files generated under:
 ``/var/log/oam/[DATE]`` (start with the summary.log file).
-
 
 Workflows
 ---------
@@ -110,20 +103,12 @@ Why should you not use gentoo-oam?
 * it is not a way to become familar with gentoo (learn emerge... etc first)
 * you are happy with your current workflow (stick with your own scripts)
 
-Prior Art
----------
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
 
-* `ansible portage module <http://docs.ansible.com/ansible/portage_module.html>`_.
-* `gentoo-upsys <https://github.com/Krishath/gentoo-upsys>`_.
-* `porticron <https://github.com/gentoo/porticron>`_.
-* `gentmaint <http://gentmaint.sourceforge.net/>`_.
-* `glcu <http://www.panhorst.com/glcu/>`_.
-* `ug <https://github.com/sidusnare/ug>`_.
-* `update <http://weaver.gentooexperimental.org/update.html>`_.
-* `update-system.sh - tip 2 <http://gentoovps.net/gentoo-portage-tips/>`_.
-* `autoupdating on reddit <https://www.reddit.com/r/Gentoo/comments/3w2od1/update_gentoo_autoupdating/>`_.
-* `linux config scripts <https://github.com/jappeace/linux-config/tree/master/scripts>`_.
-* `gentoo-sources-compilation-helper <https://github.com/rewtnull/gentoo-sources-compilation-helper>`_.
+   changelog
+   priorart
 
 Copyright
 ---------
