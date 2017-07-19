@@ -6,11 +6,15 @@ import oam.lib
 """ Todo:
     strip ansi for python-updater (einfo) and perl-cleaner
     need regex filtering for python-updated and perl-cleaner
-    add oam_log style logging to ctx.run
     add changed python and perl installs
     note: revdep-rebuild, python-updater and perl-cleaner have pretend support
     note: `emerge --rebuild-if-new-rev=y` doesn't appear to be useful for update pkg
 """
+
+@task(name='update-available')
+def update_available(ctx):
+    with ctx.cd('/var/log/oam/latest'):
+        return ctx.run("tail -n 7 sync.log | grep -q 'An update to portage is available'").ok
 
 @task(name='update-package', aliases=['update-portage'])
 def update_package(ctx, atom='sys-apps/portage'):
