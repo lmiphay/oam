@@ -37,7 +37,7 @@ def run_flow(program, flow):
 
 def run_flows(program, flownames):
     for flowname in flownames:
-        flow = settings.get_flow(flowname)
+        flow = oam.settings.get_flow(flowname)
         if flow is not None:
             run_flow(program, flow)
         else:
@@ -46,7 +46,8 @@ def run_flows(program, flownames):
 @cli.command()
 @click.option('--l', '-l', is_flag=True, default=None, help='list available tasks')
 @click.option('--vanilla', is_flag=True, default=False, help='run vanilla invoke')
-@click.option('--flow', is_flag=True, default=False, help='arguments are flows (not steps)')
+@click.option('--flow', is_flag=True, default=True, help='arguments are flows (not steps)')
+@click.option('--step', is_flag=True, default=False, help='arguments are steps (not flows)')
 @click.argument('tasks', nargs=-1)
 def inv(l, vanilla, tasks, flow):
     """
@@ -62,11 +63,13 @@ def inv(l, vanilla, tasks, flow):
     if not vanilla:
         oam_wire()
 
-    if flow:
-        run_flows(program, tasks)
-    else:
+    if step:
         # tasks is a tuple so convert to a list and prepend a dummy program name entry
         program.run(argv=['oaminvoke'] + list(tasks))
+    elif flow:
+        run_flows(program, tasks)
+    else:
+        oam.log.error('unclear if flow or step?')
 
     # program.run will have called sys.exit(1) (or so) if there was an error
 
