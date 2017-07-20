@@ -16,17 +16,16 @@ The philosophy is to:
 + log all actions and outputs (to aid postmortum analysis and followup manual intervention)
 + provide a dashboard view of the progress of actions and results (to spot issues early)
 + provide an editor preloaded with logs and portage config files ("vim -p" tabs)
-+ provide a quick glance summary of merges, blocks and new news items
++ provide a quick glance summary of merges, blocks, glsa's and news items
 
 See the [docs](http://gentoo-oam.readthedocs.io/en/latest/) for details.
 
 #### Workflows
 
 Workflows are a sequence of steps which are executed in sequence, stopping
-at the first failure (usually).
+at the first failure.
 
-Each step consists of one or more tasks. Generally all tasks in a step must
-complete successfully before the next step starts.
+Each step consists of one or more tasks. 
 
 For example the `weekly` workflow will run these steps:
 
@@ -39,8 +38,6 @@ For example the `weekly` workflow will run these steps:
 <dt>kernel</dt> attempts to build a new kernel if necessary
 <dt>qcheck</dt> <dd><pre>qcheck --all</pre></dd>
 <dl>
-
-Steps (or tasks) can be skipped for a particular server (by configuration).
 
 #### Features
 
