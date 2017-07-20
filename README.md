@@ -22,39 +22,7 @@ The philosophy is to:
 + provide an editor preloaded with logs and portage config files ("vim -p" tabs)
 + provide a quick glance summary of merges, blocks and new news items
 
-See: gentoo-oam(8), oam-flow(8), oam-watch(8) for detailed documentation.
-
-See [gentoo-koam](https://github.com/lmiphay/gentoo-koam) for a GUI over gentoo-oam to help cross-server monitoring.
-
-Stub [docs](http://gentoo-oam.readthedocs.io/en/latest/) in progress.
-
-#### Quickstart
-
-```
-# layman -L && layman -a lmiphay
-```
-
-After adding the overlay there will be a keyword file at: `/var/lib/layman/lmiphay/gentoo-oam.keywords`
-
-```
-# emerge gentoo-oam
-```
-
-Review the default settings, make any local changes, and then kick off the default flow:
-
-```
-# vi /etc/gentoo-oam.conf /etc/gentoo-oam.d/weekly.conf
-# oam go
-```
-
-In another terminal monitor progress with:
-
-```
-# oam watch
-```
-
-When `oam go` returns, browse to the set of log files generated under:
-`/var/log/oam/[DATE]` (start with the summary.log file).
+See the [docs](http://gentoo-oam.readthedocs.io/en/latest/) for details.
 
 #### Workflows
 
@@ -78,14 +46,6 @@ For example the `weekly` workflow will run these steps:
 
 Steps (or tasks) can be skipped for a particular server (by configuration).
 
-#### Manual Operations
-
-You must still manually:
-
-+ resolve keyword or use flag blockers (see the blocks.log file for a starting point)
-+ run `dispatch-conf` when prompted
-+ remove obsolete packages manually with: `emerge --depclean`
-
 #### Features
 
 * simple workflow configuration on a per-server basis - new workflows can be added
@@ -94,29 +54,8 @@ You must still manually:
 * logs all operations, errors, process output... etc
 * multi-server support for starting and monitoring operations
 * install via ebuild from the [lmiphay overlay](https://gitweb.gentoo.org/user/lmiphay.git/about/)
-* pulls in many useful dependencies as part of the install (eix, genlop, multitail, logrotate, ranger)
-* bash shell completion support with [app-shells/bash-completion](http://bash-completion.alioth.debian.org/)
 
 ![oam-watch](screenshots/oam-watch4.png?raw=true "oam-watch sample")
-
-#### Why should you not use gentoo-oam?
-
-* it is not a way to become familar with gentoo (learn emerge... etc first)
-* you are happy with your current workflow (stick with your own scripts)
-
-#### Prior Art
-
-* [ansible portage module](http://docs.ansible.com/ansible/portage_module.html)
-* [gentoo-upsys](https://github.com/Krishath/gentoo-upsys)
-* [porticron](https://github.com/gentoo/porticron)
-* [gentmaint](http://gentmaint.sourceforge.net/)
-* [glcu](http://www.panhorst.com/glcu/)
-* [ug](https://github.com/sidusnare/ug)
-* [update](http://weaver.gentooexperimental.org/update.html)
-* [update-system.sh - tip 2](http://gentoovps.net/gentoo-portage-tips/)
-* [autoupdating on reddit](https://www.reddit.com/r/Gentoo/comments/3w2od1/update_gentoo_autoupdating/)
-* [linux config scripts](https://github.com/jappeace/linux-config/tree/master/scripts)
-* [gentoo-sources-compilation-helper](https://github.com/rewtnull/gentoo-sources-compilation-helper)
 
 #### Copyright
 
