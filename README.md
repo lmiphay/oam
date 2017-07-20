@@ -25,7 +25,7 @@ See the [docs](http://gentoo-oam.readthedocs.io/en/latest/) for details.
 Workflows are a sequence of steps which are executed in sequence, stopping
 at the first failure.
 
-Each step consists of one or more tasks. 
+Each step consists of one or more tasks.
 
 For example the `weekly` workflow will run these steps:
 
