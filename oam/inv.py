@@ -74,3 +74,30 @@ def inv(l, vanilla, flow, step, tasks):
     # program.run will have called sys.exit(1) (or so) if there was an error
 
     return 0
+
+@cli.command()
+@click.argument('flows', nargs=-1)
+def flow(l, flows):
+    """
+    Sequentially invoke one or more flows
+    """
+
+    program = invoke.Program(namespace=oam.tasks.ns, version='0.0.1')
+
+    run_flows(program, tasks)
+
+    return 0
+
+@cli.command()
+@click.argument('steps', nargs=-1)
+def step(l, steps):
+    """
+    Sequentially invoke one or more steps
+    """
+
+    program = invoke.Program(namespace=oam.tasks.ns, version='0.0.1')
+
+    program.run(argv=['oaminvoke'] + list(steps))
+
+    return 0
+

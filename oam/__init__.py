@@ -54,6 +54,6 @@ from oam.fact.server      import server
 from oam.fact.synchistory import synchistory
 from oam.fact.unreadnews  import unreadnews
 
-from oam.inv import inv
+from oam.inv import flow, inv, step
 
 #__all__ = ['dumpenv']
