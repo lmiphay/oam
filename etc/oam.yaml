@@ -5,3 +5,11 @@ flows:
     - update
     - [ clean, qcheck ]
     - kernel
+  resume:
+    - update
+    - [ clean, qcheck ]
+    - kernel
+  lxc:
+    - glsa
+    - update
+    - qcheck
