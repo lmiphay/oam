@@ -10,7 +10,6 @@ check:
 SUBDIRS=\
 	bin \
 	etc \
-	man \
 	sbin
 
 .PHONY: install
