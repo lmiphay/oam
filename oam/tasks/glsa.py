@@ -28,8 +28,13 @@ class IssueChecker(invoke.watchers.StreamWatcher):
 # [N] indicates that the system might be affected.
 # This system is affected by the following GLSAs:
 
-@task(default=True)
-def check(ctx):
+@task
+def watchcheck(ctx):
     checker = IssueChecker()
     ctx.run('glsa-check --test --verbose --nocolor all', watchers=[checker])
     checker.report()
+
+@task(default=True)
+def check(ctx):
+    """Check if the server is affected by known GLSAs"""
+    ctx.run('glsa-check --test --verbose --nocolor all 2>/dev/null')
