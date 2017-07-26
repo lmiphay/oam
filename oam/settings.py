@@ -17,7 +17,7 @@ OAM_TS = os.getenv('OAM_TS', '%Y%m%d:%H:%M:%S')
 
 PORTAGE_CONFIGROOT = os.getenv('PORTAGE_CONFIGROOT', '')
 
-GLOBAL_CONFIG = '/etc/gentoo-oam.yaml'
+GLOBAL_CONFIG = '/etc/oam.yaml'
 
 def dump():
     for var in dir(oam.settings):
