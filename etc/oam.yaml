@@ -13,3 +13,12 @@ flows:
     - glsa
     - update
     - qcheck
+emerge_opts: '--backtrack=50 --deep --verbose --verbose-conflicts'
+go: 'oam flow weekly'
+heartbeatsleep: 5
+keeplogs: 10
+logdir: '/var/log/oam'
+multitail_extra_opt: ''
+review_hosts: [ 'localhost' ]
+sandboxwait: 8
+ts: '%Y%m%d:%H:%M:%S'
