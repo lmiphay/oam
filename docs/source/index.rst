@@ -1,16 +1,16 @@
-.. gentoo-oam documentation master file, created by
+.. oam documentation master file, created by
    sphinx-quickstart on Mon Jul 17 21:50:04 2017.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
 ========================
-gentoo-oam documentation
+Welcome to oam!
 ========================
 
 Operations/Admin/Management for gentoo
 --------------------------------------
 
-``gentoo-oam`` can reduce some of the repetition of normal regular maintainance tasks on a gentoo server.
+``oam`` can reduce some of the repetition of normal regular maintainance tasks on a gentoo server.
 
 The philosophy is to:
 
@@ -27,7 +27,7 @@ Workflows
 ---------
 
 Workflows are a sequence of steps which are executed in sequence, stopping
-at the first failure (usually).
+at the first failure.
 
 Each step consists of one or more tasks. Generally all tasks in a step must
 complete successfully before the next step starts.
@@ -59,7 +59,7 @@ You must still manually:
 Features
 --------
 
-* simple workflow configuration on a per-server basis - new workflows can be added
+* simple workflow configuration on a per-server basis - new workflows can be added - built on `invoke <http://www.pyinvoke.org/>`_.
 * dashboard display of currently running oam processes built on `multitail <https://www.vanheusden.com/multitail/>`_.
 * overall _summary_ of a merge (what merged succesfully, what didn't, glsa's, blockers, qcheck differences, unread news items... etc)
 * logs all operations, errors, process output... etc
@@ -74,7 +74,7 @@ Features
     :height: 300px
     :alt: oam-watch sample
 
-Why should you not use gentoo-oam?
+Why should you not use oam?
 ----------------------------------
 
 * it is not a way to become familar with gentoo (learn emerge... etc first)
