@@ -1,0 +1,112 @@
+.\" Manpage for oam
+.TH man 8 "10 May 2015" "1.0" "oam man page"
+
+.SH NAME
+oam \- gentoo-oam command line interface driver program
+
+.SH SYNOPSIS
+
+oam go \- execute the default flow
+
+oam inv <flow-name> \- invoke the list of tasks specified by flow-name
+
+oam watch \- monitor the current task run
+
+.SH DESCRIPTION
+gentoo-oam automates common maintaince tasks on a gentoo server.
+Tasks delegate most of their work to portage tools.
+.P
+.IP \(bu
+Common tasks are automated (e.g. weekly update, syncing overlays ... etc)
+.IP \(bu
+Everything is logged (by default under /var/log/oam), and logrotate'd.
+.IP \(bu
+Realtime monitoring is provided (see multitail(1)):
+.B
+"oam watch"
+.IP \(bu
+Configuration in "/etc/gentoo-oam.yaml" (can be overridden in the environment)
+.P
+An example flow: 
+.PP
+.RS 0
+        sync
+.RS 0
+        glsa
+.RS 0
+        fetch
+.RS 0
+        update
+.RS 0
+        qcheck
+
+.SH QUICKSTART
+
+Starting from scratch:
+.IP \(bu
+Examine /etc/gentoo-oam.yaml for anything that you need to localise on your server
+.IP \(bu
+As root run:
+.B
+"oam inv weekly"
+.IP \(bu
+In another console run:
+.B
+"oam watch"
+.P
+
+.SH SYSTEM SETTINGS
+
+These settings control the operation of gentoo-oam and override settings in /etc/gentoo-oam.yaml:
+.TP
+.BI OAM_EMERGE_OPTS
+The parameters passed to emerge for update. See /etc/gentoo-oam.yaml for default settings.
+.TP
+.BI OAM_FLOW
+The default flow to run when "oam go" is run. See /etc/gentoo-oam.yaml for default settings.
+.TP
+.BI OAM_LOGDIR
+The location where gentoo-oam logs will be sent/stored. Defaults to /var/log/oam
+.TP
+.BI OAM_HEARTBEATSLEEP
+How long to sleep between printing out the load average and gelop(1) output. Defaults to 60 (seconds).
+.TP
+.BI OAM_SANDBOXWAIT
+How long to wait for the sandbox process to appear before trying to run genlop(1).
+
+.SH FILES
+
+.TP
+.BI /etc/gentoo-oam.yaml
+gentoo-oam system configuration
+.TP
+.BI /var/log/oam/DATE/error.log
+central locations for error reports
+.TP
+.BI /var/log/oam/DATE/glsa.log
+results of a glsa-check(1) run following a sync
+.TP
+.BI /var/log/oam/DATE/oam.log
+log of oam operations
+.TP
+.BI /var/log/oam/DATE/blocks.log
+log of the errors reported by emerge's (typically blocks) for one particular day
+.TP
+.BI /var/log/oam/DATE/merge.log
+log of the emerge for one particular day
+.TP
+.BI /var/log/oam/DATE/sync.log
+log of the oam-sync operation for one particular day
+
+.SH BUGS
+There are some.
+
+.SH SEE ALSO
+emaint(1), emerge(1), eclean(1), glsa-check(1), qcheck(1), logrotate(8),
+eix(1), genlop(1), ts(1), multitail(1)
+
+.SH AUTHOR
+Paul Healy
+
+.SH COPYRIGHT
+GNU GENERAL PUBLIC LICENSE Version 2
