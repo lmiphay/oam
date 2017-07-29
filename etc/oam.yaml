@@ -13,6 +13,9 @@ flows:
     - glsa
     - update
     - qcheck
+  rebuild:
+    - emptytree.system
+    - emptytree
 emerge_opts: '--backtrack=50 --deep --verbose --verbose-conflicts'
 go: 'oam flow weekly'
 heartbeatsleep: 5
