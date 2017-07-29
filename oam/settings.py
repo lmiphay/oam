@@ -23,16 +23,16 @@ def get_config():
     config = {}
 
     # set defaults
-    for var in dir(oam.settings):
+    for var in dir(sys.modules[__name__]):
         if var.startswith('OAM_'):
-            config[var[4:].lower()] = getattr(oam.settings, var)
+            config[var[4:].lower()] = getattr(sys.modules[__name__], var)
 
     # overwrite/load settings from config file
     if os.path.exists(OAM_CONFIG):
         config = yaml.load(open(OAM_CONFIG))
 
     # if present in the environment then overwrite
-    for var in dir(oam.settings):
+    for var in dir(sys.modules[__name__]):
         if var.startswith('OAM_'):
             if var in os.environ:
                 config[var[4:].lower()] = os.getenv(var)
@@ -40,9 +40,9 @@ def get_config():
     return config
 
 def dump():
-    for var in dir(oam.settings):
+    for var in dir(sys.modules[__name__]):
         if var.startswith('OAM_') or var.startswith('PORTAGE_'):
-            print(var, '=', getattr(oam.settings, var))
+            print(var, '=', getattr(sys.modules[__name__], var))
 
 def get_setting(name, default_value=None):
     return getattr(sys.modules[__name__], name, default_value)
