@@ -42,6 +42,7 @@ def run_flows(program, flownames):
             run_flow(program, flow)
         else:
             raise ValueError('flow {} not found'.format(flowname))
+    oam.log.info('flow complete - {}'.format(flownames))
 
 @cli.command()
 @click.option('--l', '-l', is_flag=True, default=None, help='list available tasks')
@@ -79,7 +80,7 @@ def inv(l, vanilla, flow, step, tasks):
 @click.argument('flows', nargs=-1)
 def flow(flows):
     """
-    Sequentially invoke one or more flows
+    Sequentially invoke one (or more) flow(s)
     """
 
     oam_wire()
@@ -94,7 +95,7 @@ def flow(flows):
 @click.argument('steps', nargs=-1)
 def step(steps):
     """
-    Sequentially invoke one or more steps
+    Sequentially invoke one (or more) step(s)
     """
 
     oam_wire()
@@ -102,6 +103,8 @@ def step(steps):
     program = invoke.Program(namespace=oam.tasks.ns, version='0.0.1')
 
     program.run(argv=['oaminvoke'] + list(steps))
+
+    oam.log.info('step complete - {}'.format(steps))
 
     return 0
 
