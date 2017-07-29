@@ -77,23 +77,27 @@ def inv(l, vanilla, flow, step, tasks):
 
 @cli.command()
 @click.argument('flows', nargs=-1)
-def flow(l, flows):
+def flow(flows):
     """
     Sequentially invoke one or more flows
     """
 
+    oam_wire()
+
     program = invoke.Program(namespace=oam.tasks.ns, version='0.0.1')
 
-    run_flows(program, tasks)
+    run_flows(program, flows)
 
     return 0
 
 @cli.command()
 @click.argument('steps', nargs=-1)
-def step(l, steps):
+def step(steps):
     """
     Sequentially invoke one or more steps
     """
+
+    oam_wire()
 
     program = invoke.Program(namespace=oam.tasks.ns, version='0.0.1')
 
