@@ -20,37 +20,47 @@ def oam_make_context(self, config):
     """
     return oam.oaminvoke.Context(config=config)
 
-def oam_wire():
-    """
-    Hook-up oam runtime with the invoke library
-    """
-    Call.make_context = oam_make_context
+class Inv(object):
 
-def run_flow(program, flow):
-    for step in flow:
-        if type(step)==str:
-            oam.log.info('step - {}'.format(step))
-            program.run(argv=['oaminvflow'] + [step])
-        else:
-            oam.log.info('phase - {}'.format(step))
-            run_flow(program, step)
+    def __init__(self):
+        self.wire()
+        self.program = invoke.Program(namespace=oam.tasks.ns, version='0.0.1')
 
-def run_flows(program, flownames):
-    for flowname in flownames:
-        flow = oam.settings.get_flow(flowname)
-        if flow is not None:
-            run_flow(program, flow)
-        else:
-            raise ValueError('flow {} not found'.format(flowname))
-    oam.log.info('flow complete - {}'.format(flownames))
+    def wire(self):
+        """
+        Hook-up oam runtime with the invoke library
+        """
+        Call.make_context = oam_make_context
+
+    def run_steps(self, step):
+        self.program.run(argv=['oaminvflow'] + [step])
+        oam.log.info('step complete - {}'.format(steps))
+        return 0
+
+    def run_flow(self, flow):
+        for step in flow:
+            if type(step)==str:
+                oam.log.info('step - {}'.format(step))
+                self.program.run(argv=['oaminvflow'] + [step])
+            else:
+                oam.log.info('phase - {}'.format(step))
+                self.run_flow(step)
+
+    def run_flows(self, flownames):
+        for flowname in flownames:
+            flow = oam.settings.get_flow(flowname)
+            if flow is not None:
+                self.run_flow(flow)
+            else:
+                raise ValueError('flow {} not found'.format(flowname))
+        oam.log.info('flow complete - {}'.format(flownames))
 
 @cli.command()
 @click.option('--l', '-l', is_flag=True, default=None, help='list available tasks')
-@click.option('--vanilla', is_flag=True, default=False, help='run vanilla invoke')
 @click.option('--flow', is_flag=True, default=True, help='arguments are flows (not steps)')
 @click.option('--step', is_flag=True, default=False, help='arguments are steps (not flows)')
 @click.argument('tasks', nargs=-1)
-def inv(l, vanilla, flow, step, tasks):
+def inv(l, flow, step, tasks):
     """
     Sequentially invoke one or more tasks, or flows
     """
@@ -58,23 +68,13 @@ def inv(l, vanilla, flow, step, tasks):
     if l is not None:
         pprint.pprint(oam.tasks.ns.task_names)
         return 0
-    
-    program = invoke.Program(namespace=oam.tasks.ns, version='0.0.1')
-
-    if not vanilla:
-        oam_wire()
-
-    if step:
-        # tasks is a tuple so convert to a list and prepend a dummy program name entry
-        program.run(argv=['oaminvoke'] + list(tasks))
+    elif step:
+        return Inv().run_steps(tasks)
     elif flow:
-        run_flows(program, tasks)
+        return Inv().run_flows(tasks)
     else:
         oam.log.error('unclear if flow or step?')
-
-    # program.run will have called sys.exit(1) (or so) if there was an error
-
-    return 0
+        return 1
 
 @cli.command()
 @click.argument('flows', nargs=-1)
@@ -82,14 +82,7 @@ def flow(flows):
     """
     Sequentially invoke one (or more) flow(s)
     """
-
-    oam_wire()
-
-    program = invoke.Program(namespace=oam.tasks.ns, version='0.0.1')
-
-    run_flows(program, flows)
-
-    return 0
+    return Inv().run_flows(flows)
 
 @cli.command()
 @click.argument('steps', nargs=-1)
@@ -97,14 +90,4 @@ def step(steps):
     """
     Sequentially invoke one (or more) step(s)
     """
-
-    oam_wire()
-
-    program = invoke.Program(namespace=oam.tasks.ns, version='0.0.1')
-
-    program.run(argv=['oaminvoke'] + list(steps))
-
-    oam.log.info('step complete - {}'.format(steps))
-
-    return 0
-
+    return Inv().run_steps(steps)
