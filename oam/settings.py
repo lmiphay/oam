@@ -18,6 +18,7 @@ OAM_TS = os.getenv('OAM_TS', '%Y%m%d:%H:%M:%S')
 OAM_CONFIG = os.getenv('OAM_CONFIG', '/etc/oam.yaml')
 
 PORTAGE_CONFIGROOT = os.getenv('PORTAGE_CONFIGROOT', '')
+PORTAGE_DISTFILES = os.getenv('PORTAGE_DISTFILES', '/usr/portage/distfiles')
 
 def get_config():
     config = {}
