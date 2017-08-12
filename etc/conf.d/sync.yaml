@@ -1,0 +1,4 @@
+flows:
+  sync:
+    - sync
+    - glsa

@@ -1,0 +1,4 @@
+# sample showing how to merge/overwrite local with oam configuration
+example:
+  value: 0
+  message: "hello"
