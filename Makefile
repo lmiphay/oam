@@ -8,7 +8,6 @@ check:
 	@echo "done"
 
 SUBDIRS=\
-	bin \
 	sbin
 
 .PHONY: install

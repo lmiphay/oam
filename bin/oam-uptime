@@ -1,8 +1,0 @@
-#!/bin/bash
-
-source /etc/gentoo-oam.conf
-source /usr/share/gentoo-oam/gentoo-oam-functions.sh
-
-echo "$(oam_ts) $(cat /proc/loadavg | awk '{print $1 " " $2 " " $3}')"
-
-exit 0
