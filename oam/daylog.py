@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from __future__ import print_function
 import sys
 import os
@@ -10,8 +12,9 @@ import time
 import glob
 import re
 from .cmd import cli
+import oam.settings
 
-LOG_DIR = os.getenv('OAM_LOGDIR', '/var/log/oam')
+LOG_DIR = oam.settings.logdir()
 
 def timestamp():
     return time.strftime('%Y%m%d:%H:%M:%S')
@@ -25,6 +28,13 @@ def day_runs():
 def last_day():
     """Return the most recent day we have an oam run for; e.g. 20160801"""
     datedir = day_runs()
+    if len(datedir) > 0:
+        return datedir[-1]
+    else:
+        return None
+
+def last_date():
+    datedir = sorted(glob.glob(oam.settings.logsdir() + '/2*'))
     if len(datedir) > 0:
         return datedir[-1]
     else:

@@ -9,8 +9,9 @@ import pwd
 import glob
 import click
 from .cmd import cli
+import oam.settings
 
-EXPIRE_LOG = '{}/expire.log'.format(os.getenv('OAM_LOGDIR', '/var/log/oam'))
+EXPIRE_LOG = '{}/expire.log'.format(oam.settings.logdir())
 
 class CheckConfig(object):
     """ Check:
@@ -22,16 +23,16 @@ class CheckConfig(object):
     GROUP = 'oam'  # expect to find this group ownership
 
     DEFAULT_TARGETS = [
-        ('file', '/etc/gentoo-oam.conf',  [ ('mode',0o640), ('group',GROUP), ('owner',USER) ] ),
-        ('dir',  '/etc/gentoo-oam.d',     [ ('mode',0o750), ('group',GROUP), ('owner',USER) ] ),
-        ('glob', '/etc/gentoo-oam.d/*',   [ ('mode',0o640), ('group',GROUP), ('owner',USER) ] ),
+        ('file', '/etc/oam/oam.yaml',     [ ('mode',0o640), ('group',GROUP), ('owner',USER) ] ),
+        ('dir',  '/etc/oam/conf.d',       [ ('mode',0o750), ('group',GROUP), ('owner',USER) ] ),
+        ('glob', '/etc/oam/conf.d/*',     [ ('mode',0o640), ('group',GROUP), ('owner',USER) ] ),
         ('dir',  '/var/log/oam',          [ ('mode',0o770), ('group',GROUP), ('owner',USER) ] ),
     ]
 
     # we can only check this one when running as root - the default is for the contents of /etc/cron.daily
     # to be readable by root or group-root users only.
     ROOT_TARGETS = DEFAULT_TARGETS + [
-        ('file', '/etc/cron.daily/gentoo-oam', [ ('mode',0o755), ('group','root'), ('owner',USER) ] )
+        ('file', '/etc/cron.daily/oam',   [ ('mode',0o755), ('group','root'), ('owner',USER) ] )
     ]
 
     def __init__(self):
@@ -138,7 +139,7 @@ class CheckConfig(object):
         if os.geteuid() == 0:
             result = self.process(CheckConfig.ROOT_TARGETS)
         else:
-            self.report('# /etc/cron.daily/gentoo-oam not checked')
+            self.report('# /etc/cron.daily/oam not checked')
             result = self.process(CheckConfig.DEFAULT_TARGETS)
 
         if not self.cron_has_run():

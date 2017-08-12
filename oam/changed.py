@@ -10,6 +10,7 @@ import re
 import yaml
 import click
 from .cmd import cli
+import oam.settings
 
 """ support to track and manage lists of installed software
 
@@ -21,9 +22,9 @@ from .cmd import cli
     oam changed --update dev-lang/perl
        Saves the currently installed version(s) to a module private area.
 """
-class Changed:
+class Changed(object):
 
-    ROOT = os.getenv('PORTAGE_CONFIGROOT', '') + '/var/db/pkg/'
+    ROOT = oam.settings.portage.configroot + '/var/db/pkg/'
     OAM_DB= '/var/db/oam/'
 
     def __init__(self, pkg_name, update = False):

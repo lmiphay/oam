@@ -9,8 +9,9 @@ import inotifyx
 import psutil
 import click
 from .cmd import cli
+import oam.settings
 
-class Genlop:
+class Genlop(object):
 
     HEARTBEAT = "{timestamp:s} {uptime[0]:4.2f} {uptime[1]:4.2f} {uptime[2]:4.2f} {df[0]:.0%} {df[1]:.0%}"
 
@@ -28,8 +29,8 @@ class Genlop:
     def __init__(self):
         self.logger = logging.getLogger("oam.genlop")
         self.monitor_count = 0
-        self.nap = os.getenv('OAM_HEARTBEATSLEEP', 5)
-        self.sandboxwait = os.getenv('OAM_SANDBOXWAIT', 8)
+        self.nap = oam.settings.oam.heartbeatsleep
+        self.sandboxwait = oam.settings.oam.sandboxwait
         self.portage_tmpdir = self.tmpdir()
         self.hb = {}
 

@@ -10,11 +10,12 @@ import re
 import datetime
 from .cmd import cli
 from .daylog import DAYLOG
+import oam.settings
 
 class ServersLog(object):
     """Name/open normal-log and error-log files"""
 
-    LOGROOT = os.getenv('OAM_LOGDIR', '/var/log/oam')
+    LOGROOT = oam.settings.logdir()
     HOSTNAME = os.uname()[1]
 
     def __init__(self, default_logname = 'unknown'):

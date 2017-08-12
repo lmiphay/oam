@@ -13,11 +13,12 @@ import codecs
 
 from .cmd import cli
 from .options import oam_config
+import oam.settings
 
 @cli.command(name='go')
 def gocmd():
     """Kick off the configured default oam operation"""
-    default_op = oam_config('oam_go')
+    default_op = oam.settings.oam.go
     return subprocess.call('echo " { ' + default_op + ' ; } " | bash',
                            shell=True)
 

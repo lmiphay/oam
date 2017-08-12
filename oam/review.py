@@ -10,17 +10,19 @@ import click
 from .cmd import cli
 from oam.daylog import last_day
 from oam.status import Status
+import oam.settings
 
 STATUS_CMD = 'oam status --yaml-format --day='
 
 class Review(object):
 
-    def __init__(self, day, multicolumn, width, servers):
+    def __init__(self, day, multicolumn, lxc, width, servers):
         self.day = day
         self.multicolumn = multicolumn
+        self.lxc = lxc
         self.width = width
         if len(servers) == 0:
-            self.servers = os.getenv('OAM_REVIEW_HOSTS', 'localhost').split()
+            self.servers = oam.settings.oam.review.hosts
         else:
             self.servers = servers
 
@@ -57,12 +59,16 @@ class Review(object):
                 break
         return result
 
+    def lxcs(self, host):
+        return subprocess.check_output('ssh {} sudo lxc-ls --active'.format(host), shell=True).split()
+
 @cli.command()
 @click.option('--day', default=last_day(), help='day logs to process')
 @click.option('--multicolumn', is_flag=True, help='write a multicolumn hosts report')
+@click.option('--lxc', is_flag=True, help='include lxc\'s')
 @click.option('--width', default=78, help='column width in multicolumn mode')
 @click.argument('servers', nargs=-1, envvar='OAM_REVIEW_HOSTS')
-def review(day, multicolumn, width, servers):
+def review(day, multicolumn, lxc, width, servers):
     """Generate status reports for each server"""
-    pprint.pprint(Review(day, multicolumn, width, servers).run())
+    pprint.pprint(Review(day, multicolumn, lxc, width, servers).run())
     return 0

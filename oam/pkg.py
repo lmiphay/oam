@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from __future__ import print_function
 import sys
 import os
@@ -9,10 +11,11 @@ import pprint
 import click
 from .cmd import cli
 import portage
+import oam.settings
 
-class Pkg:
+class Pkg(object):
 
-    ROOT = os.getenv('PORTAGE_CONFIGROOT', '') + '/var/db/pkg/'
+    ROOT = oam.settings.portage.configroot + '/var/db/pkg/'
 
     def __init__(self):
         pass

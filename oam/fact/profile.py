@@ -10,7 +10,7 @@ from oam.facts import facts
 COMMAND = 'eselect profile show'
 
 def fact(day=None):
-    """Return the current gentoo profile"""
+    """Return the current profile"""
     output = subprocess.check_output(COMMAND, shell=True).splitlines()
     if len(output) == 2:
         return { 'profile': output[1].lstrip() }
@@ -20,6 +20,6 @@ def fact(day=None):
 
 @facts.command()
 def profile():
-    """The current gentoo profile"""
+    """The current profile"""
     print(fact()['profile'])
     return 0

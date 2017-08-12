@@ -4,8 +4,9 @@ import datetime
 import os
 import os.path
 import time
+import oam.settings
 
-OAM_LOGDIR = '/var/log/oam'
+OAM_LOGDIR = oam.settings.logdir()
 
 def timestamp():
     return time.strftime('%Y%m%d:%H:%M:%S')
@@ -14,7 +15,7 @@ def todays_dir():
     return datetime.datetime.fromtimestamp(time.time()).strftime('%Y%m%d')
 
 def log_dir():
-    return os.getenv('OAM_LOGDIR', OAM_LOGDIR) + '/' + todays_dir()
+    return OAM_LOGDIR + '/' + todays_dir()
 
 def make_log_dir():
     dirname = log_dir()

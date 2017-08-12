@@ -8,8 +8,9 @@ import tarfile
 import shutil
 import click
 from .cmd import cli
+import oam.settings
 
-class OAMExpire:
+class OAMExpire(object):
 
     def __init__(self, logdir = '/var/log/oam', keeplogs = 10, dryrun = False):
         self.logdir = logdir
@@ -62,11 +63,11 @@ class OAMExpire:
             self.logger.log(logging.ERROR, '%s is missing', self.olddir)
 
 @cli.command()
-@click.option('--logdir', default=os.getenv('OAM_LOGDIR', '/var/log/oam'), help='location of logs directory')
-@click.option('--keeplogs', default=int(os.getenv('OAM_KEEPLOGS', 10)), help='number of iterations of logs to keep')
+@click.option('--logdir', default=oam.settings.logdir(), help='location of logs directory')
+@click.option('--keeplogs', default=int(oam.settings.oam.logs.keep), help='number of iterations of logs to keep')
 @click.option('--dryrun/--no-dryrun', default=False, help='whether files should actually be removed')
 def expire(logdir, keeplogs, dryrun):
-    """Expire the gentoo-oam logfiles"""
+    """Expire the oam logfiles"""
     OAMExpire(logdir, keeplogs, dryrun).run()
 
 if __name__ == "__main__":

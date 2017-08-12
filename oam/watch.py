@@ -11,19 +11,8 @@ import glob
 import time
 import datetime
 from version import get_version
-
-ROW1_HEIGHT = '9'
-ROW2_HEIGHT = '9'
-
-COL1_WIDTH = '45'
-COL2_WIDTH = '40'
-
-def last_date():
-    datedir = sorted(glob.glob(os.getenv('OAM_LOGDIR', '/var/log/oam') + '/2*'))
-    if len(datedir) > 0:
-        return datedir[-1]
-    else:
-        return None
+import oam.settings
+from oam.daylog import last_date
 
 """
 """
@@ -32,16 +21,21 @@ class Watch(object):
     HOSTNAME = os.uname()[1]
     KERNEL_VER = os.uname()[2]
 
-    def __init__(self, row1, row2, col1, col2):
+    def __init__(self):
         self.logger = logging.getLogger("oam.watch")
-        self.row1 = row1
-        self.row2 = row2
-        self.col1 = col1
-        self.col2 = col2
+        self.mth = oam.settings.oam.multitail.helper
+        layout = oam.settings.oam.multitail.layout
+        self.row1 = layout.row1
+        self.row2 = layout.row2
+        self.col1 = layout.col1
+        self.col2 = layout.col2
         self.watch_dir = last_date()
 
     def title(self):
-        return "{}/oam/{}/{} oam V{}".format(self.HOSTNAME, os.path.basename(self.watch_dir), self.KERNEL_VER, get_version())
+        return "{}/oam/{}/{} oam V{}".format(self.HOSTNAME,
+                                             os.path.basename(self.watch_dir),
+                                             self.KERNEL_VER,
+                                             get_version())
 
     def make_conf(self):
         if os.path.exists('/etc/make.conf'):
@@ -50,6 +44,14 @@ class Watch(object):
             return '/etc/portage/make.conf'
         else:
             return ""
+
+    def make_env(self):
+        return dict(os.environ,
+                    OAM_EDIT='{} {}'.format(self.mth.terminal, self.mth.editor),
+                    OAM_MAKECONF=self.make_conf(),
+                    OAM_MT_EDIT='{} {}'.format(self.mth.terminal, self.mth.multitab),
+                    OAM_TERMINAL=self.mth.terminal
+        )
 
     def run(self):
         os.chdir(self.watch_dir) # this makes the multitail command line a _lot_ shorter
@@ -85,24 +87,20 @@ class Watch(object):
                 '-I', 'qcheck.log'
         ]
 
-        extra_opt = os.getenv('OAM_MULTITAIL_EXTRA_OPT', None)
+        extra_opt = oam.settings.oam.multitail.extraopt
         if extra_opt:
             cmd.append(extra_opt)
 
         genlop = subprocess.Popen(['oam', 'genlop'], stdout=subprocess.PIPE)
-        multitail = subprocess.Popen(cmd, stdin=genlop.stdout, env=dict(os.environ, OAM_MAKECONF=self.make_conf()))
+        multitail = subprocess.Popen(cmd, stdin=genlop.stdout, env=self.make_env())
 
         return multitail.wait()
 
 @cli.command()
-@click.option('--row1', default=ROW1_HEIGHT, envvar='OAM_ROW1_HEIGHT')
-@click.option('--row2', default=ROW2_HEIGHT, envvar='OAM_ROW2_HEIGHT')
-@click.option('--col1', default=COL1_WIDTH, envvar='OAM_ROW1_HEIGHT')
-@click.option('--col2', default=COL2_WIDTH, envvar='OAM_ROW2_HEIGHT')
-def watch(row1, row2, col1, col2):
+def watch():
     """Dashboard overview of current system update"""
     logdir = last_date()
     if logdir:
-        return Watch(row1, row2, col1, col2).run()
+        return Watch().run()
     else:
         sys.exit("No log directory found")

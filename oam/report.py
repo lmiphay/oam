@@ -9,7 +9,7 @@ import jinja2
 import click
 from .cmd import cli
 
-TEMPLATE_DIR = '/usr/share/gentoo-oam'
+TEMPLATE_DIR = '/usr/share/oam'
 DEFAULT_TEMPLATE = 'summary.jinja2'
 
 """ Generate a report

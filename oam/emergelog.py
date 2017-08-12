@@ -9,14 +9,15 @@ import logging
 import datetime
 import click
 from .cmd import cli
+import oam.settings
 
-LOGFILE = '/var/log/emerge.log'
+LOGFILE = oam.settings.oam.emerge.log
 
 class EmergeLog(object):
 
     def __init__(self, logfile=LOGFILE):
         self.logfile = logfile
-        self.ts_format = os.getenv('OAM_TS', '%Y%m%d:%H:%M:%S')
+        self.ts_format = oam.settings.oam.ts
 
     def timestamp(self, raw_format):
         return datetime.datetime.fromtimestamp(int(raw_format)).strftime(self.ts_format)

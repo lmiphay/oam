@@ -3,54 +3,142 @@
 from __future__ import print_function
 import os
 import sys
+import glob
+import copy
+import logging
 import yaml
+import pprint
+from attrdict import AttrDict
 
-OAM_EMERGE_OPTS = os.getenv('OAM_EMERGE_OPTS', '--backtrack=50 --deep --verbose --verbose-conflicts')
-OAM_GO = os.getenv('OAM_GO', 'oam-flow weekly')
-OAM_HEARTBEATSLEEP = os.getenv('OAM_HEARTBEATSLEEP', 5)
-OAM_KEEPLOGS = os.getenv('OAM_KEEPLOGS', 10)
-OAM_LOGDIR = os.getenv('OAM_LOGDIR', '/var/log/oam')
-OAM_MULTITAIL_EXTRA_OPT = os.getenv('OAM_MULTITAIL_EXTRA_OPT', None)
-OAM_REVIEW_HOSTS = os.getenv('OAM_REVIEW_HOSTS', 'localhost')
-OAM_SANDBOXWAIT = os.getenv('OAM_SANDBOXWAIT', 8)
-OAM_TS = os.getenv('OAM_TS', '%Y%m%d:%H:%M:%S')
+"""
+    configuration is sourced from:
 
-OAM_CONFIG = os.getenv('OAM_CONFIG', '/etc/oam.yaml')
+    1. default values defined in this file module
+    2. values loaded from configuration files under /etc/oam
+    3. overridden values from the environment (if any; i.e. optional)
 
-PORTAGE_CONFIGROOT = os.getenv('PORTAGE_CONFIGROOT', '')
-PORTAGE_DISTFILES = os.getenv('PORTAGE_DISTFILES', '/usr/portage/distfiles')
+    access oam.settings.oam.go
+"""
 
-def get_config():
-    config = {}
+DEFAULTS = {
+    'oam': {
+        'config': '/etc/oam/oam.yaml',
+        'emerge': {
+            'log': '/var/log/emerge.log',
+            'opts': '--backtrack=50 --deep --verbose --verbose-conflicts'
+        },
+        'go': 'oam flow weekly',
+        'heartbeatsleep': 5,
+        'logs': {
+            'dir': '/var/log/oam',
+            'keep': 10             # number of iterations of logs to keep
+        },
+        'multitail': {
+            'extraopt': None,
+            'helper': {
+                'editor': '/usr/bin/vi',
+                'multitab': '/usr/bin/vi -p',
+                'terminal': '/usr/bin/xterm -e'
+            },
+            'layout': {
+                'row1': '9',
+                'row2': '9',
+                'col1': '45',
+                'col2': '40'
+            }
+        },
+        'review': {
+            'hosts': [ 'localhost' ]
+        },
+        'sandboxwait': 8,
+        'ts': '%Y%m%d:%H:%M:%S'
+    },
+    'portage': {
+        'configroot': 'XXX',
+        'distfiles': '/usr/portage/distfiles'
+    }
+}
 
-    # set defaults
-    for var in dir(sys.modules[__name__]):
-        if var.startswith('OAM_'):
-            config[var[4:].lower()] = getattr(sys.modules[__name__], var)
+class Settings(object): # types.ModuleType
 
-    # overwrite/load settings from config file
-    if os.path.exists(OAM_CONFIG):
-        config = yaml.load(open(OAM_CONFIG))
+    def __init__(self):
+        #self.conf = copy.deepcopy(DEFAULTS)
+        self.conf = AttrDict(DEFAULTS)
+        #self.load_config()
+        #self.over_write(self.conf, '')
+        logging.debug('final config %s', pprint.pformat(self.conf))
 
-    # if present in the environment then overwrite
-    for var in dir(sys.modules[__name__]):
-        if var.startswith('OAM_'):
-            if var in os.environ:
-                config[var[4:].lower()] = os.getenv(var)
+    def merge(self, incoming, current):
+        for k, v in incoming.iteritems():
+            if k not in current:
+                current[k] = v
+            elif isinstance(v, dict):
+                if isinstance(current[k], dict):
+                    self.merge(v, current[k])
+                else:
+                    current[k] = v # assume over write is ok?
 
-    return config
+    def load_config(self):
+        for filename in [ self.conf['oam']['config'] ] + sorted(glob.glob('/etc/oam/conf.d/*.yaml')):
+            try:
+                self.merge(self, AttrDict(yaml.load(open(filename)), self.conf))
+            except IOError as ex:
+                logging.info('failed to load %s', filename)
 
-def dump():
-    for var in dir(sys.modules[__name__]):
-        if var.startswith('OAM_') or var.startswith('PORTAGE_'):
-            print(var, '=', getattr(sys.modules[__name__], var))
+    def over_write(self, config, path):
+        for k, v in config.iteritems():
+            key = '{}_{}'.format(path, k.upper())
+            if isinstance(v, dict):
+                self.over_write(v, key)
+            else:
+                config[k] = os.getenv(key, v)
+                #config.k = config[k]
 
-def get_setting(name, default_value=None):
-    return getattr(sys.modules[__name__], name, default_value)
+    def get_config(self):
+        return self.conf
 
-def get_flow(name):
-    config = get_config()
-    if 'flows' in config:
-        if name in config['flows']:
-            return config['flows'][name]
-    return None
+    def get_attr(self, config, elements):
+        if len(elements) == 1:
+            if elements[0] in self.conf:
+                return config[elements[0]]
+            else:
+                return None
+        else:
+            return self.get_attr(config[elements[0]], elements[1:])
+
+    def __getattr__(self, attr):
+        logging.error('lookup %s', attr)
+        print(1, self.conf)
+        print(2, self.conf['portage']['configroot'], 3)
+        print(4, self.conf.portage.configroot, 5)
+        return self.get_attr(self.conf, attr.split('.'))
+
+    def logdir(self):
+        return self.conf['oam']['logs']['dir']
+
+#SETTINGS = None
+
+# def get_config():
+#     global SETTINGS
+
+#     if SETTINGS is None:
+#         SETTINGS = Settings()
+
+#     return SETTINGS.get_config()
+
+#def get_setting(name, default_value=None):
+#    return getattr(sys.modules[__name__], name, default_value)
+
+# def get_flow(name):
+#     config = get_config()
+#     if 'flows' in config:
+#         if name in config['flows']:
+#             return config['flows'][name]
+#    return None
+
+old_module = sys.modules[__name__]
+# https://mail.python.org/pipermail/python-ideas/2012-May/014969.html
+#sys.modules [__name__] = Settings()
+SETTINGS = Settings()
+SETTINGS.conf.logdir = SETTINGS.logdir
+sys.modules [__name__] = SETTINGS.get_config()

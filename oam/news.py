@@ -49,7 +49,7 @@ class News(object):
 @cli.command(name='checknews')
 @click.pass_context
 def checknews(ctx):
-    """List new gentoo news items"""
+    """List new news items"""
     for item in News().get_unread():
         print(item)
     return 0
@@ -57,6 +57,6 @@ def checknews(ctx):
 @cli.command(name='new-news-count')
 @click.pass_context
 def countnewnews(ctx):
-    """Count new gentoo news items"""
+    """Count new news items"""
     print(News().count())
     return 0
