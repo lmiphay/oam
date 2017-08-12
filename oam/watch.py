@@ -41,7 +41,7 @@ class Watch(object):
         self.watch_dir = last_date()
 
     def title(self):
-        return "{}/oam/{}/{} gentoo-oam V{}".format(self.HOSTNAME, os.path.basename(self.watch_dir), self.KERNEL_VER, get_version())
+        return "{}/oam/{}/{} oam V{}".format(self.HOSTNAME, os.path.basename(self.watch_dir), self.KERNEL_VER, get_version())
 
     def make_conf(self):
         if os.path.exists('/etc/make.conf'):
@@ -56,12 +56,12 @@ class Watch(object):
 
         cmd = [ 'multitail',
                 '-x', self.title(),
-                '--config', '/usr/share/gentoo-oam/gentoo-oam-multitail.conf',
+                '--config', '/usr/share/oam/oam-multitail.conf',
                 '--basename',
                 '-sw', self.col1 + ',' + self.col2, # widths of each column
                 '-sn', '3,4',                       # window count per column
 
-                '-wh', self.row1, '/usr/share/gentoo-oam/oam-watch.help', # win1: help
+                '-wh', self.row1, '/usr/share/oam/oam-watch.help',        # win1: help
                 '--retry',
                 '-wh', self.row2, 'oam.log',                              # win2: oam activity log
                 '-j',                                                     # win3: stdin - genlop piped
