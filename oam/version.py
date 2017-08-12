@@ -11,5 +11,5 @@ def get_version():
 
 @cli.command()
 def version():
-    """Print gentoo-oam version"""
+    """Print oam version"""
     print(get_version())
