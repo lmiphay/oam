@@ -1,4 +1,4 @@
-# logrotate script for gentoo-oam
+# logrotate script for oam
 
 /var/log/oam/expire.log {
         monthly
