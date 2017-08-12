@@ -1,11 +1,4 @@
-#!/bin/bash
-# -*- python -*-
-"true" '''\'
-set -a
-source /etc/gentoo-oam.conf
-exec "/usr/bin/python" $0 "$@"
-exit 127
-'''
+#!/usr/bin/python
 
 import sys
 from oam import *
