@@ -32,9 +32,11 @@ class Inv(object):
         """
         Call.make_context = oam_make_context
 
-    def run_steps(self, step):
-        self.program.run(argv=['oaminvflow'] + [step])
-        oam.log.info('step complete - {}'.format(steps))
+    def run_steps(self, steps):
+        for step in steps:
+            oam.log.info('step start - {}'.format(step))
+            self.program.run(argv=['oaminvflow', step[0]])
+            oam.log.info('step complete - {}'.format(step))
         return 0
 
     def run_flow(self, flow):
