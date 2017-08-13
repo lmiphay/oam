@@ -34,7 +34,7 @@ def last_day():
         return None
 
 def last_date():
-    datedir = sorted(glob.glob(oam.settings.logsdir() + '/2*'))
+    datedir = sorted(glob.glob(oam.settings.logdir() + '/2*'))
     if len(datedir) > 0:
         return datedir[-1]
     else:
