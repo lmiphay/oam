@@ -14,7 +14,7 @@ setup(name='oam',
       ],
       scripts=['bin/oam'],
       data_files=[('share/oam',
-                   ['share/oam-functions.sh',
+                   [
                     'share/oam-multitail.conf',
                     'share/oam-watch.help',
                     'share/summary.jinja2'
