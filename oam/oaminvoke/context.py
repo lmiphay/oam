@@ -47,7 +47,7 @@ class Context(invoke.Context):
         """ add oam flag: if_new_rev=bool """
         if_new_rev = kwargs.pop('if_new_rev', None)
 
-        command = '/usr/bin/emerge {} {}'.format(oam.settings.get_setting('OAM_EMERGE_OPTS'), args)
+        command = '/usr/bin/emerge {} {}'.format(oam.settings.oam.emerge.opts, args)
 
         if if_new_rev:
             if oam.lib.is_update_available(args.split()[-1]):
