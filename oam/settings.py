@@ -81,7 +81,7 @@ class Settings(object): # types.ModuleType
     def load_config(self):
         for filename in [ self.conf['oam']['config'] ] + sorted(glob.glob('/etc/oam/conf.d/*.yaml')):
             try:
-                self.merge(self, AttrDict(yaml.load(open(filename)), self.conf))
+                self.merge(AttrDict(yaml.load(open(filename))), self.conf)
             except IOError as ex:
                 logging.info('failed to load %s', filename)
 
