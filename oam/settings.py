@@ -17,7 +17,7 @@ from attrdict import AttrDict
     2. values loaded from configuration files under /etc/oam
     3. overridden values from the environment (if any; i.e. optional)
 
-    access oam.settings.oam.go
+    access like: oam.settings.oam.go
 """
 
 DEFAULTS = {
@@ -64,9 +64,9 @@ class Settings(object): # types.ModuleType
     def __init__(self):
         #self.conf = copy.deepcopy(DEFAULTS)
         self.conf = AttrDict(DEFAULTS)
-        #self.load_config()
+        self.load_config()
         #self.over_write(self.conf, '')
-        logging.debug('final config %s', pprint.pformat(self.conf))
+        logging.info('final config %s', pprint.pformat(self.conf))
 
     def merge(self, incoming, current):
         for k, v in incoming.iteritems():
@@ -92,7 +92,6 @@ class Settings(object): # types.ModuleType
                 self.over_write(v, key)
             else:
                 config[k] = os.getenv(key, v)
-                #config.k = config[k]
 
     def get_config(self):
         return self.conf
@@ -116,29 +115,11 @@ class Settings(object): # types.ModuleType
     def logdir(self):
         return self.conf['oam']['logs']['dir']
 
-#SETTINGS = None
-
-# def get_config():
-#     global SETTINGS
-
-#     if SETTINGS is None:
-#         SETTINGS = Settings()
-
-#     return SETTINGS.get_config()
-
-#def get_setting(name, default_value=None):
-#    return getattr(sys.modules[__name__], name, default_value)
-
-# def get_flow(name):
-#     config = get_config()
-#     if 'flows' in config:
-#         if name in config['flows']:
-#             return config['flows'][name]
-#    return None
-
 old_module = sys.modules[__name__]
-# https://mail.python.org/pipermail/python-ideas/2012-May/014969.html
-#sys.modules [__name__] = Settings()
+
 SETTINGS = Settings()
 SETTINGS.conf.logdir = SETTINGS.logdir
+
+# https://mail.python.org/pipermail/python-ideas/2012-May/014969.html
+#sys.modules [__name__] = Settings()
 sys.modules [__name__] = SETTINGS.get_config()
