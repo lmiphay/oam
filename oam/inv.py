@@ -32,30 +32,41 @@ class Inv(object):
         """
         Call.make_context = oam_make_context
 
+    def run_task(self, taskname):
+        if type(taskname)==tuple:
+            taskname = taskname[0]
+        oam.log.info('task start - {}'.format(taskname))
+        self.program.run(argv=['oaminv', taskname])
+        oam.log.info('task complete - {}'.format(taskname))
+
     def run_steps(self, steps):
         for step in steps:
-            oam.log.info('step start - {}'.format(step))
-            self.program.run(argv=['oaminvflow', step[0]])
-            oam.log.info('step complete - {}'.format(step))
+            self.run_task(step)
         return 0
+
+    def get_flow(self, flowname):
+        if flowname in oam.settings.flows:
+            return oam.settings.flows['flowname']
+        else:
+            oam.log.error('flow {} not found'.format(flowname))
+            raise ValueError('flow {} not found'.format(flowname))
 
     def run_flow(self, flow):
         for step in flow:
             if type(step)==str:
-                oam.log.info('step - {}'.format(step))
-                self.program.run(argv=['oaminvflow'] + [step])
+                if step.startswith('+'):
+                    self.run_flow(self.get_flow(step[1:]))
+                else:
+                    self.run_task(step)
             else:
                 oam.log.info('phase - {}'.format(step))
                 self.run_flow(step)
 
     def run_flows(self, flownames):
         for flowname in flownames:
-            flow = oam.settings.get_flow(flowname)
-            if flow is not None:
-                self.run_flow(flow)
-            else:
-                raise ValueError('flow {} not found'.format(flowname))
-        oam.log.info('flow complete - {}'.format(flownames))
+            oam.log.info('flow start - {}'.format(flowname))
+            self.run_flow(self.get_flow(flowname))
+            oam.log.info('flow complete - {}'.format(flowname))
 
 @cli.command()
 @click.option('--l', '-l', is_flag=True, default=None, help='list available tasks')
@@ -66,6 +77,9 @@ def inv(l, flow, step, tasks):
     """
     Sequentially invoke one or more tasks, or flows
     """
+
+    if type(tasks)==str:
+        tasks = [tasks]
 
     if l is not None:
         pprint.pprint(oam.tasks.ns.task_names)
