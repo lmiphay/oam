@@ -24,8 +24,8 @@ setup(name='oam',
                                        'etc/conf.d/sync.yaml']),
                   ('/etc/oam/localtasks', ['etc/localtasks/__init__.py',
                                            'etc/localtasks/skel.py']),
-                  ('/etc/cron.daily', ['etc/oam.cron']),
-                  ('/etc/cron.monthly', ['etc/oam-depclean-check.cron']),
+                  ('/etc/cron.daily', ['etc/cron.daily/oam']),
+                  ('/etc/cron.monthly', ['etc/cron.monthly/oam-depclean-check']),
                   ('/usr/share/man/man8', ['man/oam.8'])
       ]
 )
