@@ -42,4 +42,7 @@ POST = [revdep_rebuild, python_updater, perl_cleaner, preserved_rebuild]
 
 @task(default=True, pre=PRE, post=POST, aliases=['up'])
 def update(ctx, target='world'):
+    """note that if a problem is found in the pretend phase, then --keep-going 
+       will not keep the build running (the pre-merge check will fail the update)
+    """
     ctx.emerge('--update --keep-going {}'.format(target))
