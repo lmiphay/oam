@@ -32,7 +32,8 @@ class CheckConfig(object):
     # we can only check this one when running as root - the default is for the contents of /etc/cron.daily
     # to be readable by root or group-root users only.
     ROOT_TARGETS = DEFAULT_TARGETS + [
-        ('file', '/etc/cron.daily/oam',   [ ('mode',0o755), ('group','root'), ('owner',USER) ] )
+        ('file', '/etc/cron.daily/oam',                  [ ('mode',0o755), ('group','root'), ('owner',USER) ] ),
+        ('file', '/etc/cron.monthly/oam-depclean-check', [ ('mode',0o755), ('group','root'), ('owner',USER) ] )
     ]
 
     def __init__(self):
