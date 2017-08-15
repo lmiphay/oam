@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from invoke import task, call
+from invoke import task
 
 @task
 def system(ctx):
@@ -9,4 +9,4 @@ def system(ctx):
 
 @task(default=True)
 def emptytree(ctx):
-    ctx.emerge('--emptytree world', env={'I_KNOW_WHAT_I_AM_DOING': '1'})
+    ctx.emerge('--keep-going --emptytree world', env={'I_KNOW_WHAT_I_AM_DOING': '1'})
