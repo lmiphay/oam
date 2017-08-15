@@ -4,13 +4,15 @@ Quickstart
 
 ``# layman -L && layman -a lmiphay``
 
-After adding the overlay there will be a keyword file at: `/var/lib/layman/lmiphay/gentoo-oam.keywords`
+After adding the overlay there will be a keyword file at: `/var/lib/layman/lmiphay/oam.keywords`
+
+The contents should be added to: `/etc/portage/package.keywords`
 
 ``# emerge gentoo-oam``
 
 Review the default settings, make any local changes:
 
-``# vi /etc/oam.yaml``
+``# vi /etc/oam/oam.yaml``
 
 And then kick off the default flow:
 
