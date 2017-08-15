@@ -46,7 +46,7 @@ class Inv(object):
 
     def get_flow(self, flowname):
         if flowname in oam.settings.flows:
-            return oam.settings.flows['flowname']
+            return oam.settings.flows[flowname]
         else:
             oam.log.error('flow {} not found'.format(flowname))
             raise ValueError('flow {} not found'.format(flowname))
