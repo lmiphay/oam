@@ -1,26 +1,36 @@
-=========
+==========
 Quickstart
-=========
+==========
 
-``# layman -L && layman -a lmiphay``
+* Install the program::
 
-After adding the overlay there will be a keyword file at: `/var/lib/layman/lmiphay/oam.keywords`
+    # layman -L && layman -a lmiphay
 
-The contents should be added to: `/etc/portage/package.keywords`
+  After adding the overlay there will be a keyword file at::
 
-``# emerge gentoo-oam``
+    /var/lib/layman/lmiphay/oam.keywords
 
-Review the default settings, make any local changes:
+  The contents should be added to: `/etc/portage/package.keywords`
 
-``# vi /etc/oam/oam.yaml``
+  Then::
 
-And then kick off the default flow:
+    # emerge gentoo-oam
 
-``# oam flow weekly``
+* Review the default settings, make any local changes::
 
-In another terminal monitor progress with:
+    # vi /etc/oam/oam.yaml
 
-``# oam watch``
+* And then kick off the default flow::
 
-When the ``oam flow weekly`` command returns, browse to the set of log files generated under:
-``/var/log/oam/[DATE]`` (start with the summary.log file).
+    # oam flow weekly
+
+* In another terminal monitor progress with::
+
+    # oam watch
+
+* When the ``oam flow weekly`` command returns, browse to the set of log files
+  generated under::
+
+    /var/log/oam/[DATE]
+
+  Start with the error.log and blocks.log files.
