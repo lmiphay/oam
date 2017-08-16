@@ -9,6 +9,7 @@ import emptytree
 import expire
 import fetch
 import flow
+import gcc
 import glsa
 import jdk
 import kernel
@@ -28,6 +29,7 @@ ns.add_collection(emptytree)
 ns.add_collection(expire)
 ns.add_collection(fetch)
 ns.add_collection(flow)
+ns.add_collection(gcc)
 ns.add_collection(glsa)
 ns.add_collection(jdk)
 ns.add_collection(kernel)
