@@ -10,7 +10,7 @@ from .cmd import cli
 import glob
 import time
 import datetime
-from version import get_version
+from oam.version import get_version
 import oam.settings
 from oam.daylog import last_date
 
