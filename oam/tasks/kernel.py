@@ -3,6 +3,7 @@
 import os
 import os.path
 import shutil
+import sys
 import glob
 import platform
 import gzip
@@ -11,7 +12,6 @@ from invoke import task
 
 HOSTNAME = platform.node()
 RUNNING_KERNEL = platform.release() # e.g. '4.9.22-aufs'
-USRSRC_KERNEL  = os.readlink('/usr/src/linux')[len('linux-'):]
 
 CONFIG = '/usr/src/linux/.config'
 REPO = '/usr/src/linux/kernel-config.git'
@@ -27,6 +27,12 @@ KERNEL_CONFIG = [
 EFI_DIR = '/boot/efi/EFI/Boot'
 KERNEL_IMAGE = '/usr/src/linux/arch/x86_64/boot/bzImage'
 
+def usrsrc_kernel():
+    try:
+        return os.readlink('/usr/src/linux')[len('linux-'):]
+    except OSError as ex:
+        sys.exit('a valid kernel was not found at {}'.format(ex))
+
 @task
 def initrepo(ctx):
     if not os.path.isdir(REPO):
@@ -38,7 +44,7 @@ def backup(ctx):
     shutil.copyfile(CONFIG, '{}/{}'.format(REPO, HOSTNAME))
     with ctx.cd(REPO):
         ctx.run('git add {}'.format(HOSTNAME), echo=True)
-        ctx.run('git commit -m "{}/{}"'.format(HOSTNAME, USRSRC_KERNEL), echo=True)
+        ctx.run('git commit -m "{}/{}"'.format(HOSTNAME, usrsrc_kernel()), echo=True)
 
 @task
 def findconfig(ctx):
@@ -69,7 +75,7 @@ def build(ctx):
 
 @task(default=True, pre=[configure])
 def make(ctx):
-    if not os.path.isdir('/lib/modules/{}'.format(USRSRC_KERNEL)):
+    if not os.path.isdir('/lib/modules/{}'.format(usrsrc_kernel())):
         build(ctx)
 
 def is_efi():
@@ -82,11 +88,11 @@ def is_grub():
 @task
 def install(ctx):
     if is_efi():
-        shutil.copy(KERNEL_IMAGE, '{}/{}.efi'.format(EFI_DIR, USRSRC_KERNEL))
-        ctx.run("efibootmgr --create --part 1 --label {0} --loader '{1}efi{1}boot{1}'${0}.efi".format(USRSRC_KERNEL, '\\'),
+        shutil.copy(KERNEL_IMAGE, '{}/{}.efi'.format(EFI_DIR, usrsrc_kernel()))
+        ctx.run("efibootmgr --create --part 1 --label {0} --loader '{1}efi{1}boot{1}'${0}.efi".format(usrsrc_kernel(), '\\'),
                 echo=True)
     elif is_grub():
-        shutil.copy(KERNEL_IMAGE, '/boot/{}'.format(USRSRC_KERNEL))
+        shutil.copy(KERNEL_IMAGE, '/boot/{}'.format(usrsrc_kernel()))
         # todo: edit grub.conf maybe?
 
 @task
