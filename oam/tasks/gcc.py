@@ -30,7 +30,7 @@ def packages(manifest):
             yield re.sub(r'^\[[^]]+\] ([^: ]+).*', r'=\1', line.strip())
 
 def unbuilt(manifest):
-    """yields a list of packages which have not yet been built """
+    """yields a list of packages which have not yet been built"""
     for atom in packages(manifest):
         if not pkg_exists(atom):
             yield atom
