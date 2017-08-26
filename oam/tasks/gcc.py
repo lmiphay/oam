@@ -54,16 +54,22 @@ def manifest(ctx):
 @task
 def update(ctx):
     """container: update to match host use setting"""
-    ctx.run('emerge --update --newuse --deep --verbose world')
+    ctx.run('emerge --update --newuse --deep --verbose world',
+            echo=True,
+            capture_buffer_size=200)
 
 @task
-def build(ctx, manifest):
+def build(ctx, manifest, extraopt=''):
     """container: build packages"""
-    ctx.run('emerge --pretend {} ={}'.format(BUILD_OPT, ' ='.join(unbuilt(manifest))), echo=True)
+    ctx.run('emerge {} {} ={}'.format(extraopt, BUILD_OPT, ' ='.join(unbuilt(manifest))),
+            echo=True,
+            capture_buffer_size=200)
 
 @task
-def install(ctx, manifest):
+def install(ctx, manifest, extraopt=''):
     """host: install packages"""
-    ctx.run('emerge {} {}'.format(INSTALL_OPT, ' ='.join(packages(manifest))), echo=True)
+    ctx.run('emerge {} {} {}'.format(extraopt, INSTALL_OPT, ' ='.join(packages(manifest))),
+            echo=True,
+            capture_buffer_size=200)
 
 
