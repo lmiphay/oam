@@ -7,7 +7,7 @@ from invoke import task
 
 """
 1. host: generate list of packages (manifest) to build on the host
-2. container: configure to match the host
+2. container: configure to match the host - the profiles selected should match
     a. /etc/portage/make.conf (CPPFLAGS/LDFLAGS, ACCEPT_LICENSE, VIDEO_CARDS, use flags...)
     b. /etc/portage/package.use
     c. /etc/portage/package.provided (e.g. may want to provide kernel sources (couldn't get that to work))
