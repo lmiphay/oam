@@ -28,9 +28,12 @@ Quickstart
 
     # oam watch
 
-* When the ``oam flow weekly`` command returns, browse to the set of log files
-  generated under::
+* All logging takes place under::
 
-    /var/log/oam/[DATE]
+    /var/log/oam/[TODAYS_DATE]
 
-  Start with the error.log and blocks.log files.
+  You can browse the contents of that directory using `ranger(1)` from `oam watch` by typing: `Control-N`
+
+  For example you can inspect the current list of ebuilds being merged by selecting the `merge.log` file in that directory.
+
+* When the ``oam flow weekly`` command returns check the error.log and blocks.log files.
