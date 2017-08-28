@@ -32,12 +32,19 @@ class Inv(object):
         """
         Call.make_context = oam_make_context
 
+    def run_parameterised_task(self, taskspec):
+        argv = ['oaminv', taskspec['task_name']]
+        for key, value in taskspec:
+            if key!='task_name':
+                argv.append('--{}={}'.format(key, value))
+        oam.log.info('task start - {}'.format(argv))
+        self.program.run(argv=argv)
+        oam.log.info('task complete - {}'.format(argv))
+
     def run_task(self, taskname):
         if type(taskname)==tuple:
             taskname = taskname[0]
-        oam.log.info('task start - {}'.format(taskname))
-        self.program.run(argv=['oaminv', taskname])
-        oam.log.info('task complete - {}'.format(taskname))
+        self.run_parameterised_task({'task_name': taskname})
 
     def run_steps(self, steps):
         for step in steps:
@@ -58,6 +65,8 @@ class Inv(object):
                     self.run_flow(self.get_flow(step[1:]))
                 else:
                     self.run_task(step)
+            elif type(step)==dict:
+                self.run_parameterised_task(self.get_flow(step))
             else:
                 oam.log.info('phase - {}'.format(step))
                 self.run_flow(step)
