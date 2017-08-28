@@ -14,7 +14,7 @@ Quickstart
 
   Then::
 
-    # emerge gentoo-oam
+    # emerge oam
 
 * Review the default settings, make any local changes::
 

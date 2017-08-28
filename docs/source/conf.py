@@ -48,7 +48,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'gentoo-oam'
+project = u'oam'
 copyright = u'2017, Paul Healy'
 author = u'Paul Healy'
 
@@ -150,8 +150,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'gentoo-oam', u'gentoo-oam Documentation',
-     author, 'gentoo-oam', 'One line description of project.',
+    (master_doc, 'oam', u'oam Documentation',
+     author, 'oam', 'Operations and maintenance for gentoo.',
      'Miscellaneous'),
 ]
 

@@ -1,5 +1,5 @@
 #### Table of Contents
-[![Documentation Status](https://readthedocs.org/projects/gentoo-oam/badge/?version=latest)](http://gentoo-oam.readthedocs.io/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/oam/badge/?version=latest)](http://oam.readthedocs.io/en/latest/?badge=latest)
 
 * [Table of Contents](#table-of-contents)
 * [Operations/Admin/Management for gentoo](#operationsadminmanagement-for-gentoo)
@@ -9,7 +9,7 @@
 
 #### Operations/Admin/Management for gentoo
 
-gentoo-oam aims to reduce some of the repetition of normal regular maintainance tasks on a gentoo server.
+oam aims to reduce some of the repetition of normal regular maintainance tasks on a gentoo server.
 
 The philosophy is to:
 + automate tasks where it is safe to do so (e.g. merge blockers must be still resolved manually)
@@ -18,7 +18,7 @@ The philosophy is to:
 + provide an editor preloaded with logs and portage config files ("vim -p" tabs)
 + provide a quick glance summary of merges, blocks, glsa's and news items
 
-See the [docs](http://gentoo-oam.readthedocs.io/en/latest/) for details.
+See the [docs](http://oam.readthedocs.io/en/latest/) for details.
 
 #### Workflows
 
