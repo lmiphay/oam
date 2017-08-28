@@ -34,6 +34,6 @@ Quickstart
 
   You can browse the contents of that directory using `ranger(1)` from `oam watch` by typing: `Control-N`
 
-  For example you can inspect the current list of ebuilds being merged by selecting the `merge.log` file in that directory.
+  You can inspect the current list of ebuilds being merged by selecting the `merge.log` file in that directory (typing `Control-R` from `oam watch` will bring that up directly).
 
 * When the ``oam flow weekly`` command returns check the error.log and blocks.log files.
