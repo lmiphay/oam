@@ -18,7 +18,7 @@ The philosophy is to:
 + log all actions and outputs (to aid postmortum analysis and followup manual intervention)
 + provide a dashboard view of the progress of actions and results (to spot issues early)
 + provide an editor preloaded with logs and portage config files ("vim -p" tabs)
-+ provide a quick glance summary of merges, blocks and new news items
++ provide a quick glance summary of merges, blockers and new news items
 
 See :doc:`changelog` for changes in this version.
 
@@ -34,17 +34,28 @@ complete successfully before the next step starts.
 
 For example the `weekly` workflow will run these steps:
 
-.. csv-table:: a title
-   :header: "step-name", "command(s)"
-   :widths: 20, 20
-
-	"sync",   "emaint --auto sync, layman --sync=ALL, eix-update/eix-remote"
-	"glsa",   "glsa-check"
-	"fetch",  "emerge --fetchonly --update world"
-	"update", "emerge --update world, python-updater, perl-cleaner, emerge @preserved-rebuild"
-	"clean",  "eclean distfiles, eclean-kernel"
-	"kernel", "attempts to build a new kernel if necessary"
-	"qcheck", "qcheck --all"
++------------+-----------------------------------------+
+| Step Name  | Commands                                |
++============+=========================================+
+| ``sync``   | -  ``emaint --auto sync``               |
+|            | -  ``layman --sync=ALL``                |
+|            | -  ``eix-update/eix-remote``            |
++------------+-----------------------------------------+
+| ``glsa``   | - ``glsa-check``                        |
++------------+-----------------------------------------+
+| ``fetch``  | - ``emerge --fetchonly --update world`` |
++------------+-----------------------------------------+
+| ``update`` | - ``emerge --update world``             |
+|            | - ``python-updater``                    |
+|            | - ``perl-cleaner``                      |
+|            | - ``emerge @preserved-rebuild``         |
++------------+-----------------------------------------+
+| ``clean``  | - ``eclean distfiles``                  |
++------------+-----------------------------------------+
+| ``kernel`` | - ``build a new kernel if necessary``   |
++------------+-----------------------------------------+
+| ``qcheck`` | - ``qcheck --all``                      |
++------------+-----------------------------------------+
 
 Steps (or tasks) can be skipped for a particular server (by configuration).
 

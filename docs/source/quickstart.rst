@@ -16,6 +16,8 @@ Quickstart
 
     # emerge oam
 
+  The `getoam.sh <https://raw.githubusercontent.com/lmiphay/oam/master/bin/getoam.sh>`_ script attempts to run all of these steps.
+
 * Review the default settings, make any local changes::
 
     # vi /etc/oam/oam.yaml
