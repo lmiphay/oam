@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
 import os.path
 import re
 
@@ -45,10 +46,10 @@ def unbuilt(manifest):
     """yields a list of packages which have not yet been built"""
     for atom in packages(manifest):
         if not pkg_exists(atom):
-            print 'Will-build: ', atom
+            print('Will-build: ', atom)
             yield atom
         else:
-            print 'Already-built: ', atom
+            print('Already-built: ', atom)
 
 @task
 def manifest(ctx):
