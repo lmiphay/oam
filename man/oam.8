@@ -2,7 +2,7 @@
 .TH man 8 "10 May 2015" "1.0" "oam man page"
 
 .SH NAME
-oam \- gentoo-oam command line interface driver program
+oam \- oam command line interface driver program
 
 .SH SYNOPSIS
 
@@ -13,7 +13,7 @@ oam inv <flow-name> \- invoke the list of tasks specified by flow-name
 oam watch \- monitor the current task run
 
 .SH DESCRIPTION
-gentoo-oam automates common maintaince tasks on a gentoo server.
+oam automates common maintaince tasks on a gentoo server.
 Tasks delegate most of their work to portage tools.
 .P
 .IP \(bu
@@ -25,7 +25,7 @@ Realtime monitoring is provided (see multitail(1)):
 .B
 "oam watch"
 .IP \(bu
-Configuration in "/etc/gentoo-oam.yaml" (can be overridden in the environment)
+Configuration in "/etc/oam/oam.yaml" (can be overridden in the environment)
 .P
 An example flow: 
 .PP
@@ -44,7 +44,7 @@ An example flow:
 
 Starting from scratch:
 .IP \(bu
-Examine /etc/gentoo-oam.yaml for anything that you need to localise on your server
+Examine /etc/oam/oam.yaml for anything that you need to localise on your server
 .IP \(bu
 As root run:
 .B
@@ -57,16 +57,16 @@ In another console run:
 
 .SH SYSTEM SETTINGS
 
-These settings control the operation of gentoo-oam and override settings in /etc/gentoo-oam.yaml:
+These settings control the operation of oam and override settings in /etc/oam/oam.yaml:
 .TP
 .BI OAM_EMERGE_OPTS
-The parameters passed to emerge for update. See /etc/gentoo-oam.yaml for default settings.
+The parameters passed to emerge for update. See /etc/oam/oam.yaml for default settings.
 .TP
 .BI OAM_FLOW
-The default flow to run when "oam go" is run. See /etc/gentoo-oam.yaml for default settings.
+The default flow to run when "oam go" is run. See /etc/oam/oam.yaml for default settings.
 .TP
 .BI OAM_LOGDIR
-The location where gentoo-oam logs will be sent/stored. Defaults to /var/log/oam
+The location where oam logs will be sent/stored. Defaults to /var/log/oam
 .TP
 .BI OAM_HEARTBEATSLEEP
 How long to sleep between printing out the load average and gelop(1) output. Defaults to 60 (seconds).
@@ -77,8 +77,8 @@ How long to wait for the sandbox process to appear before trying to run genlop(1
 .SH FILES
 
 .TP
-.BI /etc/gentoo-oam.yaml
-gentoo-oam system configuration
+.BI /etc/oam/oam.yaml
+oam system configuration
 .TP
 .BI /var/log/oam/DATE/error.log
 central locations for error reports
