@@ -14,13 +14,13 @@ import codecs
 from .cmd import cli
 from .options import oam_config
 import oam.settings
+import oam.inv
 
 @cli.command(name='go')
 def gocmd():
-    """Kick off the configured default oam operation"""
-    default_op = oam.settings.oam.go
-    return subprocess.call('echo " { ' + default_op + ' ; } " | bash',
-                           shell=True)
+    """Kick off the configured default oam flow"""
+    default_flow = oam.settings.oam.go
+    return oam.inv.Inv().run_flows([default_flow])
 
 def render_stdout(message):
     """Ref:

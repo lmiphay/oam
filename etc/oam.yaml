@@ -21,7 +21,7 @@ multitail:
 oam:
   emerge:
     opts: '--backtrack=50 --deep --verbose --verbose-conflicts'
-  go: 'oam flow weekly'
+  go: weekly
   logs:
     dir: '/var/log/oam'
     keep: 10
