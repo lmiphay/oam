@@ -23,7 +23,6 @@ class Watch(object):
 
     def __init__(self):
         self.logger = logging.getLogger("oam.watch")
-        self.mth = oam.settings.oam.helper
         layout = oam.settings.oam.multitail.layout
         self.row1 = layout.row1
         self.row2 = layout.row2
@@ -47,10 +46,7 @@ class Watch(object):
 
     def make_env(self):
         return dict(os.environ,
-                    OAM_EDIT='{} {}'.format(self.mth.terminal, self.mth.editor),
-                    OAM_MAKECONF=self.make_conf(),
-                    OAM_MT_EDIT='{} {}'.format(self.mth.terminal, self.mth.multitab),
-                    OAM_TERMINAL=self.mth.terminal
+                    OAM_MAKECONF=self.make_conf()
         )
 
     def run(self):
