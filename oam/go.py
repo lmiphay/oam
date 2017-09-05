@@ -12,7 +12,6 @@ import eliottree
 import codecs
 
 from .cmd import cli
-from .options import oam_config
 import oam.settings
 import oam.inv
 
