@@ -40,9 +40,9 @@ DEFAULTS = {
         'ts': '%Y%m%d:%H:%M:%S'
     },
     'helper': {
-        'editor': '/usr/bin/xterm -e /usr/bin/vi',
-        'multitab': '/usr/bin/xterm -e /usr/bin/vi -p',
-        'terminal': '/usr/bin/xterm -e'
+        'edit': '/usr/bin/xterm -e /usr/bin/vi',
+        'mtab': '/usr/bin/xterm -e /usr/bin/vi -p',
+        'term': '/usr/bin/xterm -e'
     },
     'multitail': {
         'extraopt': '',
