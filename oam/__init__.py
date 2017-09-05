@@ -2,7 +2,7 @@ __title__ = 'oam'
 from .version import __version__
 __author__ = 'Paul Healy'
 __license__ = 'GPL-2'
-__copyright__ = 'Copyright 2016, Paul Healy under GPL-2'
+__copyright__ = 'Copyright 2017, Paul Healy under GPL-2'
 
 #from oam.eventparser import EventParser
 
@@ -24,6 +24,7 @@ from oam.flowrunner import FlowRunner
 from oam.expire import OAMExpire, expire
 from oam.genlop import Genlop, genlop
 from oam.go import gocmd, bg
+from oam.helper import helper
 from oam.log import logmsg
 from oam.merges import Merges, mergesummary
 from oam.news import News, checknews, countnewnews

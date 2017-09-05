@@ -23,7 +23,7 @@ class Watch(object):
 
     def __init__(self):
         self.logger = logging.getLogger("oam.watch")
-        self.mth = oam.settings.oam.multitail.helper
+        self.mth = oam.settings.oam.helper
         layout = oam.settings.oam.multitail.layout
         self.row1 = layout.row1
         self.row2 = layout.row2

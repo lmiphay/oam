@@ -33,25 +33,25 @@ DEFAULTS = {
             'dir': '/var/log/oam',
             'keep': 10             # number of iterations of logs to keep
         },
-        'multitail': {
-            'extraopt': None,
-            'helper': {
-                'editor': '/usr/bin/vi',
-                'multitab': '/usr/bin/vi -p',
-                'terminal': '/usr/bin/xterm -e'
-            },
-            'layout': {
-                'row1': '9',
-                'row2': '9',
-                'col1': '45',
-                'col2': '40'
-            }
-        },
         'review': {
             'hosts': [ 'localhost' ]
         },
         'sandboxwait': 8,
         'ts': '%Y%m%d:%H:%M:%S'
+    },
+    'helper': {
+        'editor': '/usr/bin/xterm -e /usr/bin/vi',
+        'multitab': '/usr/bin/xterm -e /usr/bin/vi -p',
+        'terminal': '/usr/bin/xterm -e'
+    },
+    'multitail': {
+        'extraopt': '',
+        'layout': {
+            'row1': 9,
+            'row2': 9,
+            'col1': 45,
+            'col2': 40
+        }
     },
     'portage': {
         'configroot': 'XXX',

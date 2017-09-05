@@ -16,8 +16,17 @@ flows:
   rebuild:
     - emptytree.system
     - emptytree
+helper:
+  editor: '/usr/bin/xterm -e /usr/bin/vi'
+  multitab: '/usr/bin/xterm -e /usr/bin/vi -p'
+  terminal: '/usr/bin/xterm -e'
 multitail:
   extra_opt: ''
+  layout:
+    row1: 9
+    row2: 9
+    col1: 45
+    col2: 40
 oam:
   emerge:
     opts: '--backtrack=50 --deep --verbose --verbose-conflicts'
