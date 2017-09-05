@@ -15,7 +15,7 @@ def helper(ctx):
     """List available helper routines"""
     if ctx.invoked_subcommand is None:
         print('Available helpers:')
-        for command in ['editor', 'multitab', 'terminal']:
+        for command in ['edit', 'mtab', 'term']:
             print(command, oam.settings.helper[command])
             
 def run(cmd, arg):
@@ -25,19 +25,19 @@ def run(cmd, arg):
     
 @helper.command()
 @click.argument('filename')
-def editor(filename):
+def edit(filename):
     """Call the configured editor"""
     return run(oam.settings.helper.editor, filename)
             
 @helper.command()
 @click.argument('filenames', nargs=-1)
-def multitab(filenames):
+def mtab(filenames):
     """Call the configured multi-tab editor"""
     return run(oam.settings.helper.multitab, ' '.join(filenames))
 
 @helper.command()
 @click.argument('program')
-def terminal(program):
+def term(program):
     """Run program in the configured terminal"""
     return run(oam.settings.helper.terminal, program)
 
