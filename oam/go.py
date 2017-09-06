@@ -13,13 +13,13 @@ import codecs
 
 from .cmd import cli
 import oam.settings
-import oam.inv
+from oam.inv import Inv
 
 @cli.command(name='go')
 def gocmd():
     """Kick off the configured default oam flow"""
     default_flow = oam.settings.oam.go
-    return oam.inv.Inv().run_flows([default_flow])
+    return Inv().run_flows([default_flow])
 
 def render_stdout(message):
     """Ref:

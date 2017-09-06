@@ -27,7 +27,7 @@ DEFAULTS = {
             'log': '/var/log/emerge.log',
             'opts': '--backtrack=50 --deep --verbose --verbose-conflicts'
         },
-        'go': 'oam flow weekly',
+        'go': 'weekly',
         'heartbeatsleep': 5,
         'logs': {
             'dir': '/var/log/oam',

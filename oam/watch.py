@@ -23,11 +23,11 @@ class Watch(object):
 
     def __init__(self):
         self.logger = logging.getLogger("oam.watch")
-        layout = oam.settings.oam.multitail.layout
-        self.row1 = layout.row1
-        self.row2 = layout.row2
-        self.col1 = layout.col1
-        self.col2 = layout.col2
+        layout = oam.settings.multitail.layout
+        self.row1 = str(layout.row1)
+        self.row2 = str(layout.row2)
+        self.col1 = str(layout.col1)
+        self.col2 = str(layout.col2)
         self.watch_dir = last_date()
 
     def title(self):
@@ -83,7 +83,7 @@ class Watch(object):
                 '-I', 'qcheck.log'
         ]
 
-        extra_opt = oam.settings.oam.multitail.extraopt
+        extra_opt = oam.settings.multitail.extraopt
         if extra_opt:
             cmd.append(extra_opt)
 
