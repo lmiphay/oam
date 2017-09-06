@@ -10,6 +10,9 @@ import yaml
 import pprint
 from attrdict import AttrDict
 
+import click
+from oam.cmd import cli
+
 """
     configuration is sourced from:
 
@@ -62,7 +65,6 @@ DEFAULTS = {
 class Settings(object): # types.ModuleType
 
     def __init__(self):
-        #self.conf = copy.deepcopy(DEFAULTS)
         self.conf = AttrDict(DEFAULTS)
         self.load_config()
         #self.over_write(self.conf, '')
@@ -76,16 +78,19 @@ class Settings(object): # types.ModuleType
                 if isinstance(current[k], dict):
                     self.merge(v, current[k])
                 else:
-                    current[k] = v # assume over write is ok?
+                    current[k] = v
+            else:
+                current[k] = v
 
     def load_config(self):
         for filename in [ self.conf['oam']['config'] ] + sorted(glob.glob('/etc/oam/conf.d/*.yaml')):
             try:
                 self.merge(AttrDict(yaml.load(open(filename))), self.conf)
             except IOError as ex:
-                logging.info('failed to load %s', filename)
+                logging.error('failed to load %s', filename)
 
     def over_write(self, config, path):
+        """Load overrides from the environment"""
         for k, v in config.iteritems():
             key = '{}_{}'.format(path, k.upper())
             if isinstance(v, dict):
@@ -119,6 +124,11 @@ old_module = sys.modules[__name__]
 
 SETTINGS = Settings()
 SETTINGS.conf.logdir = SETTINGS.logdir
+
+@cli.command()
+def settings():
+    """Dump the current oam configuration"""
+    print(pprint.pformat(dict(SETTINGS.conf)))
 
 # https://mail.python.org/pipermail/python-ideas/2012-May/014969.html
 #sys.modules [__name__] = Settings()
