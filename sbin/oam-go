@@ -1,7 +1,0 @@
-#!/bin/bash
-
-source /etc/gentoo-oam.conf
-
-echo " { ${OAM_GO} ; } " | bash
-
-exit $?

@@ -1,7 +1,0 @@
-#!/bin/bash
-
-source /etc/gentoo-oam.conf
-
-$OAM_EDITOR $OAM_LOGDIR/glsa.log &
-
-exit 0

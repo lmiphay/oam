@@ -7,9 +7,6 @@ all:
 check:
 	@echo "done"
 
-SUBDIRS=\
-	sbin
-
 .PHONY: install
 install:
 	install -d $(DESTDIR)/etc
@@ -20,4 +17,3 @@ install:
 	install --owner=root --group=oam --mode=0770 -d $(DESTDIR)/var/db/oam
 	touch $(DESTDIR)/var/log/oam/.keep_app-portage_oam
 	touch $(DESTDIR)/var/db/oam/.keep_app-portage_oam
-	for i in $(SUBDIRS) ; do $(MAKE) $(MAKEOPTS) -C $$i install || exit 1; done

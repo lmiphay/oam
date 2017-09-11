@@ -1,8 +1,0 @@
-#!/bin/bash
-
-source /etc/gentoo-oam.conf
-source /usr/share/gentoo-oam/gentoo-oam-functions.sh
-
-$OAM_EDITOR $(oam_logdate)/merge.log &
-
-exit 0

@@ -1,7 +1,0 @@
-#!/bin/bash
-
-source /etc/gentoo-oam.conf
-
-$OAM_TERMINAL ranger $OAM_LOGDIR &
-
-exit 0
