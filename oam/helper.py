@@ -27,17 +27,17 @@ def run(cmd, arg):
 @click.argument('filename')
 def edit(filename):
     """Call the configured editor"""
-    return run(oam.settings.helper.editor, filename)
+    return run(oam.settings.helper.edit, filename)
             
 @helper.command()
 @click.argument('filenames', nargs=-1)
 def mtab(filenames):
     """Call the configured multi-tab editor"""
-    return run(oam.settings.helper.multitab, ' '.join(filenames))
+    return run(oam.settings.helper.mtab, ' '.join(filenames))
 
 @helper.command()
 @click.argument('program')
 def term(program):
     """Run program in the configured terminal"""
-    return run(oam.settings.helper.terminal, program)
+    return run(oam.settings.helper.term, program)
 
