@@ -34,7 +34,8 @@ Quickstart
 
     /var/log/oam/[TODAYS_DATE]
 
-  You can browse the contents of that directory using ``ranger(1)`` from ``oam watch`` by typing: `Control-N`
+  You can browse the contents of that directory using `ranger(1) <http://ranger.nongnu.org/>`_
+  from ``oam watch`` by typing: `Control-N`
 
   You can inspect the current list of ebuilds being merged by selecting the ``merge.log`` file in that directory (typing `Control-R` from ``oam watch`` will bring that up directly).
 
