@@ -1,9 +1,9 @@
-.\" Manpage for gentoo-oam
-.TH man 8 "10 May 2015" "1.0" "gentoo-expire man page"
+.\" Manpage for oam
+.TH man 8 "10 May 2015" "1.0" "oam expire man page"
 
 .SH NAME
 
-oam expire \- prune old log file sets written by gentoo-oam
+oam expire \- prune old log file sets written by oam
 
 .SH SYNOPSIS
 
@@ -23,22 +23,22 @@ The installation installs a script into /etc/cron.daily.
 
 The expiry implementation is provided by: '/usr/sbin/oam expire'
 
-See the OAM_KEEPLOGS setting to configure how many log file sets are kept.
+See the oam.logs.keep setting to configure how many log file sets are kept.
 
 .SH SYSTEM SETTINGS
 .P
 .TP
-.BI OAM_KEEPLOGS
+.BI oam.logs.keep
 The number of sync/update log sets to keep. Defaults to 10
 .TP
-.BI OAM_LOGDIR
-The location where gentoo-oam logs will be sent/stored. Defaults to /var/log/oam
+.BI oam.logs.directory
+The location where oam logs will be sent/stored. Defaults to /var/log/oam
 
 .SH FILES
 
 .TP
-.BI /etc/gentoo-oam.conf
-gentoo-oam system configuration
+.BI /etc/oam/oam.yaml
+oam system configuration
 .TP
 .BI /var/log/oam/expire.log
 expiry actions are logged to this file (by action of the cron script - otherwise logging is sent

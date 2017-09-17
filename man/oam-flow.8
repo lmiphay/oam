@@ -1,11 +1,13 @@
-.\" Manpage for gentoo-oam
-.TH man 8 "10 July 2015" "1.0" "oam-flow man page"
+.\" Manpage for oam
+.TH man 8 "10 July 2015" "1.0" "oam flow man page"
 
 .SH NAME
-oam-flow \- workflow runner for a gentoo server
+oam flow \- workflow runner for a gentoo server
 
 .SH SYNOPSIS
-oam-flow [-d] flowname \- run a specified flow
+oam flow [-d] flowname \- run a specified flow
+
+oam step [-d] stepname \- run a specified step
 
 .SH DESCRIPTION
 
@@ -24,112 +26,31 @@ run detached (the flow will not wait for the action to complete before starting 
 An example flow definition
 .PP
 .RS 0
-        oam-sync
+        sync
 .RS 0
-        oam-glsa
+        glsa
 .RS 0
-        oam-fetch
+        fetch
 .RS 0
-        oam-update "laptop:oam-flow weekly &"
+        update
 .RS 0
-        oam-qcheck
+        qcheck
 .PP
-In this example the first three stages run strictly one-after-the-other.
-The fourth stage will run two steps in parallel, with the second step running
-a remote call to the "laptop" server (detached in this case by the presence of the ampersand).
-The final stage (oam-qcheck) will only run after the oam-update has completed.
+In this example the stages run one-after-the-other.
 .PP
-The stages/steps for a flow FLOWNAME are defined in the OAM_FLOW variable in: /etc/gentoo-oam.d/FLOWNAME.conf
-
-Other settings specific to the flow can also be added to this configuration file and
-they will override the system settings found in /etc/gentoo-oam.conf
-.PP
-For example a workflow specific OAM_ONERROR handler can be defined for the workflow here as
-well.
-.P
-Non gentoo-oam steps can be added to the new workflow provided that:
-.IP \(bu
-The step should handle its own logging - gentoo-oam will capture output
-to /var/oam/DATE/FLOWNAME.log
-.IP \(bu
-The step should return 0 to indicate that the action succeeded. If it returns a
-non-zero result then the workflow will be aborted at that point (and the on error
-handler called if one has been defined).
-
-.P
-Example 1: in /etc/gentoo-oam.d/local.conf (note dummy scripts for illustration purposes):
-.PP
-.RS 0
-OAM_FLOW='
-.RS 0
-	localdumpfs.sh
-.RS 0
-	oam-depclean
-.RS 0
-	oam-emptytree
-.RS 0
-	rdumpfs-rota-daily
-.RS 0
-	localfstrim.sh
-.RS 0
-	smartctl-start.sh
-.RS 0
- '
-.RS 0
-OAM_ONERROR="localonerrorhandler.sh"
-
-.P
-Example 2: for an lxc which has bind-mounted access to a host servers portage - in /etc/gentoo-oam.d/my-lxc.conf:
-.PP
-.RS 0
-OAM_FLOW='
-.RS 0
-	oam-glsa
-.RS 0
-	oam-layman
-.RS 0
-	oam-update
-.RS 0
-	oam-qcheck
-.RS 0
- '
-.RS 0
-
-.P
-Example 3: for a server (myhost) which also hosts an lxc (mylxc) - in /etc/gentoo-oam.d/myhost.conf:
-.PP
-.RS 0
-OAM_FLOW='
-.RS 0
-        oam-sync
-.RS 0
-        oam-glsa oam-fetch
-.RS 0
-        oam-update
-.RS 0
-        oam-clean oam-qcheck "mylxc:oam go &"
-.RS 0
-        oam-kernel
-.RS 0
- '
-.RS 0
-This waits until the host update completes and then runs the lxc update in parallel with
-the host clean/qcheck jobs.
+The stages/steps for a flow are defined in: /etc/oam/oam.yaml
 
 .SH FILES
 
 .TP
-.BI /etc/gentoo-oam.conf
-gentoo-oam system configuration
-.TP
-.BI /etc/gentoo-oam.d/weekly.conf
-example configuration - "weekly" flow
+.BI /etc/oam/oam.yaml
+oam system configuration
 
 .SH BUGS
 None.
 
 .SH SEE ALSO
-gentoo-oam(8), emaint(1), emerge(1), eclean(1), glsa-check(1), qcheck(1), logrotate(8),
+oam(8), emaint(1), emerge(1), eclean(1), glsa-check(1), qcheck(1), logrotate(8),
 eix(1), genlop(1), ts(1), multitail(1)
 
 .SH AUTHOR

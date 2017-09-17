@@ -26,6 +26,11 @@ setup(name='oam',
                                            'etc/localtasks/skel.py']),
                   ('/etc/cron.daily', ['etc/cron.daily/oam']),
                   ('/etc/cron.monthly', ['etc/cron.monthly/oam-depclean-check']),
-                  ('/usr/share/man/man8', ['man/oam.8'])
+                  ('/usr/share/man/man8', ['man/oam.8',
+                                           'man/oam-expire.8',
+                                           'man/oam-flow.8',
+                                           'man/oam-pretend.8',
+                                           'man/oam-watch.8'
+                  ])
       ]
 )
