@@ -37,9 +37,9 @@ class Inv(object):
         for key, value in taskspec.iteritems():
             if key!='task_name':
                 argv.append('--{}={}'.format(key, value))
-        oam.log.info('task start - {}'.format(argv))
+        oam.log.info('task start - {}'.format(argv[1]))
         self.program.run(argv=argv)
-        oam.log.info('task complete - {}'.format(argv))
+        oam.log.info('task complete - {}'.format(argv[1]))
 
     def run_task(self, taskname):
         if type(taskname)==tuple:
