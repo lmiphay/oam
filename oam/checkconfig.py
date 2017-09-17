@@ -11,7 +11,7 @@ import click
 from .cmd import cli
 import oam.settings
 
-EXPIRE_LOG = '{}/expire.log'.format(oam.settings.logdir())
+EXPIRE_LOG = '{}/expire.log'.format(oam.settings.oam.logs.directory)
 
 class CheckConfig(object):
     """ Check:

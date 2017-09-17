@@ -33,7 +33,7 @@ DEFAULTS = {
         'go': 'weekly',
         'heartbeatsleep': 5,
         'logs': {
-            'dir': '/var/log/oam',
+            'directory': '/var/log/oam',
             'keep': 10             # number of iterations of logs to keep
         },
         'review': {
@@ -117,13 +117,9 @@ class Settings(object): # types.ModuleType
         print(4, self.conf.portage.configroot, 5)
         return self.get_attr(self.conf, attr.split('.'))
 
-    def logdir(self):
-        return self.conf['oam']['logs']['dir']
-
 old_module = sys.modules[__name__]
 
 SETTINGS = Settings()
-SETTINGS.conf.logdir = SETTINGS.logdir
 
 @cli.command()
 def settings():

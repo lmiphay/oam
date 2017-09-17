@@ -14,8 +14,6 @@ import re
 from .cmd import cli
 import oam.settings
 
-LOG_DIR = oam.settings.logdir()
-
 def timestamp():
     return time.strftime('%Y%m%d:%H:%M:%S')
 
@@ -23,7 +21,7 @@ def today():
     return datetime.datetime.fromtimestamp(time.time()).strftime('%Y%m%d')
 
 def day_runs():
-    return sorted(filter(re.compile(r'\d{8}').match, os.listdir(LOG_DIR)))
+    return sorted(filter(re.compile(r'\d{8}').match, os.listdir(oam.settings.oam.logs.directory)))
 
 def last_day():
     """Return the most recent day we have an oam run for; e.g. 20160801"""
@@ -34,7 +32,7 @@ def last_day():
         return None
 
 def last_date():
-    datedir = sorted(glob.glob(oam.settings.logdir() + '/2*'))
+    datedir = sorted(glob.glob(oam.settings.oam.logs.directory + '/2*'))
     if len(datedir) > 0:
         return datedir[-1]
     else:
@@ -57,10 +55,10 @@ def get_logfile(ident, mergelog=False):
         If mergelog is True, then a symbolic link is created pointing to the file
         from /var/log/oam/<TODAY>/<ident.log>
     """
-    daydir = '{}/{}'.format(LOG_DIR, today())
+    daydir = '{}/{}'.format(oam.settings.oam.logs.directory, today())
     if mergelog:
         subdir = time.strftime('%H%M%S')
-        dirname = '{}/{}/{}'.format(LOG_DIR, today(), subdir)
+        dirname = '{}/{}/{}'.format(oam.settings.oam.logs.directory, today(), subdir)
     else:
         dirname = daydir
     if not os.path.isdir(dirname):
@@ -97,7 +95,7 @@ class DayLog(object):
 
     def __init__(self, day=today()):
         self.day = day
-        self.daydir = "{}/{}".format(LOG_DIR, day)
+        self.daydir = "{}/{}".format(oam.settings.oam.logs.directory, day)
 
     def day_dir(self):
         return self.daydir
@@ -119,7 +117,7 @@ DAYLOG = DayLog()
 @cli.command()
 def logdir():
     """Return the configured oam log directory"""
-    print(LOG_DIR)
+    print(oam.settings.oam.logs.directory)
     return 0
 
 @cli.command()

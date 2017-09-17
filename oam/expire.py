@@ -63,7 +63,7 @@ class OAMExpire(object):
             self.logger.log(logging.ERROR, '%s is missing', self.olddir)
 
 @cli.command()
-@click.option('--logdir', default=oam.settings.logdir(), help='location of logs directory')
+@click.option('--logdir', default=oam.settings.oam.logs.directory, help='location of logs directory')
 @click.option('--keeplogs', default=int(oam.settings.oam.logs.keep), help='number of iterations of logs to keep')
 @click.option('--dryrun/--no-dryrun', default=False, help='whether files should actually be removed')
 def expire(logdir, keeplogs, dryrun):

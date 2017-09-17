@@ -6,7 +6,7 @@ import os.path
 import time
 import oam.settings
 
-OAM_LOGDIR = oam.settings.logdir()
+OAM_LOGDIR = oam.settings.oam.logs.directory
 
 def timestamp():
     return time.strftime('%Y%m%d:%H:%M:%S')

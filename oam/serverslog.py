@@ -15,7 +15,7 @@ import oam.settings
 class ServersLog(object):
     """Name/open normal-log and error-log files"""
 
-    LOGROOT = oam.settings.logdir()
+    LOGROOT = oam.settings.oam.logs.directory
     HOSTNAME = os.uname()[1]
 
     def __init__(self, default_logname = 'unknown'):

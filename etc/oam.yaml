@@ -32,7 +32,7 @@ oam:
     opts: '--backtrack=50 --deep --verbose --verbose-conflicts'
   go: weekly
   logs:
-    dir: '/var/log/oam'
+    directory: '/var/log/oam'
     keep: 10
   heartbeat:
     sleep: 5

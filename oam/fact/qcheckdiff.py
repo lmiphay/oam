@@ -8,12 +8,13 @@ import logging
 import click
 
 from oam.facts import facts
-from oam.daylog import last_day, prev_day, DayLog, LOG_DIR
+from oam.daylog import last_day, prev_day, DayLog
+import oam.settings
 
 def fact(day=last_day()):
     """Return the differences between specified and previous-to-it qcheck run"""
-    prevqcheck_file = '{}/{}/qcheck.log'.format(LOG_DIR, prev_day(day))
-    daycheck_file = '{}/{}/qcheck.log'.format(LOG_DIR, day)
+    prevqcheck_file = '{}/{}/qcheck.log'.format(oam.settings.oam.logs.directory, prev_day(day))
+    daycheck_file = '{}/{}/qcheck.log'.format(oam.settings.oam.logs.directory, day)
     result = []
     if os.path.isfile(prevqcheck_file) and os.path.isfile(daycheck_file):
         cmd = 'diff -u {} {}'.format(prevqcheck_file, daycheck_file)
