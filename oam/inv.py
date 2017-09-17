@@ -1,18 +1,41 @@
 # -*- coding: utf-8 -*-
 
+import glob
+import imp
 import pprint
+import os.path
+import sys
 
 import click
 
-from .cmd import cli
-
+from oam.cmd import cli
 import oam.log
 import oam.tasks
 import oam.oaminvoke
 import oam.settings
 
 import invoke
-from invoke.tasks import Call
+from invoke.tasks import Call # for monkey patch
+
+def add_modules(ns, location):
+    package = os.path.basename(os.path.dirname(location))
+
+    oam.log.info('add modules from {} to invoke collection: {}'.format(location, package))
+
+    try:
+        sys.path.insert(0, location)
+
+        for mod in glob.glob('{}/*.py'.format(location)):
+            oam.log.info('  checking: {}'.format(mod))
+
+            if not mod.endswith('__init__.py'):
+                # foo = imp.load_source('module.name', '/path/to/file.py')
+                modname = os.path.basename(mod)[:-3]
+                oam.log.info('  load_source: {}.{} {}'.format(package, modname, mod))
+                newmod = imp.load_source('{}.{}'.format(package, modname), mod)
+                ns.add_collection(newmod)
+    finally:
+        del sys.path[0]
 
 def oam_make_context(self, config):
     """
@@ -24,6 +47,7 @@ class Inv(object):
 
     def __init__(self):
         self.wire()
+        add_modules(oam.tasks.ns, '/etc/oam/localtasks') # Fixme - need to run from source tree
         self.program = invoke.Program(namespace=oam.tasks.ns, version='0.0.1')
 
     def wire(self):

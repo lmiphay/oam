@@ -3,5 +3,5 @@ from invoke import task
 
 @task(default=True)
 def skel(ctx):
-    ctx.run('/bin/echo "hello world"')
+    ctx.run('/bin/echo "hello world"', echo_result=True)
 
