@@ -22,6 +22,8 @@ The philosophy is to:
 
 See :doc:`changelog` for changes in this version.
 
+See :doc:`config` for an overview of how to configuration ``oam``.
+
 
 Workflows
 ---------
@@ -96,6 +98,7 @@ Why should you not use oam?
    :caption: Contents:
 
    quickstart
+   config
    changelog
    priorart
 
