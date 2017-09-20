@@ -53,7 +53,7 @@ Configuration
 
     $ oam inv -l | grep skel
      'skel.skel': ['skel'],
-    $ oam step skel
+    $ oam task skel
     hello world
 
     $

@@ -22,12 +22,10 @@ See the [docs](http://oam.readthedocs.io/en/latest/) for details.
 
 #### Workflows
 
-Workflows are a sequence of steps which are executed in sequence, stopping
+Workflows are a sequence of tasks which are executed in sequence, stopping
 at the first failure.
 
-Each step consists of one or more tasks.
-
-For example the `weekly` workflow will run these steps:
+For example the `weekly` workflow will run:
 
 <dl>
 <dt>sync  </dt> <dd><pre>emaint --auto sync, layman --sync=ALL, eix-update/eix-remote</pre></dd>

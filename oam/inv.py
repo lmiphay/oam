@@ -70,7 +70,7 @@ class Inv(object):
             taskname = taskname[0]
         self.run_parameterised_task({'task_name': taskname})
 
-    def run_steps(self, steps):
+    def run_tasks(self, steps):
         for step in steps:
             self.run_task(step)
         return 0
@@ -103,10 +103,10 @@ class Inv(object):
 
 @cli.command()
 @click.option('--l', '-l', is_flag=True, default=None, help='list available tasks')
-@click.option('--flow', is_flag=True, default=True, help='arguments are flows (not steps)')
-@click.option('--step', is_flag=True, default=False, help='arguments are steps (not flows)')
+@click.option('--flow', is_flag=True, default=True, help='arguments are flows (not tasks)')
+@click.option('--task', is_flag=True, default=False, help='arguments are tasks (not flows)')
 @click.argument('tasks', nargs=-1)
-def inv(l, flow, step, tasks):
+def inv(l, flow, task, tasks):
     """
     Sequentially invoke one or more tasks, or flows
     """
@@ -117,8 +117,8 @@ def inv(l, flow, step, tasks):
     if l is not None:
         pprint.pprint(oam.tasks.ns.task_names)
         return 0
-    elif step:
-        return Inv().run_steps(tasks)
+    elif task:
+        return Inv().run_tasks(tasks)
     elif flow:
         return Inv().run_flows(tasks)
     else:
@@ -134,9 +134,9 @@ def flow(flows):
     return Inv().run_flows(flows)
 
 @cli.command()
-@click.argument('steps', nargs=-1)
-def step(steps):
+@click.argument('tasks', nargs=-1)
+def task(tasks):
     """
-    Sequentially invoke one (or more) step(s)
+    Sequentially invoke one (or more) tasks(s)
     """
-    return Inv().run_steps(steps)
+    return Inv().run_tasks(tasks)

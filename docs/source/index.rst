@@ -28,16 +28,16 @@ See :doc:`config` for an overview of how to configuration ``oam``.
 Workflows
 ---------
 
-Workflows are a sequence of steps which are executed in sequence, stopping
-at the first failure.
+Workflows are a sequence of tasks which are executed in sequence, stopping
+at the first failure. A task must complete successfully before the next
+task starts.
 
-Each step consists of one or more tasks. Generally all tasks in a step must
-complete successfully before the next step starts.
+A task can consist of one or more `invoke <http://www.pyinvoke.org/>`_ tasks.
 
-For example the `weekly` workflow will run these steps:
+For example the `weekly` workflow will run these tasks:
 
 +------------+-----------------------------------------+
-| Step Name  | Commands                                |
+| Task Name  | Commands                                |
 +============+=========================================+
 | ``sync``   | -  ``emaint --auto sync``               |
 |            | -  ``layman --sync=ALL``                |
@@ -59,7 +59,7 @@ For example the `weekly` workflow will run these steps:
 | ``qcheck`` | - ``qcheck --all``                      |
 +------------+-----------------------------------------+
 
-Steps (or tasks) can be skipped for a particular server (by configuration).
+Tasks can be added/skipped by configuration.
 
 Manual Operations
 -----------------
