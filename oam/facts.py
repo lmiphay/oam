@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
@@ -7,7 +6,8 @@ import time
 import click
 import importlib
 import yaml
-from .cmd import cli
+
+from oam.cmd import cli
 from oam.daylog import last_day
 
 FACT = [
