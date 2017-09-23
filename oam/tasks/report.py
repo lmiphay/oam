@@ -7,10 +7,11 @@ import oam.facts
 import oam.report
 import oam.settings
 
+# daydir should be similar to: 20160403 
 @task(default=True)
-def report(ctx):
-    logdir = oam.settings.oam.logs.dir # /var/log/oam
-    daydir = oam.daylog.last_day()     # 20160403
+def report(ctx, daydir=oam.daylog.last_day())
+    logdir = oam.settings.oam.logs.directory  # e.g. /var/log/oam
+
     with ctx.cd('{}/{}'.format(logdir, daydir)):
         oam.facts.write_facts(daydir, 'summary.yaml')
         with open('summary.log', 'w') as summary:
