@@ -10,11 +10,11 @@ Quickstart
 
     /var/lib/layman/lmiphay/oam.keywords
 
-  The contents should be added to: ``/etc/portage/package.keywords``
+  Add the contents to: ``/etc/portage/package.keywords``
 
   Then::
 
-    # emerge oam
+    # emerge app-oam/oam
 
   The `getoam.sh <https://raw.githubusercontent.com/lmiphay/oam/master/bin/getoam.sh>`_ script attempts to run all of these steps.
 
