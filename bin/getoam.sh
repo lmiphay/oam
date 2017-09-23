@@ -21,4 +21,10 @@ die()
 
 [ ! -h "$keywords_link" ] && { ln -s "$keywords" "$keywords_link" || die "failed to symlink oam keywords file: ${keywords_link}"; }
 
-exec emerge app-portage/oam
+if grep -q 'app-oam' /etc/portage/categories 2>/dev/null; then
+    echo "app-oam is already entered into /etc/portage/categories"
+else
+    echo 'app-oam' >>/etc/portage/categories
+fi
+
+exec emerge app-oam/oam
