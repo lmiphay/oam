@@ -20,7 +20,10 @@ def helper(ctx):
             
 def run(cmd, arg):
     """Run the specified program via subprocess"""
-    oam.log.info('subprocess - {} {}'.format(cmd, arg))
+    try:
+        oam.log.info('subprocess - {} {}'.format(cmd, arg))
+    except BaseException as ex:
+        sys.stderr.write('exception occurred logging helper start: {}\n'.format(ex))
     return subprocess.call('{} {}'.format(cmd, arg), shell=True)
     
 @helper.command()
