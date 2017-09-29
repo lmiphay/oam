@@ -10,8 +10,8 @@ def check_for_executable(filename):
 
 def is_update_available(atom):
     """return True if there is an update available for atom"""
-    return Pkg().is_update_available(atom)
+    return oam.pkg.Pkg().is_update_available(atom)
 
 def preserved_libs():
     """return True if there are preserved libraries"""
-    return len(Pkg().preserved_libs())>0
+    return len(oam.pkg.Pkg().preserved_libs())>0
