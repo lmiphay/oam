@@ -13,4 +13,4 @@ Prior Art
 * `autoupdating on reddit <https://www.reddit.com/r/Gentoo/comments/3w2od1/update_gentoo_autoupdating/>`_.
 * `linux config scripts <https://github.com/jappeace/linux-config/tree/master/scripts>`_.
 * `gentoo-sources-compilation-helper <https://github.com/rewtnull/gentoo-sources-compilation-helper>`_.
-
+* `Upgrading Gentoo kernel automatically <https://elbauldelprogramador.com/en/upgrade-gentoo-kernel-automatically/>`_.
