@@ -15,6 +15,7 @@ import jdk
 import kernel
 import layman
 import newuse
+import perl
 import qcheck
 import report
 import skel
@@ -36,6 +37,7 @@ ns.add_collection(jdk)
 ns.add_collection(kernel)
 ns.add_collection(layman)
 ns.add_collection(newuse)
+ns.add_collection(perl)
 ns.add_collection(qcheck)
 ns.add_collection(report)
 ns.add_collection(skel)
