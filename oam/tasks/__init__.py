@@ -3,6 +3,7 @@
 import invoke
 
 import clean
+import config
 import depclean
 import eix
 import emptytree
@@ -25,6 +26,7 @@ import update
 ns = invoke.Collection()
 
 ns.add_collection(clean)
+ns.add_collection(config)
 ns.add_collection(depclean)
 ns.add_collection(eix)
 ns.add_collection(emptytree)
