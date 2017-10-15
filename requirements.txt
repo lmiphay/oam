@@ -1,0 +1,9 @@
+psutil>=5.2.2
+eliot>=1.0.0
+click>=6.6
+invoke>=0.21.0
+eliot_tree>=17.0.0
+attrdict>=2.0.0
+Jinja2>=2.9.5
+inotifyx>=0.2.2
+PyYAML>=3.12
