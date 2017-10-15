@@ -3,12 +3,13 @@
 from __future__ import print_function
 import os
 import re
+import sys
 import yaml
 
 from invoke import task
 
 TOOLS = [
-    'binutils'
+    'binutils' # also available as 'eselect binutils list'
     ,'gcc'
 ]
 
@@ -36,30 +37,27 @@ def latest(ctx, profile='gcc'):
     return available(ctx, profile)[-1]
 
 @task
-def current_is_latest(ctx, profile='gcc', version_check=True):
-    """check if the current profile is the latest installed.
-       optionally raise an exception if its not.
-    """
-    if current(ctx, profile) == latest(ctx, profile):
-        return True
-    else:
-        if version_check:
-            raise RuntimeError('current {profile} is not the latest installed'.format(profile=profile))
-        return False
+def is_latest(ctx, profile='gcc'):
+    """check if the current profile is the latest installed"""
+    return current(ctx, profile) == latest(ctx, profile)
 
 @task
-def show(ctx, profile='gcc'):
-    """show the current and and latest available profiles"""
-    print(current(ctx, profile), latest(ctx, profile))
+def require_latest(ctx, profile='gcc'):
+    """raise an exception if the current profile is the latest installed"""
+    if not is_latest(ctx, profile):
+        raise RuntimeError('current {profile} is not the latest installed'.format(profile=profile))
+
+ATTRIBUTES = ['current', 'latest', 'is_latest', 'available']
 
 @task
-def profiles(ctx, profile='gcc'):
-    """dump the currently selected and available profiles"""
-    config = {}
+def profiles(ctx):
+    """return the currently selected and available profiles"""
+    result = {}
     for tool in TOOLS:
-        config[tool] = {}
-        config[tool]['current'] = current(ctx, tool)
-        config[tool]['latest'] = latest(ctx, tool)
-        config[tool]['is_latest'] = current_is_latest(ctx, tool, version_check=False)
-        config[tool]['available'] = available(ctx, tool)
-    print(yaml.dump({'config': config}, default_flow_style=False))
+        result[tool] = {key: globals()[key](ctx, tool) for key in ATTRIBUTES}
+    return {'config': result}
+
+@task(default=True)
+def show(ctx):
+    """show the current and latest available profiles"""
+    print(yaml.dump(profiles(ctx), default_flow_style=False))
