@@ -19,6 +19,7 @@ import newuse
 import perl
 import qcheck
 import report
+import resume
 import skel
 import sync
 import update
@@ -42,6 +43,7 @@ ns.add_collection(newuse)
 ns.add_collection(perl)
 ns.add_collection(qcheck)
 ns.add_collection(report)
+ns.add_collection(resume)
 ns.add_collection(skel)
 ns.add_collection(sync)
 ns.add_collection(update)
