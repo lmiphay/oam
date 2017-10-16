@@ -6,7 +6,7 @@ flows:
     - [ clean, qcheck ]
     - kernel
     - report
-  resume:
+  finish:
     - update
     - [ clean, qcheck ]
     - kernel
