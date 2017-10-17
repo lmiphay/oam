@@ -11,9 +11,10 @@ from invoke import task
 MTIMEDB = '/var/cache/edb/mtimedb'
 
 @task(default=True)
-def resume(ctx):
-    """resume the last interrupted merge"""
-    ctx.emerge('--resume')
+def resume(ctx, extraopt='', env={}):
+    """resume the last interrupted merge; extraopt=--skipfirst"""
+    ctx.emerge('--resume {extraopt}'.format(extraopt=extraopt),
+               env=env)
 
 @task
 def clean(ctx):
