@@ -7,6 +7,18 @@ from oam.daylog import last_day
 import oam.facts
 from oam.report import Report
 import oam.settings
+import oam.tasks.config
+
+@task
+def facts(ctx, daydir=last_day()):
+    context = oam.facts.get_facts(daydir)
+    context.update(oam.tasks.config.profiles(ctx))
+    return context
+
+@task
+def write(ctx, context, out_filename='summary.log', template='summary.jinja2'):
+    with open(out_filename, 'w') as summary:
+        summary.write(Report(context).render(template))
 
 # daydir should be similar to: 20160403 
 @task(default=True)
@@ -15,8 +27,6 @@ def report(ctx, daydir=last_day()):
     curdir = os.getcwd()
     try:
         os.chdir('{}/{}'.format(logdir, daydir))
-        oam.facts.write_facts(daydir, 'summary.yaml')
-        with open('summary.log', 'w') as summary:
-            summary.write(Report().build(['summary.yaml']).render('summary.jinja2'))
+        write(ctx, facts(ctx, daydir))
     finally:
         os.chdir(curdir)
