@@ -13,6 +13,12 @@ import oam.settings
 
 LOGFILE = oam.settings.oam.emerge.log
 
+# 1506776832:  ::: completed emerge (43 of 44) sys-fs/e2fsprogs-1.43.3-r1 to /
+MERGE_RECORD = r'(\d+)::  ::: completed emerge \(\d+ of \d+\) ([-\w\d\.]+) to '
+
+def current_size():
+    return os.stat(LOGFILE).st_size
+
 class EmergeLog(object):
 
     def __init__(self, logfile=LOGFILE):
