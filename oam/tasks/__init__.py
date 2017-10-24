@@ -2,27 +2,27 @@
 
 import invoke
 
-import clean
-import config
-import depclean
-import eix
-import emptytree
-import expire
-import fetch
-import flow
-import gcc
-import glsa
-import jdk
-import kernel
-import layman
-import newuse
-import perl
-import qcheck
-import report
-import resume
-import skel
-import sync
-import update
+from oam.tasks import clean
+from oam.tasks import config
+from oam.tasks import depclean
+from oam.tasks import eix
+from oam.tasks import emptytree
+from oam.tasks import expire
+from oam.tasks import fetch
+from oam.tasks import flow
+from oam.tasks import gcc
+from oam.tasks import glsa
+from oam.tasks import jdk
+from oam.tasks import kernel
+from oam.tasks import layman
+from oam.tasks import newuse
+from oam.tasks import perl
+from oam.tasks import qcheck
+from oam.tasks import report
+from oam.tasks import resume
+from oam.tasks import skel
+from oam.tasks import sync
+from oam.tasks import update
 
 ns = invoke.Collection()
 
