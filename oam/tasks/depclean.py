@@ -10,10 +10,10 @@ def newuse(ctx):
     """bring the system up-to-date prior to a depclean run"""
     ctx.emerge('--update --newuse --deep --with-bdeps=y world')
 
-@task(default=True, pre=[newuse])
+@task(default=True)
 def pretend(ctx):
     """list packages that would be removed"""
-    ctx.emerge('--pretend --depclean world')
+    ctx.emerge('--pretend --depclean')  # , capture_buffer_size=10240
 
 @task(aliases=['format'])
 def reformat(ctx, deps='-'):
@@ -21,7 +21,7 @@ def reformat(ctx, deps='-'):
     for line in sys.stdin if deps=='-' else open(deps).readlines():
         if 'All selected packages:' in line:
             for atom in sorted(line.replace('All selected packages:', '').split()):
-                print('={}'.format(atom))
+                print(atom)
 
 @task
 def add(ctx, atom):
