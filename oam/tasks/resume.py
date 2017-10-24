@@ -61,4 +61,4 @@ def record(ctx, daydir=last_day()):
     """save a copy of mtimedb to the /var/log/oam/[daydir] in yaml format"""
     yaml.dump(json.loads(open(MTIMEDB).read()),
               open('{}/{}/mtimedb-{}.yaml'.format(OAM_LOGDIR, daydir, os.path.getmtime(MTIMEDB)), 'w'),
-              default_flow_style=False))
+              default_flow_style=False)
