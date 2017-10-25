@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
 import glob
 import imp
 import pprint
@@ -15,12 +16,28 @@ import oam.oaminvoke
 import oam.settings
 
 import invoke
-from invoke.tasks import Call # for monkey patch
+from invoke.tasks import Call # for monkey patch (see: wire() )
+
+def oam_make_context(self, config):
+    """
+    Generate an oam Context for the call, using the given config.
+    """
+    return oam.oaminvoke.Context(config=config)
+
+def wire():
+    """
+    Hook-up oam runtime with the invoke library
+    """
+    Call.make_context = oam_make_context
 
 def add_modules(ns, location):
     package = os.path.basename(os.path.dirname(location))
 
-    oam.log.info('add modules from {} to invoke collection: {}'.format(location, package))
+    if os.path.exists(location):
+        oam.log.info('add modules from {} to invoke collection: {}'.format(location, package))
+    else:
+        oam.log.info('add modules: {} does not exist'.format(location))
+        return
 
     try:
         sys.path.insert(0, location)
@@ -37,24 +54,16 @@ def add_modules(ns, location):
     finally:
         del sys.path[0]
 
-def oam_make_context(self, config):
-    """
-    Generate an oam Context for the call, using the given config.
-    """
-    return oam.oaminvoke.Context(config=config)
 
 class Inv(object):
 
     def __init__(self):
-        self.wire()
+        wire()
         add_modules(oam.tasks.ns, '/etc/oam/localtasks') # Fixme - need to run from source tree
-        self.program = invoke.Program(namespace=oam.tasks.ns, version='0.0.1')
+        self.program = invoke.Program(namespace=oam.tasks.ns, version='0.1.0')
 
-    def wire(self):
-        """
-        Hook-up oam runtime with the invoke library
-        """
-        Call.make_context = oam_make_context
+    def run(self, argv):
+        return self.program.run(argv=argv)
 
     def run_parameterised_task(self, taskspec):
         argv = ['oaminv', taskspec['task_name']]
@@ -101,29 +110,13 @@ class Inv(object):
             self.run_flow(self.get_flow(flowname))
             oam.log.info('flow complete - {}'.format(flowname))
 
-@cli.command()
-@click.option('--l', '-l', is_flag=True, default=None, help='list available tasks')
-@click.option('--flow', is_flag=True, default=True, help='arguments are flows (not tasks)')
-@click.option('--task', is_flag=True, default=False, help='arguments are tasks (not flows)')
-@click.argument('tasks', nargs=-1)
-def inv(l, flow, task, tasks):
+@cli.command(name='tasks')
+def list_tasks():
     """
-    Sequentially invoke one or more tasks, or flows
+    List available tasks
     """
-
-    if type(tasks)==str:
-        tasks = [tasks]
-
-    if l is not None:
-        pprint.pprint(oam.tasks.ns.task_names)
-        return 0
-    elif task:
-        return Inv().run_tasks(tasks)
-    elif flow:
-        return Inv().run_flows(tasks)
-    else:
-        oam.log.error('unclear if flow or step?')
-        return 1
+    pprint.pprint(oam.tasks.ns.task_names)
+    return 0
 
 @cli.command()
 @click.argument('flows', nargs=-1)
@@ -137,6 +130,7 @@ def flow(flows):
 @click.argument('tasks', nargs=-1)
 def task(tasks):
     """
-    Sequentially invoke one (or more) tasks(s)
+    Sequentially invoke one (or more) tasks(s) - add an extra standalone '--'
+    before any options to tasks
     """
-    return Inv().run_tasks(tasks)
+    return Inv().run(['oam-task'] + list(tasks))
