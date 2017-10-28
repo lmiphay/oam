@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
 import os.path
+
 from invoke import task
 
 import oam.settings
@@ -21,15 +23,35 @@ jdk:
 # BASE_URL = 'http://download.oracle.com/otn-pub/java/jdk'
 # HEADER = '--header "Cookie: oraclelicense=accept-securebackup-cookie"'
 # OPTS = '--continue --no-check-certificate --no-cookies'
+#
+# http://download.oracle.com/otn-pub/java/jdk/8u151-b12/e758a0de34e24606bca991d704f6dcbf/jdk-8u151-linux-x64.tar.gz
 
 # in blocks and merge log files
 MATCH = 'Oracle requires you to download the needed files manually after'
 
-@task(default=True)
-def fetch(ctx, version='8u144', dest='/usr/portage/distfiles'):
-    """fetch the specified oracle jdk to the specified directory"""
-    specific_url = oam.settings.jdk[version]
-    ver = '{0}-{1}/jdk-{0}-linux-x64.tar.gz'.format(version, specific_url)
-    with ctx.cd(dest):
-        ctx.run('wget {} {} {}/{}'.format(oam.settings.jdk.opts, oam.settings.jdk.header, oam.settings.jdk.site, ver))
-        ctx.run('chown portage:portage {}'.format(os.path.basename(ver)))
+def jdk_filename():
+    return 'jdk-{version}-linux-x64.tar.gz'.format(version=oam.settings.jdk.version)
+
+
+def url():
+    """ http://download.oracle.com/otn-pub/java/jdk/8u151-b12/e758a0de34e24606bca991d704f6dcbf/jdk-8u151-linux-x64.tar.gz """
+    return '{site}/{version}-{specific_url}/{filename}'.format(site=oam.settings.jdk.site,
+                                                               version=oam.settings.jdk.version,
+                                                               specific_url=oam.settings.jdk.specific_url,
+                                                               filename=jdk_filename())
+
+@task
+def chown(ctx):
+    ctx.run('chown portage:portage {filename}'.format(filename=jdk_filename()))
+
+
+@task(default=True. post=[chown])
+def fetch(ctx, directory='/usr/portage/distfiles'):
+    """fetch the oracle jdk to directory"""
+    with ctx.cd(directory):
+        ctx.run('wget {opts} {header} {url}'.format(opts=oam.settings.jdk.opts,
+                                                    header=oam.settings.jdk.header,
+                                                    url=url()))
+@task
+def pretend(ctx):
+    print(url())
