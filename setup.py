@@ -20,8 +20,11 @@ setup(name='oam',
                     'share/summary.jinja2'
                    ]),
                   ('/etc/oam', ['etc/oam.yaml']),
-                  ('/etc/oam/conf.d', ['etc/conf.d/monthly.yaml',
-                                       'etc/conf.d/sync.yaml']),
+                  ('/etc/oam/conf.d', ['etc/conf.d/jdk.yaml',
+                                       'etc/conf.d/monthly.yaml',
+                                       'etc/conf.d/skel.yaml',
+                                       'etc/conf.d/sync.yaml'
+                  ]),
                   ('/etc/oam/localtasks', ['etc/localtasks/__init__.py',
                                            'etc/localtasks/skel.py']),
                   ('/etc/cron.daily', ['etc/cron.daily/oam']),
