@@ -34,6 +34,7 @@ class Context(invoke.Context):
 
             runner_class = self.config.get('runner', invoke.Local)
 
+            command = self._prefix_commands(command)  #  FIXME
             self.logger.info(command)
 
             result = runner_class(context=self).run(command, **kwargs)
