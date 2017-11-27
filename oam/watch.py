@@ -50,8 +50,6 @@ class Watch(object):
         )
 
     def run(self):
-        os.chdir(self.watch_dir) # this makes the multitail command line a _lot_ shorter
-
         cmd = [ 'multitail',
                 '-x', self.title(),
                 '--config', '/usr/share/oam/oam-multitail.conf',
@@ -87,7 +85,7 @@ class Watch(object):
         if extra_opt:
             cmd.append(extra_opt)
 
-        genlop = subprocess.Popen(['oam', 'genlop'], stdout=subprocess.PIPE)
+        genlop = subprocess.Popen(['oam', 'genlop'], stdout=subprocess.PIPE, cwd=self.watch_dir)
         multitail = subprocess.Popen(cmd, stdin=genlop.stdout, env=self.make_env())
 
         return multitail.wait()
