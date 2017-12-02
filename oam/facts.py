@@ -14,6 +14,7 @@ FACT = [
     'oam.fact.blocks',
     'oam.fact.checkconfig',
     'oam.fact.downgrades',
+    'oam.fact.gcc',
     'oam.fact.kernbuilt',
     'oam.fact.logdate',
     'oam.fact.merges',
