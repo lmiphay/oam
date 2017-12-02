@@ -7,9 +7,19 @@ import os
 from invoke import task
 from invoke.tasks import call
 
+CHOST = 'x86_64-pc-linux-gnu'
+
 PROFILE = 'default/linux/amd64/17.0/desktop/plasma'
+
 GCC_VER = '6.4.0'
 GCC_ATOM = 'sys-devel/gcc:{}'.format(GCC_VER)
+
+BINUTILS_VER = '2.29.1-r1'
+BINUTILS_ATOM = 'sys-devel/binutils'
+BINUTILS_ESELECT = '{}-2.29.1'.format(CHOST)
+
+def is_installed(atom, major_version)
+    return os.path.isdir('/var/db/pkg/{}-{}'.format(atom, major_version))
 
 @task
 def merge(ctx, atom):
@@ -21,7 +31,13 @@ def gcc_config(ctx):
     """check that 6.4.0 is actually installed already"""
     if not os.path.isdir('/var/db/pkg/sys-devel/gcc-{}'.format(GCC_VER)): # -rX should be allowed as well
         merge(ctx, GCC_ATOM)
-    ctx.run('gcc-config x86_64-pc-linux-gnu-{}'.format(GCC_VER), echo=True)
+    ctx.run('gcc-config {}-{}'.format(CHOST, GCC_VER), echo=True)
+
+@task
+def binutils(ctx):
+    if not os.path.isdir('/var/db/pkg/sys-devel/binutils-{}'.format(BINUTILS_VER)):
+        merge(ctx, BINUTILS_ATOM)
+    ctx.run('eselect binutils set {}'.format(BINUTILS_ESELECT))
 
 @task
 def libtool(ctx):
@@ -33,13 +49,13 @@ def profile(ctx):
 
 @task
 def base(ctx):
-    for atom in [GCC_ATOM, 'sys-devel/binutils', 'sys-libs/glibc']:
-        merge(ctx, atom) # need to select latest binutils
+    for atom in [GCC_ATOM, BINUTILS_ATOM, 'sys-libs/glibc']:
+        merge(ctx, atom)
 
 @task
 def world(ctx):
     merge('-e @world')
 
-@task(default=True, pre=[gcc_config, libtool, profile, base], post=[world])
+@task(default=True, pre=[gcc_config, binutils, libtool, profile, base], post=[world])
 def update(ctx):
     pass
