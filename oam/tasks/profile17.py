@@ -16,7 +16,7 @@ def libtool(ctx):
 
 @task
 def profile(ctx):
-    ctx.run.('eselect profile set default/linux/amd64/17.0/desktop/plasma')
+    ctx.run('eselect profile set default/linux/amd64/17.0/desktop/plasma')
 
 @task
 def base(ctx):
