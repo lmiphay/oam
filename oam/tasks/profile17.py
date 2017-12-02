@@ -3,7 +3,8 @@
 # ref: 2017-11-30-new-17-profiles
 #
 from __future__ import print_function
-import os
+
+import glob
 from invoke import task
 from invoke.tasks import call
 
@@ -19,8 +20,8 @@ BINUTILS_ATOM = 'sys-devel/binutils'
 BINUTILS_ESELECT = '{}-2.29.1'.format(CHOST)
 
 def is_installed(atom, major_version):
-     # -rX should be allowed as well
-    return os.path.isdir('/var/db/pkg/{}-{}'.format(atom, major_version))
+    """return True if the package is installed, -rX versions are counted"""
+    return len(glob.glob('/var/db/pkg/{}-{}'.format(atom, major_version))) > 0
 
 @task
 def merge(ctx, atom):
