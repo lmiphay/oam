@@ -56,12 +56,12 @@ def base(ctx):
 
 @task
 def world(ctx):
-    merge('--keep-going -e @world')
+    merge(ctx, '--keep-going -e @world')
 
 @task
 def minimum(ctx):
     """see: https://forums.gentoo.org/viewtopic-p-8149548.html#8149548"""
-    merge('/lib*/*.a /usr/lib*/*.a')
+    merge(ctx, '/lib*/*.a /usr/lib*/*.a')
 
 @task(default=True, pre=[gcc_config, binutils, libtool, profile, base], post=[minimum])
 def update(ctx):
