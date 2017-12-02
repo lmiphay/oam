@@ -1,4 +1,4 @@
-#!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 import os
 import sys
@@ -57,10 +57,13 @@ class OAMExpire(object):
             self.process_daydirs()
         else:
             self.logger.log(logging.ERROR, '%s is missing', self.logdir)
+            return 1
         if os.path.isdir(self.olddir):
             self.expire_old()
         else:
             self.logger.log(logging.ERROR, '%s is missing', self.olddir)
+            return 2
+        return 0
 
 @cli.command()
 @click.option('--logdir', default=oam.settings.oam.logs.directory, help='location of logs directory')
@@ -68,9 +71,6 @@ class OAMExpire(object):
 @click.option('--dryrun/--no-dryrun', default=False, help='whether files should actually be removed')
 def expire(logdir, keeplogs, dryrun):
     """Expire the oam logfiles"""
-    OAMExpire(logdir, keeplogs, dryrun).run()
-
-if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
 
-    sys.exit(OAMExpire(len(sys.argv)>1).run())
+    return OAMExpire(logdir, keeplogs, dryrun).run()
