@@ -6,6 +6,14 @@ Running kernel: {{ kernel }}
 Kernel built: {{ kernel_built }}
 Last sync'd on: {{ lastsync }}
 gentoo profile: {{ profile }}
+Gcc profile:
+  current: {{ gcc.current }}
+  available: {% for gcc in gcc.available %}
+    {{ gcc }} {% endfor %}
+Binutils profile:
+  current: {{ binutils.current }}
+  available: {% for binutil in binutils.available %}
+    {{ binutil }} {% endfor %}
 runs on the day: {{ runs }}
 Merges: {% for merge in merges %}
    {{ merge }} {% endfor %}
