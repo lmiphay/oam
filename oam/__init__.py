@@ -42,6 +42,7 @@ from oam.summary import summary
 from oam.events import Events, events
 
 from oam.facts            import write_facts
+from oam.fact.binutils    import binutils
 from oam.fact.blocks      import blocks
 from oam.fact.checkconfig import checkconfig
 from oam.fact.gcc         import gcc

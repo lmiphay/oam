@@ -11,6 +11,7 @@ from oam.cmd import cli
 from oam.daylog import last_day
 
 FACT = [
+    'oam.fact.binutils',
     'oam.fact.blocks',
     'oam.fact.checkconfig',
     'oam.fact.downgrades',
