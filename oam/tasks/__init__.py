@@ -17,6 +17,7 @@ from oam.tasks import kernel
 from oam.tasks import layman
 from oam.tasks import newuse
 from oam.tasks import perl
+from oam.tasks import profile17
 from oam.tasks import qcheck
 from oam.tasks import report
 from oam.tasks import resume
@@ -41,6 +42,7 @@ ns.add_collection(kernel)
 ns.add_collection(layman)
 ns.add_collection(newuse)
 ns.add_collection(perl)
+ns.add_collection(profile17)
 ns.add_collection(qcheck)
 ns.add_collection(report)
 ns.add_collection(resume)
