@@ -16,8 +16,10 @@ def fact(day=None):
     all_profiles = subprocess.check_output(LIST_COMMAND, shell=True).splitlines()
 
     return {
-        'current_gcc': current,
-        'available_gcc': [profile.strip().split()[1] for profile in all_profiles]
+        'gcc': {
+            'current': current,
+            'available': [profile.strip().split()[1] for profile in all_profiles]
+        }
     }
 
 @facts.command()

@@ -44,6 +44,7 @@ from oam.events import Events, events
 from oam.facts            import write_facts
 from oam.fact.blocks      import blocks
 from oam.fact.checkconfig import checkconfig
+from oam.fact.gcc         import gcc
 from oam.fact.kernbuilt   import kernbuilt
 from oam.fact.merges      import merges
 from oam.fact.obsolete    import obsolete
