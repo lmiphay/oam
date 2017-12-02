@@ -18,7 +18,8 @@ BINUTILS_VER = '2.29.1-r1'
 BINUTILS_ATOM = 'sys-devel/binutils'
 BINUTILS_ESELECT = '{}-2.29.1'.format(CHOST)
 
-def is_installed(atom, major_version)
+def is_installed(atom, major_version):
+     # -rX should be allowed as well
     return os.path.isdir('/var/db/pkg/{}-{}'.format(atom, major_version))
 
 @task
@@ -29,13 +30,13 @@ def merge(ctx, atom):
 @task
 def gcc_config(ctx):
     """check that 6.4.0 is actually installed already"""
-    if not os.path.isdir('/var/db/pkg/sys-devel/gcc-{}'.format(GCC_VER)): # -rX should be allowed as well
+    if not is_installed('sys-devel/gcc', GCC_VER):
         merge(ctx, GCC_ATOM)
     ctx.run('gcc-config {}-{}'.format(CHOST, GCC_VER), echo=True)
 
 @task
 def binutils(ctx):
-    if not os.path.isdir('/var/db/pkg/sys-devel/binutils-{}'.format(BINUTILS_VER)):
+    if not is_installed('sys-devel/binutils', BINUTILS_VER):
         merge(ctx, BINUTILS_ATOM)
     ctx.run('eselect binutils set {}'.format(BINUTILS_ESELECT))
 
