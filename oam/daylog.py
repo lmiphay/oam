@@ -74,6 +74,8 @@ def get_logfile(ident, mergelog=False):
         symlink = '{}/{}.log'.format(daydir, ident)
         if os.path.islink(symlink):
             os.remove(symlink)
+        elif os.path.isfile(symlink):
+            os.rename(symlink, '{}.{}.bogus'.format(symlink, int(time.time())))
         os.symlink(os.path.relpath(filename, daydir), symlink)
 
     return filename
