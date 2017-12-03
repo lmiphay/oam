@@ -32,7 +32,7 @@ def emptytree(ctx, extraopt=''):
 @task
 def resume(ctx, extraopt=''):
     """resume an interrupted emptytree world merge"""
-    oam.tasks.resume.resume(ctx, extraopt=extraopt,  env=EMPTYTREE_ENV)
+    oam.tasks.resume.resume(ctx, extraopt=extraopt, env=EMPTYTREE_ENV)
 
 @task(pre=[call(emptytree, extraopt='--pretend')])
 def manifest(ctx):
