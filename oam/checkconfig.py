@@ -25,6 +25,7 @@ class CheckConfig(object):
     DEFAULT_TARGETS = [
         ('file', '/etc/oam/oam.yaml',     [ ('mode',0o640), ('group',GROUP), ('owner',USER) ] ),
         ('dir',  '/etc/oam/conf.d',       [ ('mode',0o750), ('group',GROUP), ('owner',USER) ] ),
+        ('dir',  '/etc/oam/localtasks',   [ ('mode',0o750), ('group',GROUP), ('owner',USER) ] ),
         ('glob', '/etc/oam/conf.d/*',     [ ('mode',0o640), ('group',GROUP), ('owner',USER) ] ),
         ('dir',  '/var/log/oam',          [ ('mode',0o770), ('group',GROUP), ('owner',USER) ] ),
     ]
