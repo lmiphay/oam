@@ -60,8 +60,10 @@ def world(ctx):
 
 @task
 def minimum(ctx):
-    """see: https://forums.gentoo.org/viewtopic-p-8149548.html#8149548"""
-    merge(ctx, '/lib*/*.a /usr/lib*/*.a')
+    """see: https://forums.gentoo.org/viewtopic-p-8149548.html#8149548
+       also maybe: emerge -1 $(eix-installed-after -btF /usr/bin/gcc)
+    """
+    merge(ctx, '--exclude sys-libs/glibc /lib*/*.a /usr/lib*/*.a')
 
 @task(default=True, pre=[gcc_config, binutils, libtool, profile, base], post=[minimum])
 def update(ctx):
