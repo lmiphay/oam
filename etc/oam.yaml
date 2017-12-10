@@ -1,6 +1,7 @@
 flows:
   weekly:
     - sync
+    - layman
     - [ glsa, fetch ]
     - update
     - [ clean, qcheck ]
@@ -12,6 +13,7 @@ flows:
     - kernel
     - report
   lxc:
+    - layman
     - glsa
     - update
     - qcheck
