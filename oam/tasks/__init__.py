@@ -24,6 +24,7 @@ from oam.tasks import resume
 from oam.tasks import skel
 from oam.tasks import sync
 from oam.tasks import update
+from oam.tasks import wipe
 
 ns = invoke.Collection()
 
@@ -49,3 +50,4 @@ ns.add_collection(resume)
 ns.add_collection(skel)
 ns.add_collection(sync)
 ns.add_collection(update)
+ns.add_collection(wipe)
