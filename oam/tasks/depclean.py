@@ -13,7 +13,7 @@ def newuse(ctx):
 @task(default=True)
 def pretend(ctx):
     """list packages that would be removed"""
-    ctx.emerge('--pretend --depclean')  # , capture_buffer_size=10240
+    print(ctx.run('emerge --pretend --depclean', capture_buffer_size=10240).stdout)
 
 @task(aliases=['format'])
 def reformat(ctx, deps='-'):
@@ -25,5 +25,5 @@ def reformat(ctx, deps='-'):
 
 @task
 def add(ctx, atom):
-    """add package to the world file with rebuilding it"""
+    """add package to the world file without rebuilding it"""
     ctx.emerge('--noreplace {}'.format(atom))
