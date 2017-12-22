@@ -5,6 +5,7 @@
 from __future__ import print_function
 
 import glob
+import yaml
 from invoke import task
 from invoke.tasks import call
 
@@ -70,11 +71,16 @@ def minimum(ctx):
     """
     merge(ctx, '--exclude sys-libs/glibc /lib*/*.a /usr/lib*/*.a')
 
+def profile_config(ctx):
+    return {
+        'profile': current_profile(ctx),
+        'gcc': ctx.run('gcc-config -c').stdout.strip(),
+        'binutils': ctx.run('eselect binutils show').stdout.strip()
+    }
+
 @task
 def report(ctx):
-    print(current_profile(ctx))
-    print(ctx.run('gcc-config -c').stdout.strip())
-    print(ctx.run('eselect binutils show').stdout.strip())
+    print(yaml.dump(profile_config(ctx), default_flow_style=False))
 
 @task(default=True, pre=[gcc_config, binutils, libtool, profile, base], post=[minimum, report])
 def update(ctx):
