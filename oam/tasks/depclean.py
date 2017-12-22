@@ -5,23 +5,37 @@ import sys
 
 from invoke import task
 
+
+# filter these packages - only remove if not the active versions
+FILTER={
+    'sys-devel/binutils',
+    'sys-devel/gcc',
+    'sys-kernel/gentoo-sources'
+}
+
+
 @task
 def newuse(ctx):
     """bring the system up-to-date prior to a depclean run"""
     ctx.emerge('--update --newuse --deep --with-bdeps=y world')
 
-@task(default=True)
-def pretend(ctx):
-    """list packages that would be removed"""
-    print(ctx.run('emerge --pretend --depclean', capture_buffer_size=10240).stdout)
+@task
+def remove(ctx, opt='--pretend'):
+    """run an 'emerge --depclean' (sets --pretend by default)"""
+    return ctx.run('emerge {opt} --depclean'.format(opt=opt), capture_buffer_size=10240).stdout
 
-@task(aliases=['format'])
-def reformat(ctx, deps='-'):
+def reformat(raw_output):
     """re-format the output of 'emerge --pretend --depclean world'"""
-    for line in sys.stdin if deps=='-' else open(deps).readlines():
+    for line in raw_output.splitlines():
         if 'All selected packages:' in line:
             for atom in sorted(line.replace('All selected packages:', '').split()):
-                print(atom)
+                yield atom
+
+@task(default=True, aliases=['list'])
+def removal_list(ctx):
+    """list packages that would be removed"""
+    for atom in reformat(run_depclean(ctx)):
+        print(atom)
 
 @task
 def add(ctx, atom):
