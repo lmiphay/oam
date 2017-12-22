@@ -70,6 +70,12 @@ def minimum(ctx):
     """
     merge(ctx, '--exclude sys-libs/glibc /lib*/*.a /usr/lib*/*.a')
 
-@task(default=True, pre=[gcc_config, binutils, libtool, profile, base], post=[minimum])
+@task
+def report(ctx):
+    print(current_profile(ctx))
+    print(ctx.run('gcc-config -c').stdout.strip())
+    print(ctx.run('eselect binutils show').stdout.strip())
+
+@task(default=True, pre=[gcc_config, binutils, libtool, profile, base], post=[minimum, report])
 def update(ctx):
     pass
