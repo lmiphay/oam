@@ -10,7 +10,8 @@ from invoke.tasks import call
 
 CHOST = 'x86_64-pc-linux-gnu'
 
-PROFILE = 'default/linux/amd64/17.0/desktop/plasma'
+PROFILE17 = 'default/linux/amd64/17.0'
+DEFAULT_PROFILE = '{}/desktop/plasma'.format(PROFILE17)
 
 GCC_VER = '6.4.0'
 GCC_ATOM = 'sys-devel/gcc:{}'.format(GCC_VER)
@@ -39,15 +40,19 @@ def gcc_config(ctx):
 def binutils(ctx):
     if not is_installed('sys-devel/binutils', BINUTILS_VER):
         merge(ctx, BINUTILS_ATOM)
-    ctx.run('eselect binutils set {}'.format(BINUTILS_ESELECT))
+    ctx.run('eselect binutils set {}'.format(BINUTILS_ESELECT), echo=True)
 
 @task
 def libtool(ctx):
     merge(ctx, 'sys-devel/libtool')
 
+def current_profile(ctx):
+    return ctx.run('eselect profile show | tail -1', echo=True).stdout.strip()
+
 @task
 def profile(ctx):
-    ctx.run('eselect profile set {}'.format(PROFILE))
+    if not current_profile(ctx).startswith(PROFILE17):
+        ctx.run('eselect profile set {}'.format(DEFAULT_PROFILE), echo=True)
 
 @task
 def base(ctx):
