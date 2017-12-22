@@ -35,7 +35,11 @@ def reformat(raw_output):
 def removal_list(ctx):
     """list packages that would be removed"""
     for atom in reformat(run_depclean(ctx)):
-        print(atom)
+        for blacklist in FILTER:
+            if blacklist in atom:
+                print('X{}'.format(atom))
+            else:
+                print(atom)
 
 @task
 def add(ctx, atom):
