@@ -1,10 +1,25 @@
 # -*- coding: utf-8 -*-
+"""
+Can use like this:
+  1. oam task depclean
+     which will produce a list like:
 
+     =app-text/docbook-xml-dtd-4.4-r2
+     =app-text/xmlto-0.0.26-r1
+     =dev-lang/nasm-2.12.01
+     =dev-libs/libnatspec-0.2.6-r1
+     =dev-util/desktop-file-utils-0.23
+
+   2. emerge --noreplace <whatever_want_to_add_to_world>
+   3. emerge -aC $(oam task depclean)
+   4. revdep-rebuild --ignore
+"""
 from __future__ import print_function
+import os
 import sys
 
 from invoke import task
-
+from invoke.tasks import call
 
 # filter these packages - only remove if not the active versions
 FILTER={
@@ -45,6 +60,22 @@ def removal_list(ctx):
             print('X{}'.format(atom))
         else:
             print(atom)
+
+@task
+def rebuild(ctx):
+    """Run a revdep rebuild to check system consistency"""
+    ctx.run('revdep-rebuild --ignore')
+
+@task(pre=[newuse, removal_list], post=[call(remove, opt=''), rebuild])
+def clean(ctx):
+    """Run:
+       1. an emerge newuse update
+       2. list the packages which would be removed by a depclean
+       3. wait for the RETURN key to confirm removal (control-C to abort)
+       4. run an emerge depclean (note not currently filtered).
+       5. run a revdep-rebuild
+    """
+    os.system('read -p "Pressing RETURN will _REMOVE_ any packages listed above"')
 
 @task
 def add(ctx, atom):
