@@ -19,7 +19,6 @@ import os
 import sys
 
 from invoke import task
-from invoke.tasks import call
 
 # filter these packages - only remove if not the active versions
 FILTER={
@@ -32,12 +31,14 @@ FILTER={
 @task
 def newuse(ctx):
     """bring the system up-to-date prior to a depclean run"""
-    ctx.emerge('--update --newuse --deep --with-bdeps=y world')
+    ctx.emerge('--update --newuse --deep --with-bdeps=y world', echo=True)
 
 @task
 def remove(ctx, opt='--pretend'):
     """run an 'emerge --depclean' (sets --pretend by default)"""
-    return ctx.run('emerge {opt} --depclean'.format(opt=opt), capture_buffer_size=10240).stdout
+    return ctx.run('emerge {opt} --depclean'.format(opt=opt),
+                   echo=True,
+                   capture_buffer_size=10240).stdout
 
 def reformat(raw_output):
     """re-format the output of 'emerge --pretend --depclean world'"""
@@ -55,16 +56,19 @@ def is_filtered(atom):
 @task(default=True, aliases=['list'])
 def removal_list(ctx):
     """list packages that would be removed"""
+    print('### Packages which would be removed:')
+    filtered = []
     for atom in reformat(remove(ctx)):
         if is_filtered(atom):
-            print('X{}'.format(atom))
+            filtered.append(atom)
         else:
             print(atom)
+    print('### Filtered from above list: {}'.format(', '.join(filtered)))
 
 @task
 def rebuild(ctx):
     """Run a revdep rebuild to check system consistency"""
-    ctx.run('revdep-rebuild --ignore')
+    ctx.run('revdep-rebuild --ignore', echo=True)
 
 @task(pre=[newuse, removal_list], post=[call(remove, opt=''), rebuild])
 def clean(ctx):
@@ -75,9 +79,9 @@ def clean(ctx):
        4. run an emerge depclean (note not currently filtered).
        5. run a revdep-rebuild
     """
-    os.system('read -p "Pressing RETURN will _REMOVE_ any packages listed above"')
+    ctx.run('read -p "Pressing RETURN will _REMOVE_ any packages listed above"')
 
 @task
 def add(ctx, atom):
     """add package to the world file without rebuilding it"""
-    ctx.emerge('--noreplace {}'.format(atom))
+    ctx.emerge('--noreplace {}'.format(atom), echo=True)
