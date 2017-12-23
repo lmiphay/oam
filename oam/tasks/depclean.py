@@ -31,15 +31,20 @@ def reformat(raw_output):
             for atom in sorted(line.replace('All selected packages:', '').split()):
                 yield atom
 
+def is_filtered(atom):
+    for blacklist in FILTER:
+        if blacklist in atom:
+            return True
+    return False
+
 @task(default=True, aliases=['list'])
 def removal_list(ctx):
     """list packages that would be removed"""
     for atom in reformat(run_depclean(ctx)):
-        for blacklist in FILTER:
-            if blacklist in atom:
-                print('X{}'.format(atom))
-            else:
-                print(atom)
+        if is_filtered(atom):
+            print('X{}'.format(atom))
+        else:
+            print(atom)
 
 @task
 def add(ctx, atom):
