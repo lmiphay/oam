@@ -16,6 +16,7 @@ Can use like this:
 """
 from __future__ import print_function
 import os
+import subprocess
 import sys
 
 from invoke import task
@@ -79,7 +80,7 @@ def clean(ctx):
        4. run an emerge depclean (note not currently filtered).
        5. run a revdep-rebuild
     """
-    ctx.run('read -p "Pressing RETURN will _REMOVE_ any packages listed above"')
+    subprocess.call('read -p "Pressing RETURN will _REMOVE_ any packages listed above"', shell=True)
 
 @task
 def add(ctx, atom):
