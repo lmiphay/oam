@@ -65,7 +65,7 @@ def removal_list(ctx):
             filtered.append(atom)
         else:
             print(atom)
-    print('### Filtered from above list: {}'.format(', '.join(filtered)))
+    print('### Filtered from above list: {}'.format(', '.join(filtered if len(filtered)>0 else ['<none>'])))
 
 @task
 def rebuild(ctx):
