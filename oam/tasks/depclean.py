@@ -40,7 +40,7 @@ def is_filtered(atom):
 @task(default=True, aliases=['list'])
 def removal_list(ctx):
     """list packages that would be removed"""
-    for atom in reformat(run_depclean(ctx)):
+    for atom in reformat(remove(ctx)):
         if is_filtered(atom):
             print('X{}'.format(atom))
         else:
