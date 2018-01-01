@@ -67,6 +67,8 @@ def configure(ctx):
     findconfig(ctx)
     if os.path.isfile(CONFIG):
         olddefconfig(ctx)
+    else:
+        raise RuntimeError('failed to find .config for {}'.format(CONFIG))
 
 @task
 def build(ctx):
