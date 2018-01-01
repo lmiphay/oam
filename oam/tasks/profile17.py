@@ -1,7 +1,27 @@
 # -*- coding: utf-8 -*-
 #
-# ref: 2017-11-30-new-17-profiles
-#
+"""
+ref: 2017-11-30-new-17-profiles news article
+
+From oam the usage should look like this:
+
+  # oam task profile17
+  gcc-config x86_64-pc-linux-gnu-6.4.0
+  eselect binutils set x86_64-pc-linux-gnu-2.29.1
+  . /etc/profile && emerge -1 sys-devel/libtool
+  eselect profile show | tail -1
+  eselect profile set default/linux/amd64/17.0/desktop/plasma
+  . /etc/profile && emerge -1 sys-devel/gcc:6.4.0
+  . /etc/profile && emerge -1 sys-devel/binutils
+  . /etc/profile && emerge -1 sys-libs/glibc
+  . /etc/profile && emerge -1 --exclude sys-libs/glibc /lib*/*.a /usr/lib*/*.a
+  eselect profile show | tail -1
+  binutils: !!python/unicode 'x86_64-pc-linux-gnu-2.29.1'
+  gcc: !!python/unicode 'x86_64-pc-linux-gnu-6.4.0'
+  profile: !!python/unicode 'default/linux/amd64/17.0/desktop/plasma'
+
+  #
+"""
 from __future__ import print_function
 
 import glob
