@@ -23,6 +23,11 @@ def system(ctx):
     for i in range(2):
         ctx.emerge('@system')
 
+@task
+def package(ctx, atom, extraopt=''):
+    """Rebuild a package and all its dependencies"""
+    ctx.emerge('--keep-going --emptytree {extraopt} {atom}'.format(extraopt=extraopt, atom=atom))
+
 @task(default=True, pre=[check])
 def emptytree(ctx, extraopt=''):
     """reinstall world and its 'entire dependency tree'"""
