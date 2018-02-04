@@ -43,7 +43,7 @@ BINUTILS_ESELECT = '{}-2.29.1'.format(CHOST)
 
 def is_installed(atom, major_version):
     """return True if the package is installed, -rX versions are counted"""
-    return len(glob.glob('/var/db/pkg/{}-{}'.format(atom, major_version))) > 0
+    return len(glob.glob('/var/db/pkg/{}-{}*'.format(atom, major_version))) > 0
 
 @task
 def merge(ctx, atom):
