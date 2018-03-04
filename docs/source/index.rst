@@ -48,7 +48,6 @@ For example the `weekly` workflow will run these tasks:
 | ``fetch``  | - ``emerge --fetchonly --update world`` |
 +------------+-----------------------------------------+
 | ``update`` | - ``emerge --update world``             |
-|            | - ``python-updater``                    |
 |            | - ``perl-cleaner``                      |
 |            | - ``emerge @preserved-rebuild``         |
 +------------+-----------------------------------------+

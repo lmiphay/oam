@@ -18,7 +18,6 @@ LOGDEST = [
     ('emerge',              'merge',  'blocks',  '- -     multi'),
     ('revdep-rebuild',      'merge',  'error',   '- -     -'),
     ('make -C',             'kernel', 'error',   '- -     -'),
-    ('python-updater',      'merge',  'error',   '- -     -'),
     ('perl-cleaner',        'merge',  'error',   '- -     -'),
     ('oam qcheck',          'qcheck', 'error',   '- -     -'),
     ('eclean',              'clean',  'error',   '- dats  -'),

@@ -31,7 +31,7 @@ For example the `weekly` workflow will run:
 <dt>sync  </dt> <dd><pre>emaint --auto sync, layman --sync=ALL, eix-update/eix-remote</pre></dd>
 <dt>glsa  </dt> <dd><pre>glsa-check</pre></dd>
 <dt>fetch </dt> <dd><pre>emerge --fetchonly --update world</pre></dd>
-<dt>update</dt> <dd><pre>emerge --update world, python-updater, perl-cleaner, emerge @preserved-rebuild</pre></dd>
+<dt>update</dt> <dd><pre>emerge --update world, perl-cleaner, emerge @preserved-rebuild</pre></dd>
 <dt>clean </dt> <dd><pre>eclean distfiles, eclean-kernel</pre></dd>
 <dt>kernel</dt> attempts to build a new kernel if necessary
 <dt>qcheck</dt> <dd><pre>qcheck --all</pre></dd>
