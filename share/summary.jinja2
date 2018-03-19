@@ -19,7 +19,7 @@ Merges: {% for merge in merges %}
    {{ merge }} {% endfor %}
 Preserved Libraries: {% for lib in preserved_libs %}
    {{ lib }} {% endfor %}
-Downgrades: {% for package, detail in downgrades.iteritems() %}
+Downgrades: {% for package, detail in downgrades.items() %}
    {{ package }} : from {{ detail.from_version }}, to {{ detail.to_version }} {% endfor %}
 Build failures: {% for fail in build_fails %}
    {{ fail }} {% endfor %}

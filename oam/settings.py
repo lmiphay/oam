@@ -91,7 +91,7 @@ class Settings(object): # types.ModuleType
 
     def over_write(self, config, path):
         """Load overrides from the environment"""
-        for k, v in config.iteritems():
+        for k, v in config.items():
             key = '{}_{}'.format(path, k.upper())
             if isinstance(v, dict):
                 self.over_write(v, key)

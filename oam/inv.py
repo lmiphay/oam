@@ -67,7 +67,7 @@ class Inv(object):
 
     def run_parameterised_task(self, taskspec):
         argv = ['oaminv', taskspec['task_name']]
-        for key, value in taskspec.iteritems():
+        for key, value in taskspec.items():
             if key!='task_name':
                 argv.append('--{}={}'.format(key, value))
         oam.log.info('task start - {}'.format(argv[1]))

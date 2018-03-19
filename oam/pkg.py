@@ -28,7 +28,7 @@ class Pkg(object):
         for filename in glob.iglob(self.ROOT + '*/*/SIZE'):
             size = int(open(filename).readline().strip())
             rec[size].append(self.package(os.path.dirname(filename)))
-        for size, pkgs in sorted(rec.iteritems()):
+        for size, pkgs in sorted(rec.items()):
             for p in pkgs:
                 print("%10d %s" % (size, p))
 
