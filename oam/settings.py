@@ -71,7 +71,7 @@ class Settings(object): # types.ModuleType
         logging.info('final config %s', pprint.pformat(self.conf))
 
     def merge(self, incoming, current):
-        for k, v in incoming.iteritems():
+        for k, v in incoming.items():
             if k not in current:
                 current[k] = v
             elif isinstance(v, dict):
