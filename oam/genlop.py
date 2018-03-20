@@ -116,7 +116,7 @@ class Genlop(object):
 
     def log_currentcompile(self, wait_time):
         if self.wait_for_sandbox(wait_time):
-	    self.log_current()
+            self.log_current()
 
     def tail(self):
         fd = inotifyx.init()
