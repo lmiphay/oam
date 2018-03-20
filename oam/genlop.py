@@ -126,7 +126,7 @@ class Genlop(object):
             self.log_currentcompile(1) # only wait for a second for the sandbox
 
             while True:
-		self.log_heartbeat()
+                self.log_heartbeat()
                 events = inotifyx.get_events(fd, float(self.nap))
                 if len(events) != 0: # not timeout
                     self.log_currentcompile(self.sandboxwait)
