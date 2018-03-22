@@ -2,7 +2,8 @@ import logging
 import pprint
 import click
 from .cmd import cli
-from flowrunner import FlowRunner
+
+from oam.flowrunner import FlowRunner
 
 LOGGER = logging.getLogger('oam.run')
 

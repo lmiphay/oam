@@ -27,6 +27,10 @@ class IssueChecker(invoke.watchers.StreamWatcher):
 # [U] means the system is not affected and
 # [N] indicates that the system might be affected.
 # This system is affected by the following GLSAs:
+#
+# This system is not affected by any of the listed GLSAs (goes to stderr)
+#
+# in test sys.exit(0) is always called
 
 @task
 def watchcheck(ctx):
@@ -36,5 +40,6 @@ def watchcheck(ctx):
 
 @task(default=True)
 def check(ctx):
-    """Check if the server is affected by known GLSAs"""
+    """Check if the server is affected by known GLSAs.
+    """
     ctx.run('glsa-check --test --verbose --nocolor all 2>/dev/null')

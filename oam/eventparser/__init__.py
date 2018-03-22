@@ -1,6 +1,7 @@
-from buildfail import BuildFail
-from multipleinstances import MultipleInstances
-from skippedconflict import SkippedConflict
+# -*- coding: utf-8 -*-
 
-from report import Report
-from scanner import Scanner
+from oam.eventparser.buildfail import BuildFail
+from oam.eventparser.multipleinstances import MultipleInstances
+from oam.eventparser.skippedconflict import SkippedConflict
+from oam.eventparser.report import Report
+from oam.eventparser.scanner import Scanner

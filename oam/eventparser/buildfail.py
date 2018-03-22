@@ -1,4 +1,4 @@
-#!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 from __future__ import print_function
 import sys
@@ -9,8 +9,9 @@ import glob
 import collections
 import unittest
 import re
-from report import Report
-from scanner import Scanner
+
+from oam.eventparser.report import Report
+from oam.eventparser.scanner import Scanner
 
 class BuildFail:
 

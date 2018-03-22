@@ -3,7 +3,7 @@
 from __future__ import print_function
 
 import os
-import StringIO
+import io
 import csv
 import threading
 
@@ -12,7 +12,7 @@ from invoke import task
 
 import oam.tasks
 
-FLOW = StringIO.StringIO(os.getenv('OAM_FLOW', ''))
+FLOW = io.StringIO(os.getenv('OAM_FLOW', ''))
 
 @task(help={'task': 'Name of the oam task to run'})
 def step(ctx, task):
