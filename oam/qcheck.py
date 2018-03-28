@@ -30,6 +30,7 @@ class QCheck(object):
     def its(self):
         """Return a list potential problems with installed packages"""
         for line in sorted(subprocess.Popen(self.CMD, stdout=subprocess.PIPE).stdout.readlines()):
+            line = line.decode('utf-8')
             if self.is_interesting(line):
                 yield line.strip()
           
