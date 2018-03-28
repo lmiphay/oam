@@ -187,9 +187,9 @@ class Qlop(object):
 class Tail(pyinotify.ProcessEvent):
 
     def my_init(self, **kargs):
-        super().__init(self)
+        #super().__init(self)
         self.wm = pyinotify.WatchManager()
-        self.wdd = wm.add_watch(kargs['filename'], pyinotify.IN_MODIFY)
+        self.wdd = self.wm.add_watch(kargs['filename'], pyinotify.IN_MODIFY)
         self.watchers = kargs['watchers']
         self.heartbeat_every = kargs['heartbeat_every']
 
