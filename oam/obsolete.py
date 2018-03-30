@@ -7,7 +7,7 @@ import logging
 import click
 import subprocess
 import re
-from .cmd import cli
+from oam.cmd import cli
 
 TESTING_PACKAGES = 'enalyze --no-color rebuild keywords --pretend --exact'
 EIX = '/usr/bin/eix'
@@ -42,6 +42,7 @@ class Obsolete(object):
         if os.path.isfile(EIX):
             rdr = subprocess.Popen(CMD, stdout=subprocess.PIPE)
             for line in rdr.stdout:
+                line = line.decode('utf-8')
                 if len(line)>1 and not any(line.startswith(s) for s in FILTER):
                     yield line.strip()
         else:

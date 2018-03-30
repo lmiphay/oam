@@ -7,7 +7,7 @@ import logging
 import click
 import subprocess
 import re
-from .cmd import cli
+from oam.cmd import cli
 
 """
     Wrapper around: qcheck --nomtime --nocolor

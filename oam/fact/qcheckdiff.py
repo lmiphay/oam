@@ -1,10 +1,10 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
 import os
 import subprocess
 import logging
+import pprint
 import click
 
 from oam.facts import facts
@@ -19,14 +19,14 @@ def fact(day=last_day()):
     if os.path.isfile(prevqcheck_file) and os.path.isfile(daycheck_file):
         cmd = 'diff -u {} {}'.format(prevqcheck_file, daycheck_file)
         try:
-            result = subprocess.check_output(cmd, shell=True).splitlines()
+            result = subprocess.check_output(cmd, shell=True)
         except subprocess.CalledProcessError as ex:
-            result = ex.output.splitlines()
-    return { 'qcheck_diff': result }
+            result = ex.output
+    return { 'qcheck_diff': result.decode('utf-8').replace('\t', '   ').splitlines() }
 
 @facts.command()
 @click.option('--day', default=last_day(), help='day qcheck log to process')
 def qcheckdiff(day):
     """Diff between current and previous qcheck run"""
-    print(fact(day)['qcheck_diff'])
+    pprint.pprint(fact(day)['qcheck_diff'])
     return 0

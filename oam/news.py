@@ -7,7 +7,7 @@ import logging
 import click
 import subprocess
 import re
-from .cmd import cli
+from oam.cmd import cli
 
 """
     Wrapper around: eselect news list
@@ -42,6 +42,7 @@ class News(object):
         """
         self.size = 0
         for item in self.eselect_news():
+            item = item.decode('utf-8')
             if re.match(self.IS_UNREAD, item):
                 yield item.strip()
                 self.size += 1
