@@ -44,3 +44,17 @@ Quickstart
 
 * When the weekly flow completes typing `Control-U` from ``oam watch`` will bring up a simple summary
   log of everything that has taken place.
+
+* There are two useful aliases for specific flows available::
+
+    # oam go
+
+  will run the flow specified in ``/etc/oam/oam.yaml`` (by default this is the ``weekly`` flow).
+
+* The second alias::
+
+    # oam resume
+
+  will run the ``resume`` flow defined in ``/etc/oam/oam.yaml`` - by default this is the flow used
+  to continue an update following a manual resolution of blockers, keyworking fixes, use flag changes... etc
+

@@ -134,3 +134,11 @@ def task(tasks):
     before any options to tasks
     """
     return Inv().run(['oam-task'] + list(tasks))
+
+@cli.command()
+def resume():
+    """
+    Shorthand to run the 'resume' flow
+    """
+    inv = Inv()
+    return inv.run_flow(inv.get_flow('resume'))
