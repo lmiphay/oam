@@ -204,13 +204,20 @@ class Tail(pyinotify.ProcessEvent):
     def event_loop(self):
         notifier = pyinotify.Notifier(self.wm, self)
         notifier.process_events()
-        while notifier.check_events(timeout=self.heartbeat_every*1000):
-            self.notify()
-            notifier.read_events()
-            notifier.process_events()
+        while True:
+            while notifier.check_events(timeout=self.heartbeat_every*1000):
+                self.notify()
+                notifier.read_events()
+                notifier.process_events()
+        print('exiting')
 
 
 @cli.command()
 def genlop():
     """Watch emerge.log for merge activity"""
     Tail(filename=EMERGE_LOG, watchers=[Heartbeat(), Genlop()], heartbeat_every=5).event_loop()
+
+@cli.command()
+def qlop():
+    """Watch emerge.log for merge activity"""
+    Tail(filename=EMERGE_LOG, watchers=[Heartbeat(), Qlop()], heartbeat_every=5).event_loop()
