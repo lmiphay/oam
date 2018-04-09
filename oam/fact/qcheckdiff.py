@@ -15,14 +15,16 @@ def fact(day=last_day()):
     """Return the differences between specified and previous-to-it qcheck run"""
     prevqcheck_file = '{}/{}/qcheck.log'.format(oam.settings.oam.logs.directory, prev_day(day))
     daycheck_file = '{}/{}/qcheck.log'.format(oam.settings.oam.logs.directory, day)
-    result = []
     if os.path.isfile(prevqcheck_file) and os.path.isfile(daycheck_file):
+        result = ""
         cmd = 'diff -u {} {}'.format(prevqcheck_file, daycheck_file)
         try:
             result = subprocess.check_output(cmd, shell=True)
         except subprocess.CalledProcessError as ex:
             result = ex.output
-    return { 'qcheck_diff': result.decode('utf-8').replace('\t', '   ').splitlines() }
+        return { 'qcheck_diff': result.decode('utf-8').replace('\t', '   ').splitlines() }
+    else:
+        return { 'qcheck_diff': "" }
 
 @facts.command()
 @click.option('--day', default=last_day(), help='day qcheck log to process')
