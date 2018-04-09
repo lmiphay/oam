@@ -10,11 +10,11 @@ COMMAND = 'eselect profile show'
 
 def fact(day=None):
     """Return the current profile"""
-    output = subprocess.check_output(COMMAND, shell=True).splitlines()
+    output = subprocess.check_output(COMMAND, shell=True).decode('utf-8').splitlines()
     if len(output) == 2:
         return { 'profile': output[1].lstrip() }
     else:
-        logging.error('failed read current profile: %s', str(output))
+        logging.error('failed reading current profile: %s', str(output))
         return { 'profile': 'unknown' }
 
 @facts.command()

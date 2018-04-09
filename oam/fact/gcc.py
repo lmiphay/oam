@@ -12,8 +12,8 @@ LIST_COMMAND = 'gcc-config --list-profiles --nocolor'
 
 def fact(day=None):
     """Return gcc compiler profile information"""
-    current = subprocess.check_output(CURRENT_COMMAND, shell=True).splitlines()[0].strip()
-    all_profiles = subprocess.check_output(LIST_COMMAND, shell=True).splitlines()
+    current = subprocess.check_output(CURRENT_COMMAND, shell=True).decode('utf-8').splitlines()[0].strip()
+    all_profiles = subprocess.check_output(LIST_COMMAND, shell=True).decode('utf-8').splitlines()
 
     return {
         'gcc': {
