@@ -8,7 +8,7 @@ import logging
 import pyinotify
 import psutil
 import click
-from .cmd import cli
+from oam.cmd import cli
 import oam.settings
 
 EMERGE_LOG = '/var/log/emerge.log'
@@ -18,6 +18,10 @@ def timestamp():
 
 def run(cmd):
     return os.popen(cmd).read()
+
+def strip_version(atom):
+    """sed courtesy think4urs11 @ https://forums.gentoo.org/viewtopic-p-5114319.html#5114319"""
+    return run("echo " + atom + "|sed 's/-[0-9]\{1,\}.*$//'").strip()
 
 class Genlop(object):
 
@@ -96,6 +100,7 @@ class Heartbeat(object):
         self.logger = logging.getLogger("oam.heartbeat")
         self.monitor_count = 0
         self.hb = {}
+        self.portage_tmpdir = self.tmpdir()
 
     def emerge_var(self, var):
         return run('emerge --verbose --info | egrep ^' + var + '=').strip().split('=')[1].replace('"', '')
@@ -151,7 +156,7 @@ class Qlop(object):
     def average(self, atom):
         """oam: 18 seconds average for 9 merges"""
         if not atom in self.averages:
-            output = run(self.AVERAGE.format(atom)).split(': ')[1].split(' average for ')
+            output = run(self.AVERAGE.format(atom=atom)).split(': ')[1].split(' average for ')
             self.averages[atom] = {
                 'average': output[0],
                 'merges': output[1].split()[1]
@@ -167,19 +172,20 @@ class Qlop(object):
      elapsed: 2 seconds
         """
         return {
-            'atom': info[0].split()[1],
+            'atom': strip_version(info[0].split()[1]),
+            'package': info[0].split()[1],
             'started': info[1].split('started: ')[1],
             'elapsed': info[2].split('elapsed: ')
         }
 
     def notify(self):
-        last_modtime = os.path.getmtime(path)
+        last_modtime = os.path.getmtime(EMERGE_LOG)
         if last_modtime > self.last_modtime:
             self.last_modtime = last_modtime
             output = run(self.CURRENT)
-            if len(info) > 0:
-                info = parse_current(output.splitlines())
-                print(self.CURRENT_FORMAT.format(info))
+            if len(output) > 0:
+                info = self.parse_current(output.splitlines())
+                print(self.CURRENT_FORMAT.format(**info))
                 print(self.AVERAGE_FORMAT.format(self.average(info['atom'])))
                 sys.stdout.flush()
 
@@ -198,18 +204,18 @@ class Tail(pyinotify.ProcessEvent):
             watcher.notify()
 
     def process_IN_MODIFY(self, event):
-        print("Modify:", event.pathname)
+        #print("Modify:", event.pathname)
         self.notify()
 
     def event_loop(self):
-        notifier = pyinotify.Notifier(self.wm, self)
+        notifier = pyinotify.Notifier(self.wm, self, read_freq=100, timeout=self.heartbeat_every*1000)
         notifier.process_events()
         while True:
-            while notifier.check_events(timeout=self.heartbeat_every*1000):
-                self.notify()
-                notifier.read_events()
-                notifier.process_events()
-        print('exiting')
+            self.notify()
+            if notifier.check_events():
+                """new events to read (are available)"""
+                notifier.read_events()     # Read events, build _RawEvents, and enqueue them
+                notifier.process_events()  # Process events from queue by calling their associated proccessing method
 
 
 @cli.command()
