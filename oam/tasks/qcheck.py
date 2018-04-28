@@ -24,17 +24,13 @@ def qcheck(ctx):
 
     diffs = oam.fact.qcheckdiff.fact()['qcheck_diff']
 
-    if len(diffs)<1:
-        with open(oam.path.log_file('qcheck'), 'a') as f:
-            f.write('---------------------\n')
-            f.write('No Differences\n')
-            f.write('---------------------\n')
-    else:
-        with open(oam.path.log_file('qcheck'), 'a') as f:
-            f.write('---------------------\n')
-            f.write('Differences\n')
-            f.write('---------------------\n')
-            for diff_line in diffs:
-                f.write('{}\n'.format(diff_line))
+    with open(oam.path.log_file('qcheck-diffs'), 'w') as f:
+        f.write('---------------------\n')
+        if len(diffs)<1:
+            f.write('No \n')
+        f.write('Differences\n')
+        f.write('---------------------\n')
+        for diff_line in diffs:
+            f.write('{}\n'.format(diff_line))
 
     return 0
