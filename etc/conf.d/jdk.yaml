@@ -2,5 +2,5 @@ jdk:
   site: http://download.oracle.com/otn-pub/java/jdk
   header: '--header "Cookie: oraclelicense=accept-securebackup-cookie"'
   opts: '--continue --no-check-certificate --no-cookies'
-  version: 8u162
-  specific_url: b12/0da788060d494f5095bf8624735fa2f1
+  version: 8u172
+  specific_url: b11/a58eab1ec242421181065cdc37240b08
