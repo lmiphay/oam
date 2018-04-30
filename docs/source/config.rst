@@ -57,3 +57,13 @@ Configuration
     hello world
 
     $
+
+* The python interpreter requires a UTF-8 locale to be configured. If you see a message like::
+
+    RuntimeError: Click will abort further execution because Python 3 was configured to use ASCII as encoding for the environment.
+
+  Then `http://click.pocoo.org/python3/ < http://click.pocoo.org/python3/>`_ has some background - you you have the C locale already
+  generated, then setting these environment variables may be all that is required::
+
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
