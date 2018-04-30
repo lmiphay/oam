@@ -158,6 +158,7 @@ class Qlop(object):
         if not atom in self.averages:
             output = run(self.AVERAGE.format(atom=atom)).split(': ')[1].split(' average for ')
             self.averages[atom] = {
+                'atom': atom,
                 'average': output[0],
                 'merges': output[1].split()[1]
             }
