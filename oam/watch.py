@@ -85,7 +85,7 @@ class Watch(object):
         if extra_opt:
             cmd.append(extra_opt)
 
-        genlop = subprocess.Popen(['oam', 'genlop'], stdout=subprocess.PIPE, cwd=self.watch_dir)
+        genlop = subprocess.Popen(['oam', 'qlop'], stdout=subprocess.PIPE, cwd=self.watch_dir)
         multitail = subprocess.Popen(cmd, stdin=genlop.stdout, env=self.make_env(), cwd=self.watch_dir)
 
         return multitail.wait()
