@@ -5,5 +5,5 @@ invoke>=0.21.0
 eliot_tree>=17.0.0
 attrdict>=2.0.0
 Jinja2>=2.9.5
-inotifyx>=0.2.2
+pyinotify>=0.9.6
 PyYAML>=3.12
