@@ -179,16 +179,21 @@ class Qlop(object):
             'elapsed': info[2].split('elapsed: ')
         }
 
-    def notify(self):
-        last_modtime = os.path.getmtime(EMERGE_LOG)
-        if last_modtime > self.last_modtime:
-            self.last_modtime = last_modtime
-            output = run(self.CURRENT)
-            if len(output) > 0:
+    def show(self):
+        output = run(self.CURRENT)
+        if len(output) > 0:
+            output = output.splitlines()
+            if len(output) == 3:
                 info = self.parse_current(output.splitlines())
                 print(self.CURRENT_FORMAT.format(**info))
                 print(self.AVERAGE_FORMAT.format(self.average(info['atom'])))
                 sys.stdout.flush()
+
+    def notify(self):
+        last_modtime = os.path.getmtime(EMERGE_LOG)
+        if last_modtime > self.last_modtime or (self.last_modtime + 120) < time.time():
+            self.last_modtime = last_modtime
+            self.show()
 
 
 class Tail(pyinotify.ProcessEvent):
@@ -228,3 +233,9 @@ def genlop():
 def qlop():
     """Watch emerge.log for merge activity"""
     Tail(filename=EMERGE_LOG, watchers=[Heartbeat(), Qlop()], heartbeat_every=5).event_loop()
+
+@cli.command()
+def olop():
+    """Summarise current emerge activity"""
+    Qlop().show()
+
