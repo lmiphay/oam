@@ -1,0 +1,7 @@
+#!/bin/bash
+
+layman -s lmiphay
+
+emerge -v1 app-oam/oam
+
+exec oam go
