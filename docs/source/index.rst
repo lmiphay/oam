@@ -22,7 +22,7 @@ The philosophy is to:
 
 See :doc:`changelog` for changes in this version.
 
-See :doc:`config` for an overview of how to configuration ``oam``.
+See :doc:`config` for an overview of how to configure ``oam``.
 
 
 Workflows
