@@ -140,10 +140,10 @@ class Qlop(object):
     """
 
     CURRENT = 'qlop --current --nocolor'
-    CURRENT_FORMAT = 'qlop: {atom} {started} elapsed={elapsed}'
+    CURRENT_FORMAT = '{atom}\n started {started}\n elapsed {elapsed}'
 
     AVERAGE = 'qlop --time --nocolor {atom}'
-    AVERAGE_FORMAT = 'qlop: {atom} {average} {merges}'
+    AVERAGE_FORMAT = ' average {average} in {merges} merges'
 
     GUAGE = 'qlop --gauge --nocolor {atom}'
     GUAGE_FORMAT = 'qlop: {atom} {started} elapsed={elapsed}'
@@ -151,6 +151,7 @@ class Qlop(object):
     def __init__(self):
         self.logger = logging.getLogger("oam.qlop")
         self.last_modtime = -1
+        self.last_show = time.time()
         self.averages = {}
 
     def average(self, atom):
@@ -160,7 +161,7 @@ class Qlop(object):
             self.averages[atom] = {
                 'atom': atom,
                 'average': output[0],
-                'merges': output[1].split()[1]
+                'merges': output[1].split()[0]
             }
         return self.averages[atom]
 
@@ -176,7 +177,7 @@ class Qlop(object):
             'atom': strip_version(info[0].split()[1]),
             'package': info[0].split()[1],
             'started': info[1].split('started: ')[1],
-            'elapsed': info[2].split('elapsed: ')
+            'elapsed': info[2].split('elapsed: ')[1]
         }
 
     def show(self):
@@ -184,17 +185,20 @@ class Qlop(object):
         if len(output) > 0:
             output = output.splitlines()
             if len(output) == 3:
-                info = self.parse_current(output.splitlines())
+                info = self.parse_current(output)
                 print(self.CURRENT_FORMAT.format(**info))
-                print(self.AVERAGE_FORMAT.format(self.average(info['atom'])))
+                print(self.AVERAGE_FORMAT.format(**self.average(info['atom'])))
                 sys.stdout.flush()
 
     def notify(self):
         last_modtime = os.path.getmtime(EMERGE_LOG)
-        if last_modtime > self.last_modtime or (self.last_modtime + 120) < time.time():
+        if last_modtime > self.last_modtime:
             self.last_modtime = last_modtime
+            self.last_show = time.time()
             self.show()
-
+        elif time.time() > self.last_show + 120:
+            self.last_show = time.time()
+            self.show()
 
 class Tail(pyinotify.ProcessEvent):
 
