@@ -133,6 +133,25 @@ class Heartbeat(object):
         print(self.HEARTBEAT.format(**self.hb))
         sys.stdout.flush()
 
+PERIOD = {
+    'day': 3600*24,
+    'hour': 3600,
+    'minute': 60,
+    'second': 1
+}
+
+def human_to_seconds(human):
+    """return '1 days, 3 hours, 27 minutes, 30 seconds; in seconds"""
+    human = human.replace(',', '').split()
+    seconds = 0
+
+    for period in PERIOD.keys():
+        if period in human:
+            seconds += PERIOD[period] * int(human[human.index(period)-1])
+        elif period + 's' in human:
+            seconds += PERIOD[period] * int(human[human.index(period + 's')-1])
+
+    return seconds
 
 class Qlop(object):
     """Report on the currently running emerge useing qlop (q) from
@@ -177,7 +196,8 @@ class Qlop(object):
             'atom': strip_version(info[0].split()[1]),
             'package': info[0].split()[1],
             'started': info[1].split('started: ')[1],
-            'elapsed': info[2].split('elapsed: ')[1]
+            'elapsed': human_to_seconds(info[2].split('elapsed: ')[1]),
+            'elapsed_human': info[2].split('elapsed: ')[1]
         }
 
     def show(self):
