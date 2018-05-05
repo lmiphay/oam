@@ -1,7 +1,13 @@
 #!/bin/bash
+set -xe
 
-layman -s lmiphay
+[ -d /var/lib/layman/lmiphay ] && layman -s lmiphay
 
 emerge -v1 app-oam/oam
+
+if [ -z "${LANG}" -o "${LANG}" = "C" ] ; then
+    export LANG=$(locale -a|grep utf|head -1)
+    export LC_ALL=${LANG}
+fi
 
 exec oam go

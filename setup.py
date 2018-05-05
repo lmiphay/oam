@@ -12,7 +12,7 @@ setup(name='oam',
                 'oam/oaminvoke',
                 'oam/tasks'
       ],
-      scripts=['bin/oam'],
+      scripts=['bin/oam', 'bin/update-oam'],
       data_files=[('share/oam',
                    [
                     'share/oam-multitail.conf',
