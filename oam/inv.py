@@ -109,13 +109,15 @@ class Inv(object):
         Run the specifed flow(s); at the end if there is finally flow
         defined, then run it as well.
         """
-        for flowname in flownames:
-            oam.log.info('flow start - {}'.format(flowname))
-            self.run_flow(self.get_flow(flowname))
-            oam.log.info('flow complete - {}'.format(flowname))
-        if 'finally' in oam.settings.flows:
-            oam.log.info('running finally flow')
-            self.run_flow(self.get_flow('finally'))
+        try:
+            for flowname in flownames:
+                oam.log.info('flow start - {}'.format(flowname))
+                self.run_flow(self.get_flow(flowname))
+                oam.log.info('flow complete - {}'.format(flowname))
+        finally:
+            if 'finally' in oam.settings.flows:
+                oam.log.info('running finally flow')
+                self.run_flow(self.get_flow('finally'))
 
 @cli.command(name='tasks')
 def list_tasks():
