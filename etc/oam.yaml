@@ -6,21 +6,19 @@ flows:
     - update
     - [ clean, qcheck ]
     - kernel
-    - report
   resume:
     - update
     - [ clean, qcheck ]
     - kernel
-    - report
   lxc:
     - layman
     - glsa
     - update
     - qcheck
-    - report
   rebuild:
     - emptytree.system
     - emptytree
+  finally:
     - report
 helper:
   edit: '/usr/bin/xterm -e /usr/bin/vi'

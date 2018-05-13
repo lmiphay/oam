@@ -38,6 +38,16 @@ Configuration
         - sync
         - glsa
 
+* If a flow exists named ``finally`` then it will always be executed when any other flow finishes; example::
+
+    flows:
+      check:
+        - sync
+        - glsa
+      finally:
+        - report
+
+  In the above case, the report task will always be run after the check flow has completed.
 
 * New invoke tasks can be added in ``/etc/oam/localtasks`` - for example this file
   dropped in as ``/etc/oam/localtasks/skel.py``::
