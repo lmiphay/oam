@@ -156,22 +156,51 @@ def human_to_seconds(human):
 class Qlop(object):
     """Report on the currently running emerge useing qlop (q) from
        app-portage/portage-utils
+2018-05-06:16:16:13 3.09 3.09 3.12 73% 22%
+www-client/chromium
+ started Sun May  6 13:17:44 2018
+ elapsed 10708
+ average 87857 seconds in 33 merges
+2018-05-06:16:16:18 3.08 3.09 3.11 73% 22%
+
+2018-05-06 13:17:44 www-client/chromium
+ 20% (10708/182249 seconds, 33 merges)
+
+kul ~ # qlop --gauge --nocolor www-client/chromium
+chromium: Tue Aug  4 16:41:55 2015: 46778 seconds
+chromium: Sun Aug 16 16:31:18 2015: 47292 seconds
+...
+chromium: Sat Feb 17 15:55:38 2018: 129289 seconds
+chromium: Sat Mar 10 19:31:25 2018: 128681 seconds
+chromium: Sun Apr  1 01:32:04 2018: 168672 seconds
+chromium: Sun Apr 29 21:01:45 2018: 182249 seconds
+chromium: 33 times
     """
 
     CURRENT = 'qlop --current --nocolor'
-    CURRENT_FORMAT = '{atom}\n started {started}\n elapsed {elapsed}'
+    CURRENT_FORMAT = '{atom}\n started {started}\n elapsed {elapsed}/{last_merge}'
 
     AVERAGE = 'qlop --time --nocolor {atom}'
     AVERAGE_FORMAT = ' average {average} in {merges} merges'
 
-    GUAGE = 'qlop --gauge --nocolor {atom}'
-    GUAGE_FORMAT = 'qlop: {atom} {started} elapsed={elapsed}'
+    GAUGE = 'qlop --gauge --nocolor {atom} | tail -2 | head -1'
 
     def __init__(self):
         self.logger = logging.getLogger("oam.qlop")
         self.last_modtime = -1
         self.last_show = time.time()
         self.averages = {}
+        self.last_merges = {}
+
+    def last_merge(self, atom):
+        """chromium: Sat May  5 11:31:46 2018: 13406 seconds"""
+        if not atom in self.last_merges:
+            output = run(self.GAUGE.format(atom=atom)).split(' ')
+            if len(output)>2:
+                self.last_merges[atom] = output[-2]
+            else:
+                self.last_merges[atom] = 'unknown'
+        return self.last_merges[atom]
 
     def average(self, atom):
         """oam: 18 seconds average for 9 merges"""
@@ -206,7 +235,7 @@ class Qlop(object):
             output = output.splitlines()
             if len(output) == 3:
                 info = self.parse_current(output)
-                print(self.CURRENT_FORMAT.format(**info))
+                print(self.CURRENT_FORMAT.format(last_merge=self.last_merge(info['atom']), **info))
                 print(self.AVERAGE_FORMAT.format(**self.average(info['atom'])))
                 sys.stdout.flush()
 
