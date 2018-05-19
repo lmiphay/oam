@@ -178,7 +178,7 @@ chromium: 33 times
     """
 
     CURRENT = 'qlop --current --nocolor'
-    CURRENT_FORMAT = '{atom}\n started {started}\n elapsed {elapsed}/{last_merge}'
+    CURRENT_FORMAT = '{atom}\n started {started}\n remain {remain}, elapsed {elapsed}/{last_merge}'
 
     AVERAGE = 'qlop --time --nocolor {atom}'
     AVERAGE_FORMAT = ' average {average} in {merges} merges'
@@ -213,6 +213,12 @@ chromium: 33 times
             }
         return self.averages[atom]
 
+    def remaining(self, elapsed_time, last_merge_time):
+        if last_merge_time == 'unknown':
+            return 'unknown'
+        else:
+            return int(last_merge_time) - int(elapsed_time)
+
     def parse_current(self, info):
         """
        For the currently running query, the output is either empty or
@@ -235,7 +241,9 @@ chromium: 33 times
             output = output.splitlines()
             if len(output) == 3:
                 info = self.parse_current(output)
-                print(self.CURRENT_FORMAT.format(last_merge=self.last_merge(info['atom']), **info))
+                print(self.CURRENT_FORMAT.format(last_merge=self.last_merge(info['atom']),
+                                                 remain=self.remaining(info['elapsed'], self.last_merge(info['atom'])),
+                                                 **info))
                 print(self.AVERAGE_FORMAT.format(**self.average(info['atom'])))
                 sys.stdout.flush()
 
