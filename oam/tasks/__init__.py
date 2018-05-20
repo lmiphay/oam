@@ -2,6 +2,7 @@
 
 import invoke
 
+from oam.tasks import ansible
 from oam.tasks import clean
 from oam.tasks import config
 from oam.tasks import depclean
@@ -28,6 +29,7 @@ from oam.tasks import wipe
 
 ns = invoke.Collection()
 
+ns.add_collection(ansible)
 ns.add_collection(clean)
 ns.add_collection(config)
 ns.add_collection(depclean)

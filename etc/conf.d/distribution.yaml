@@ -1,0 +1,27 @@
+inventory:
+  containers: [ 'lxc-a', 'lxc-b', 'lxc-c' ]
+  dependant-servers: [ 'nuc', 'backup-master' ]
+flows:
+  mainserver:
+    - +weekly
+    - ansible.both
+  remote-resume:
+    - ansible.resume-both
+  local-containers:
+    - task-name: ansible
+      inventory: containers
+      args: oam flow lxc
+      forks: 1
+  remote-servers:
+    - task-name: ansible
+      inventory: dependant-servers
+  control-server:
+    - +weekly
+    - task-name: ansible
+      inventory: containers
+      forks: 1
+    - +remote-servers
+  virt-check:
+    - task-name: ansible
+      inventory: containers
+      args: virt-what
