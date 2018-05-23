@@ -33,9 +33,14 @@ def fact(day=last_day()):
                  'qcheck': content(daycheck_file)
         }
     else:
-        return { 'qcheck_diff': "",
-                 'qcheck': content(daycheck_file)
-        }
+        if os.path.isfile(daycheck_file):
+            return { 'qcheck_diff': "",
+                     'qcheck': content(daycheck_file)
+            }
+        else:
+            return { 'qcheck_diff': '',
+                     'qcheck': ''
+            }
 
 @facts.command()
 @click.option('--day', default=last_day(), help='day qcheck log to process')
