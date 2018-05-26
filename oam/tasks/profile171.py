@@ -2,6 +2,7 @@
 #
 """
 ref: 2017-12-26-experimental-amd64-17-1-profiles news article
+https://www.gentoo.org/support/news-items/2017-12-26-experimental-amd64-17-1-profiles.html
 
   oam go
   emerge -1v app-portage/unsymlink-lib
@@ -82,7 +83,7 @@ def gcc_config(ctx):
         merge(ctx, GCC_ATOM)
     ctx.run('gcc-config {}-{}'.format(CHOST, GCC_VER), echo=True)
 
-@task(pre=[call(phase, cmds=PHASE_2), gcc_config, call(merge, GCC_ATOM, call(merge, '/lib32 /usr/lib32'])
+@task(pre=[call(phase, cmds=PHASE_2), gcc_config, call(merge, GCC_ATOM), call(merge, '/lib32 /usr/lib32')])
 def phase2(ctx):
     ctx.run('rm /lib32 /usr/lib32')
 
