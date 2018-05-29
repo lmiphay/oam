@@ -3,6 +3,10 @@
 import os
 from invoke import task
 
+import jinja2
+import markdown
+import markdown.extensions.tables
+
 from oam.daylog import last_day
 import oam.facts
 from oam.report import Report
@@ -34,3 +38,11 @@ def report(ctx, daydir=None):
         write(ctx, facts(ctx, daydir))
     finally:
         os.chdir(curdir)
+
+@task
+def fancy(ctx):
+    context = facts(ctx)
+    md = jinja2.Template(open('/usr/share/oam/summary-md.jinja2', 'r').read()).render(context)
+    with open('/var/log/oam/{}/summary.html'.format(last_day()), 'w') as html:
+        html.write(markdown.markdown(md, extensions=[markdown.extensions.tables.TableExtension()]))
+

@@ -1,0 +1,145 @@
+
+Update Report for {{ hostname }} at {{ timestamp }}
+===================================================
+
+#### Summary Report
+
+There were {{ merges|length }} merges, with {{ downgrades|length }} downgrades,
+leaving {{ preserved_libs|length }} preserved libraries.
+
+Portage was last sync'd on: {{ lastsync }}
+
+##### Kernel Information
+
+{% if kernel_built is not none %}
+This kernel was built: {{ kernel_built }}
+{% endif %}
+
+The running kernel is: {{ kernel }}
+
+##### Portage Information
+
+The installed version of portage is: {{ installed_version }}
+{% if installed_version != best_available %}
+The best available version of portage is: {{ best_available }}
+{% endif %}
+
+#### Merge Report
+
+There were {{ merges|length }} merges.
+
+Merges      |
+----------- | {% for merge in merges %}
+{{ merge }} | {% endfor %}
+
+Including any emerges run to pre-fetch distfiles, there were {{ runs }} runs on the day.
+
+#### Package Downgrades
+
+There were {{ downgrades|length }} downgrades.
+
+Package       | From Version              | To Version              |
+------------- |-------------------------- | ----------------------- | {% for package, detail in downgrades.items() %}
+{{ package }} | {{ detail.from_version }} | {{ detail.to_version }} | {% endfor %}
+
+#### Preserved Libraries:
+
+{{ preserved_libs|length }} preserved libraries were left.
+
+Libraries  |
+---------- | {% for lib in preserved_libs %}
+{{ lib }}  | {% endfor %}
+
+#### {{ hostname }} Configuration
+
+The gentoo profile in force is: {{ profile }}
+
+#### gcc Profile
+
+The current gcc profile in force is: {{ gcc.current }}
+
+The available gcc profiles are:
+
+Version   |
+--------- | {% for gcc in gcc.available %}
+{{ gcc }} | {% endfor %}
+
+#### binutils Profile
+
+The current binutils profile is: {{ binutils.current }}
+
+The available binutils profiles are:
+
+Version       |
+------------- | {% for binutil in binutils.available %}
+{{ binutil }} | {% endfor %}
+
+#### {{ hostname }} Security Report
+
+##### GLSA Reports
+
+TODO
+
+##### Changed File Qcheck Report (Delta from last Run)
+
+These anomalies were detected by qcheck(1) (these are differences detected from the previous run):
+
+File       |
+---------- | {% for qck in qcheck %}
+{{ qck }}  | {% endfor %}
+
+##### Full Changed File Qcheck Report
+
+This is the full list of differences reported by qcheck (from the installation database):
+
+File       |
+---------- | {% for qck in qcheck_diff %}
+{{ qck }}  | {% endfor %}
+
+##### oam Configuration Issues
+
+These issues were reported by the `oam checkconfig` tool:
+
+Item |
+----------| {% for chk in check_config %}
+{{ chk }} | {% endfor %}
+
+
+#### {{ hostname }} Miscellaneous Information
+
+##### Unread News Items
+
+Item      |
+----------| {% for nws in unread_news %}
+{{ nws }} | {% endfor %}
+
+##### Obsolete Items
+
+These items were reported as obsolete by `eix`:
+
+Item      |
+----------| {% for obs in obsolete %}
+{{ obs }} | {% endfor %}
+
+#### {{ hostname }} Emerge Log Summary
+
+This section is a summary of all the issues detected by `oam` on the day (some issues may have
+been already corrected).
+
+##### Build Failure Log Messages
+
+Item      |
+----------| {% for fail in build_fails %}
+{{ fail }} | {% endfor %}
+
+##### Keyword and Useflag Changes
+
+Item      |
+----------| {% for ku in keyword_useflag %}
+{{ ku }} | {% endfor %}
+
+##### Emerge Blockers
+
+Item      |
+----------| {% for block in errors %}
+{{ block }} | {% endfor %}

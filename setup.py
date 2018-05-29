@@ -17,7 +17,8 @@ setup(name='oam',
                    [
                     'share/oam-multitail.conf',
                     'share/oam-watch.help',
-                    'share/summary.jinja2'
+                    'share/summary.jinja2',
+                    'share/summary-md.jinja2'
                    ]),
                   ('/etc/oam', ['etc/oam.yaml']),
                   ('/etc/oam/conf.d', ['etc/conf.d/jdk.yaml',
