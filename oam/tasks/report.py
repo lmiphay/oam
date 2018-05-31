@@ -39,10 +39,21 @@ def report(ctx, daydir=None):
     finally:
         os.chdir(curdir)
 
+BORDER="""
+<head>
+<style>
+table, th, td {
+    border: 1px solid black;
+}
+</style>
+</head>
+"""
+
 @task
-def fancy(ctx):
+def html(ctx):
     context = facts(ctx)
     md = jinja2.Template(open('/usr/share/oam/summary-md.jinja2', 'r').read()).render(context)
     with open('/var/log/oam/{}/summary.html'.format(last_day()), 'w') as html:
+        html.write(BORDER)
         html.write(markdown.markdown(md, extensions=[markdown.extensions.tables.TableExtension()]))
 
