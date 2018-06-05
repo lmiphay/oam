@@ -1,13 +1,20 @@
-
 Update Report for {{ hostname }} at {{ timestamp }}
 ===================================================
 
+[TOC]
+
 #### Summary Report
 
-There were {{ merges|length }} merges, with {{ downgrades|length }} downgrades,
-leaving {{ preserved_libs|length }} preserved libraries.
+There were {{ merges|length }} merges
+{%- if downgrades|length > 0 -%}
+, with {{ downgrades|length }} downgrades,
+{% endif -%}
+{%- if  preserved_libs|length > 0 -%}
+leaving {{ preserved_libs|length }} preserved libraries
+{% endif -%}
+.
 
-Portage was last sync'd on: {{ lastsync }}
+Portage was last sync'd at {{ lastsync }}
 
 ##### Kernel Information
 
@@ -21,9 +28,11 @@ The running kernel is: {{ kernel }}
 
 The installed version of portage is: {{ installed_version }}
 {% if installed_version != best_available %}
-The best available version of portage is: {{ best_available }}
+!!! note
+    The best available version of portage is: {{ best_available }}
 {% endif %}
 
+{% if  merges|length > 0 %}
 #### Merge Report
 
 There were {{ merges|length }} merges.
@@ -32,8 +41,10 @@ Merges      |
 ----------- | {% for merge in merges %}
 {{ merge }} | {% endfor %}
 
-Including any emerges run to pre-fetch distfiles, there were {{ runs }} runs on the day.
+Including any emerges run to pre-fetch distfiles, there were {{ runs|length }} runs on the day.
+{% endif %}
 
+{% if downgrades|length > 0 %}
 #### Package Downgrades
 
 There were {{ downgrades|length }} downgrades.
@@ -41,7 +52,9 @@ There were {{ downgrades|length }} downgrades.
 Package       | From Version              | To Version              |
 ------------- |-------------------------- | ----------------------- | {% for package, detail in downgrades.items() %}
 {{ package }} | {{ detail.from_version }} | {{ detail.to_version }} | {% endfor %}
+{% endif %}
 
+{% if preserved_libs|length > 0 %}
 #### Preserved Libraries:
 
 {{ preserved_libs|length }} preserved libraries were left.
@@ -49,6 +62,7 @@ Package       | From Version              | To Version              |
 Libraries  |
 ---------- | {% for lib in preserved_libs %}
 {{ lib }}  | {% endfor %}
+{% endif %}
 
 #### {{ hostname }} Configuration
 
@@ -58,21 +72,25 @@ The gentoo profile in force is: {{ profile }}
 
 The current gcc profile in force is: {{ gcc.current }}
 
+{% if gcc.available|length > 1 %}
 The available gcc profiles are:
 
 Version   |
 --------- | {% for gcc in gcc.available %}
 {{ gcc }} | {% endfor %}
+{% endif %}
 
 #### binutils Profile
 
 The current binutils profile is: {{ binutils.current }}
 
+{% if binutils.available|length > 1 %}
 The available binutils profiles are:
 
 Version       |
 ------------- | {% for binutil in binutils.available %}
 {{ binutil }} | {% endfor %}
+{% endif %}
 
 #### {{ hostname }} Security Report
 
@@ -126,20 +144,30 @@ Item      |
 This section is a summary of all the issues detected by `oam` on the day (some issues may have
 been already corrected).
 
+{% if build_fails|length > 0 %}
 ##### Build Failure Log Messages
 
 Item      |
 ----------| {% for fail in build_fails %}
 {{ fail }} | {% endfor %}
+{% endif %}
 
+{% if keyword_useflag|length > 0 %}
 ##### Keyword and Useflag Changes
 
 Item      |
 ----------| {% for ku in keyword_useflag %}
 {{ ku }} | {% endfor %}
+{% endif %}
 
-##### Emerge Blockers
+{% if errors|length > 0 %}
 
-Item      |
-----------| {% for block in errors %}
-{{ block }} | {% endfor %}
+##### Errors and Emerge Blockers
+
+```
+{% for block in errors %}
+{{ block }}
+{% endfor %}
+```
+
+{% endif %}

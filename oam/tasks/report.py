@@ -5,7 +5,10 @@ from invoke import task
 
 import jinja2
 import markdown
+import markdown.extensions.admonition
+import markdown.extensions.fenced_code
 import markdown.extensions.tables
+import markdown.extensions.toc
 
 from oam.daylog import last_day
 import oam.facts
@@ -55,5 +58,17 @@ def html(ctx):
     md = jinja2.Template(open('/usr/share/oam/summary-md.jinja2', 'r').read()).render(context)
     with open('/var/log/oam/{}/summary.html'.format(last_day()), 'w') as html:
         html.write(BORDER)
-        html.write(markdown.markdown(md, extensions=[markdown.extensions.tables.TableExtension()]))
-
+        html.write(markdown.markdown(md,
+                                     extensions=[
+                                         markdown.extensions.admonition.AdmonitionExtension(),
+                                         markdown.extensions.fenced_code.FencedCodeExtension(),
+                                         markdown.extensions.tables.TableExtension(),
+                                         markdown.extensions.toc.TocExtension()
+                                     ]))
+"""
+@task(post=[genfacts,genmd,genhtml,dumpreport])
+def generate(ctx, daydir=None):
+    ctx.report = {
+        'daydir': last_day() if not daydir else daydir
+    }
+"""
