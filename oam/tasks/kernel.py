@@ -53,8 +53,10 @@ def findconfig(ctx):
             with open(CONFIG, 'w') as outf:
                 if config.endswith('.gz'):
                     shutil.copyfileobj(gzip.open(config, 'r'), outf)
+                    break
                 else:
                     shutil.copyfileobj(open(config, 'r'), outf)
+                    break
 
 @task(post=[backup])
 def olddefconfig(ctx):
