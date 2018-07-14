@@ -67,13 +67,12 @@ def backup(ctx):
 def findconfig(ctx):
     for config in KERNEL_CONFIG:
         if os.path.isfile(config):
-            with open(CONFIG, 'w') as outf:
-                if config.endswith('.gz'):
-                    shutil.copyfileobj(gzip.open(config, 'r'), outf)
-                    break
-                else:
-                    shutil.copyfileobj(open(config, 'r'), outf)
-                    break
+            if config.endswith('.gz'):
+                ctx.run('zcat {} >{}'.format(config, CONFIG), echo=True)
+                break
+            else:
+                ctx.run('cp -p {} {}'.format(config, CONFIG), echo=True)
+                break
 
 @task(post=[backup])
 def olddefconfig(ctx):
