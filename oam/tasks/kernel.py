@@ -13,6 +13,8 @@ from invoke import task
 HOSTNAME = platform.node()
 RUNNING_KERNEL = platform.release() # e.g. '4.9.22-aufs'
 
+LINUX_SRC = '/usr/src/linux'
+
 CONFIG = '/usr/src/linux/.config'
 REPO = '/usr/src/linux/kernel-config.git'
 
@@ -25,13 +27,28 @@ KERNEL_CONFIG = [
 ]
 
 EFI_DIR = '/boot/efi/EFI/Boot'
-KERNEL_IMAGE = '/usr/src/linux/arch/x86_64/boot/bzImage'
+KERNEL_IMAGE = 'arch/x86_64/boot/bzImage'
 
-def usrsrc_kernel():
-    try:
-        return os.readlink('/usr/src/linux')[len('linux-'):]
-    except OSError as ex:
-        sys.exit('a valid kernel was not found at {}'.format(ex))
+
+def kernel_release(srcdir=LINUX_SRC):
+    """returns full kernel version, e.g. 4.12.12-gentoo"""
+    return open('{}/include/config/kernel.release'.format(srcdir)).read().strip()
+
+@task
+def clean(ctx, srcdir=LINUX_SRC):
+    ctx.run('make -C {} clean'.format(srcdir), echo=True)
+
+@task
+def module_rebuild(ctx):
+    ctx.run('emerge @module-rebuild', echo=True)
+
+@task(post=[module_rebuild])
+def make(ctx, srcdir=LINUX_SRC):
+    ctx.run('make -C {} all modules_install'.format(srcdir), echo=True)
+
+@task(pre=[clean], post=[make])
+def cleanall(ctx):
+    pass
 
 @task
 def initrepo(ctx):
@@ -72,15 +89,16 @@ def configure(ctx):
     else:
         raise RuntimeError('failed to find .config for {}'.format(CONFIG))
 
-@task
-def build(ctx):
-    ctx.run('make -C /usr/src/linux all modules_install', echo=True)
-    ctx.run('emerge @module-rebuild', echo=True)
-
 @task(default=True, pre=[configure])
-def make(ctx):
-    if not os.path.isdir('/lib/modules/{}'.format(usrsrc_kernel())):
-        build(ctx)
+def check_new_kernel(ctx):
+    if not os.path.isdir('/lib/modules/{}'.format(kernel_release())):
+        make(ctx)
+
+def usrsrc_kernel():
+    try:
+        return os.readlink(LINUX_SRC)[len('linux-'):]
+    except OSError as ex:
+        sys.exit('a valid kernel was not found at {}'.format(ex))
 
 def is_efi():
     return os.path.isdir(EFI_DIR) and os.path.isfile('/usr/sbin/efibootmgr')
@@ -90,18 +108,25 @@ def is_grub():
     return os.path.isdir('/boot/grub/grub.conf') and os.path.isfile('/sbin/grub')
 
 @task
-def install(ctx):
-    if is_efi():
-        shutil.copy(KERNEL_IMAGE, '{}/{}.efi'.format(EFI_DIR, usrsrc_kernel()))
-        ctx.run("efibootmgr --create --part 1 --label {0} --loader '{1}efi{1}boot{1}'${0}.efi".format(usrsrc_kernel(), '\\'),
-                echo=True)
-    elif is_grub():
-        shutil.copy(KERNEL_IMAGE, '/boot/{}'.format(usrsrc_kernel()))
-        # todo: edit grub.conf maybe?
+def install_efi(ctx, srcdir=LINUX_SRC):
+    krel = kernel_release(srcdir)
+    with ctx.cd(srcdir):
+        ctx.run('cp -p {bzimg} {efidir}/{tag}.efi'.format(bzimg=KERNEL_IMAGE, efidir=EFI_DIR, tag=krel), echo=True)
+        ctx.run("efibootmgr --create --part 1 --label {tag} --loader '{sep}efi{sep}boot{sep}{tag}.efi'".format(krel=krel, sep='\\'), echo=True)
 
 @task
-def clean(ctx, directory='linux'):
-    ctx.run('make -C /usr/src/{} clean'.format(directory), echo=True)
+def install_grub(ctx, srcdir=LINUX_SRC):
+    """todo: edit grub.conf maybe?"""
+    krel = kernel_release(srcdir)
+    with ctx.cd(srcdir):
+        ctx.run('cp -p {bzimg} /boot/{tag}'.format(bzimg=KERNEL_IMAGE, tag=krel), echo=True)
+
+@task
+def install(ctx, srcdir=LINUX_SRC):
+    if is_efi():
+        install_efi(ctx, srcdir)
+    elif is_grub():
+        install_efi(ctx, srcdir)
 
 def version(directory):
     return os.path.basename(directory)[len('linux-'):]
