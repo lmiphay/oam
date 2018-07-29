@@ -39,7 +39,7 @@ class Obsolete(object):
         """Return a list obsolete portage configuration entries, filtering noise; needs
            eix
         """
-        if os.path.isfile(EIX):
+        if os.path.isfile(EIX) and os.path.isfile('/var/cache/eix/portage.eix'):
             rdr = subprocess.Popen(CMD, stdout=subprocess.PIPE)
             for line in rdr.stdout:
                 line = line.decode('utf-8')
