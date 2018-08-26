@@ -1,0 +1,19 @@
+#!/bin/bash
+
+if [ $# -ne 1 ] ; then
+   echo "usage: $0 <tag>"
+   exit 1
+fi
+
+tag=$1
+
+cp -p /usr/src/linux/arch/x86_64/boot/bzImage /boot/efi/EFI/Boot/${tag}.efi
+
+mount -o remount,rw /sys/firmware/efi/efivars
+
+# TODO: automatically figure out partition number for --part argument below
+efibootmgr --create --part 1 --label "${tag}" --loader '\efi\boot\'${tag}.efi
+
+mount -o remount,ro /sys/firmware/efi/efivars
+
+exit 0
