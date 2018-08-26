@@ -15,6 +15,8 @@ die()
 
 [ $(id -u) -ne 0 ]                                                && die "please re-run as root, exiting"
 
+[ -x /usr/bin/layman ]                                            || die "please: emerge layman"
+
 [ ! -d "$overlay_dir" ]   && { layman -a "${overlay}"             || die "failed to add ${overlay} overlay"; }
 
 [ ! -d "$keywords_dir" ]                                          && die "please re-run after creating the ${keywords_dir} directory"
