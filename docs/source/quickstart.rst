@@ -6,6 +6,10 @@ Quickstart
 
     # layman -L && layman -a lmiphay
 
+  Answer ``y`` to::
+
+    * Overlay "lmiphay" is not official. Continue installing? [y/n]:
+
 * After adding the overlay there is a keyword file at::
 
     /var/lib/layman/lmiphay/oam.keywords
@@ -17,6 +21,10 @@ Quickstart
     # emerge app-oam/oam
 
 * The `getoam.sh <https://raw.githubusercontent.com/lmiphay/oam/master/bin/getoam.sh>`_ script attempts to automate these steps.
+
+* You may need to manually add the ``sqlite`` use flag to dev-lang/python(s) - in /etc/portage/package.use::
+
+    dev-lang/python sqlite
 
 * Review the default settings, make any local changes::
 
@@ -57,4 +65,11 @@ Quickstart
 
   will run the ``resume`` flow defined in ``/etc/oam/oam.yaml`` - by default this is the flow used
   to continue an update following a manual resolution of blockers, keyworking fixes, use flag changes... etc
+
+* To remove oam::
+
+    # emerge -C app-oam/oam
+    # layman -d lmiphay
+    # rm /etc/portage/package.keywords/oam.keywords
+    # rm -rf /etc/oam /var/log/oam
 
