@@ -9,6 +9,7 @@ import subprocess
 import re
 from oam.cmd import cli
 
+
 TESTING_PACKAGES = 'enalyze --no-color rebuild keywords --pretend --exact'
 EIX = '/usr/bin/eix'
 CMD = [EIX, '--test-non-matching', '--test-obsolete', '--exact']
@@ -35,6 +36,23 @@ class Obsolete(object):
     check for obsolete portage configuration entries
     """
 
+    def __init__(self):
+        self.result = {}
+        self.section('')
+
+    def section(self, name):
+        self.current = list()
+        self.result[name] = self.current
+
+    def parts(self):
+        """return a dict of obsolete items broken down by type"""
+        for it in its():
+            if it in SECTIONS:
+                self.section(it)
+            else:
+                self.current.append(it)
+        return self.result
+
     def its(self):
         """Return a list obsolete portage configuration entries, filtering noise; needs
            eix
@@ -48,11 +66,12 @@ class Obsolete(object):
         else:
             yield '(eix not installed)'
 
-    def testing_packages():
-        """installed package list that currently requires keywording"""
-        for line in rdr.subprocess.Popen(TESTING_PACKAGES, shell=True, stdout=subprocess.PIPE).stdout:
-            if len(line)>1 and not any(line.startswith(s) for s in FILTER):
-                yield line.strip()
+
+def testing_packages():
+    """installed package list that currently requires keywording"""
+    for line in rdr.subprocess.Popen(TESTING_PACKAGES, shell=True, stdout=subprocess.PIPE).stdout:
+        if len(line)>1 and not any(line.startswith(s) for s in FILTER):
+            yield line.strip()
 
 # use flag settings that are currently required by installed packages
 # add: enalyze --no-color rebuild use --pretend --exact
