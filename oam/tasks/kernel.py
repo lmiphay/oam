@@ -6,6 +6,7 @@ import shutil
 import sys
 import glob
 import platform
+import subprocess
 import gzip
 
 from invoke import task
@@ -31,8 +32,12 @@ KERNEL_IMAGE = 'arch/x86_64/boot/bzImage'
 
 
 def kernel_release(srcdir=LINUX_SRC):
-    """returns full kernel version, e.g. 4.12.12-gentoo"""
+    """returns full kernel version, e.g. 4.12.12-gentoo - only available for built kernel"""
     return open('{}/include/config/kernel.release'.format(srcdir)).read().strip()
+
+def kernel_version(srcdir=LINUX_SRC):
+    return subprocess.check_output('cd /usr/src/linux && make kernelversion', shell=True).decode("utf-8").strip()
+
 
 @task
 def clean(ctx, srcdir=LINUX_SRC):
@@ -90,7 +95,7 @@ def configure(ctx):
 
 @task(default=True, pre=[configure])
 def check_new_kernel(ctx):
-    if not os.path.isdir('/lib/modules/{}'.format(kernel_release())):
+    if not os.path.isdir('/lib/modules/{}'.format(kernel_version())):
         make(ctx)
 
 def usrsrc_kernel():
@@ -108,7 +113,7 @@ def is_grub():
 
 @task
 def install_efi(ctx, srcdir=LINUX_SRC):
-    krel = kernel_release(srcdir)
+    krel = kernel_version(srcdir)
     with ctx.cd(srcdir):
         ctx.run('cp -p {bzimg} {efidir}/{tag}.efi'.format(bzimg=KERNEL_IMAGE, efidir=EFI_DIR, tag=krel), echo=True)
         ctx.run("efibootmgr --create --part 1 --label {tag} --loader '{sep}efi{sep}boot{sep}{tag}.efi'".format(krel=krel, sep='\\'), echo=True)
@@ -116,7 +121,7 @@ def install_efi(ctx, srcdir=LINUX_SRC):
 @task
 def install_grub(ctx, srcdir=LINUX_SRC):
     """todo: edit grub.conf maybe?"""
-    krel = kernel_release(srcdir)
+    krel = kernel_version(srcdir)
     with ctx.cd(srcdir):
         ctx.run('cp -p {bzimg} /boot/{tag}'.format(bzimg=KERNEL_IMAGE, tag=krel), echo=True)
 
