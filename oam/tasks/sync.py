@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+import os
+
+
 from invoke import task
 
 @task(name='eix-update')
