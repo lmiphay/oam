@@ -13,9 +13,13 @@ def eix_remote(ctx):
     ctx.run('eix-remote -H update1', echo=True)  # -H = "Suppress status line update"
     # ctx.run('eix-remote add1')
 
-@task(post=[eix_update, eix_remote])
+@task
 def eix(ctx):
-    pass
+    """Run eix-update and eix-remote if they are installed"""
+    if os.path.exists('/usr/bin/eix-update'):
+        eix_update(ctx)
+        if os.path.exists('/usr/bin/eix-remote'):
+            eix_remote(ctx)
 
 @task(default=True, post=[eix])
 def sync(ctx):
