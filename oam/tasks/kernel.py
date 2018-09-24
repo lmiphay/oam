@@ -140,11 +140,11 @@ def grub_stanza(new_kernel):
     for line in open('/boot/grub/grub.conf').readlines():
         if line.startswith('title='):
             if old_kernel is None:
-                old_kernel = line.strip().split('=')[1]
+                old_kernel = line.rstrip().split('=')[1]
             else:
                 break
         if old_kernel is not None:
-            yield line.strip().replace(old_kernel, new_kernel)
+            yield line.rstrip().replace(old_kernel, new_kernel)
 
 @task
 def install_grub_0_97(ctx, srcdir=LINUX_SRC):
