@@ -138,7 +138,7 @@ def grub_stanza(new_kernel):
     """
     old_kernel = None
     for line in open('/boot/grub/grub.conf').readlines():
-        if lines.startswith('title='):
+        if line.startswith('title='):
             if old_kernel is None:
                 old_kernel = line.strip().split('=')[1]
             else:
