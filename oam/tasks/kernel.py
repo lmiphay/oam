@@ -107,9 +107,19 @@ def usrsrc_kernel():
 def is_efi():
     return os.path.isdir(EFI_DIR) and os.path.isfile('/usr/sbin/efibootmgr')
 
-def is_grub():
-    """grub v0.97"""
-    return os.path.isdir('/boot/grub/grub.conf') and os.path.isfile('/sbin/grub')
+def grub_version():
+    """ e.g.
+    # /sbin/grub --version
+    grub (GNU GRUB 0.97)
+    """
+    return subprocess.check_output(['/sbin/grub', '--version']).decode("utf-8").strip()
+
+def is_grub_0_97():
+    """grub v0.97
+    """
+    return os.path.isfile('/boot/grub/grub.conf') \
+        and os.path.isfile('/sbin/grub') \
+        and grub_version() == 'grub (GNU GRUB 0.97)'
 
 @task
 def install_efi(ctx, srcdir=LINUX_SRC):
@@ -118,19 +128,42 @@ def install_efi(ctx, srcdir=LINUX_SRC):
         ctx.run('cp -p {bzimg} {efidir}/{tag}.efi'.format(bzimg=KERNEL_IMAGE, efidir=EFI_DIR, tag=krel), echo=True)
         ctx.run("efibootmgr --create --part 1 --label {tag} --loader '{sep}efi{sep}boot{sep}{tag}.efi'".format(krel=krel, sep='\\'), echo=True)
 
+def grub_stanza(new_kernel):
+    """ yields the first existing stanza from /boot/grub/grub.conf, replacing
+    the existing kernel with new_kernel; e.g.:
+
+    title=4.14.52-gentoo
+        root (hd0,0)
+        kernel /4.14.52-gentoo ro root=/dev/sda3
+    """
+    old_kernel = None
+    for line in open('/boot/grub/grub.conf').readlines():
+        if lines.startswith('title='):
+            if old_kernel is None:
+                old_kernel = line.strip().split('=')[1]
+            else:
+                break
+        if old_kernel is not None:
+            yield line.strip().replace(old_kernel, new_kernel)
+
 @task
-def install_grub(ctx, srcdir=LINUX_SRC):
-    """todo: edit grub.conf maybe?"""
+def install_grub_0_97(ctx, srcdir=LINUX_SRC):
+    """todo: add paragraph to grub.conf"""
     krel = kernel_version(srcdir)
     with ctx.cd(srcdir):
         ctx.run('cp -p {bzimg} /boot/{tag}'.format(bzimg=KERNEL_IMAGE, tag=krel), echo=True)
+    print("manually add /boot/{tag} to /boot/grub/grub.conf:")
+    for line in grub_stanza(krel):
+        print(line)
 
 @task
 def install(ctx, srcdir=LINUX_SRC):
     if is_efi():
         install_efi(ctx, srcdir)
-    elif is_grub():
-        install_efi(ctx, srcdir)
+    elif is_grub_0_97():
+        install_grub_0_97(ctx, srcdir)
+    else:
+        print("don't know how to install the kernel?")
 
 def version(directory):
     return os.path.basename(directory)[len('linux-'):]
