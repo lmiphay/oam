@@ -13,6 +13,7 @@ from oam.tasks import fetch
 from oam.tasks import flow
 from oam.tasks import gcc
 from oam.tasks import glsa
+from oam.tasks import grok
 from oam.tasks import jdk
 from oam.tasks import kernel
 from oam.tasks import layman
@@ -41,6 +42,7 @@ ns.add_collection(fetch)
 ns.add_collection(flow)
 ns.add_collection(gcc)
 ns.add_collection(glsa)
+ns.add_collection(grok)
 ns.add_collection(jdk)
 ns.add_collection(kernel)
 ns.add_collection(layman)
