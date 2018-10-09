@@ -1,6 +1,26 @@
 # -*- coding: utf-8 -*-
 """
 For tomcat configuration slot/suffix see: https://wiki.gentoo.org/wiki/Apache_Tomcat
+
+Examples:
+
+   $ oam task grok.deploy
+   deploy.py /opt/opengrok/lib/source.war /var/lib/tomcat-9/webapps
+   $
+
+   $ oam task grok.index
+   ionice -c3 indexer.py -j /usr/bin/java -a /opt/opengrok/lib/opengrok.jar -- \
+          --source /var/opengrok/src --dataRoot /var/opengrok/data \
+          --writeConfig /var/opengrok/etc/configuration.xml \
+          --history --projects --search --assignTags --uri http://localhost:8080 
+   $
+
+   $ oam task grok.restarttomcat
+   sudo -S -p '[sudo] password: ' /etc/init.d/tomcat-9 restart
+     * Stopping 'tomcat-9' ... [ ok ]
+     * Starting tomcat-9 ... [ ok ]
+     * Caching service dependencies ... [ ok ]
+   $
 """
 
 import glob
@@ -13,7 +33,7 @@ from invoke import task, call
 GROK_TOMCAT_SLOT      = os.getenv('GROK_TOMCAT_ID', '9')
 GROK_INDEXER_EXTRAOPT = os.getenv('GROK_INDEXER_EXTRAOPT', '')
 
-WEBAPPS   = '/var/lib/tomcat-{slot}/webapps'.format(GROK_TOMCAT_SLOT)
+WEBAPPS   = '/var/lib/tomcat-{slot}/webapps'.format(slot=GROK_TOMCAT_SLOT)
 
 GROK_SRC  = '/var/opengrok/src'
 GROK_DATA = '/var/opengrok/data'
@@ -58,7 +78,7 @@ def pull(ctx):
 
 @task
 def restarttomcat(ctx):
-    ctx.sudo('/etc/init.d/tomcat-{slot} restart'.format(GROK_TOMCAT_SLOT), echo=True)
+    ctx.sudo('/etc/init.d/tomcat-{slot} restart'.format(slot=GROK_TOMCAT_SLOT), echo=True)
 
 
 @task(post=[restarttomcat])
