@@ -18,6 +18,12 @@ flows:
   rebuild:
     - emptytree.system
     - emptytree
+  sync-all:
+    - sync
+    - layman
+    - glsa
+  clean-all:
+    - clean
   finally:
     - report
 helper:

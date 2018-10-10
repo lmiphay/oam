@@ -149,5 +149,28 @@ def resume():
     """
     Shorthand to run the 'resume' flow
     """
-    inv = Inv()
-    return inv.run_flow(inv.get_flow('resume'))
+    return Inv().run_flow(inv.get_flow('resume'))
+
+@cli.command()
+def sync():
+    """
+    Shorthand to run the 'sync-all' flow
+    """
+    return Inv().run_flow(inv.get_flow('sync-all'))
+
+@cli.command()
+def clean():
+    """
+    Shorthand to run the 'clean-all' flow
+    """
+    return Inv().run_flow(inv.get_flow('clean-all'))
+
+# alias to emerge
+@cli.command()
+@click.argument('targets', nargs=-1)
+def merge(targets):
+    """
+    Shorthand to run an 'update' task
+    """
+    return Inv().run(['oam-task', 'update.merge', '--', '--target="{}"'.format(' '.join(targets))])
+

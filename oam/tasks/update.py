@@ -63,3 +63,10 @@ def update(ctx, target='world'):
     # Removal in 30 days.
     """
     ctx.emerge('--update --changed-use --keep-going {}'.format(target))
+
+@task(aliases=['emerge'])
+def merge(ctx, target='world'):
+    """
+    """
+    ctx.emerge('--update --changed-use --keep-going {}'.format(target))
+
