@@ -23,10 +23,16 @@ def getLogger(ident=''):
 
     if OAM_LOGGER is None:
         logging.getLogger('').handlers = []
-        logging.basicConfig(filename=oam.path.log_file(),
-                            format='%(asctime)s %(levelname)s %(name)s - %(message)s',
-                            datefmt='%Y%m%d:%H:%M:%S',
-                            level=logging.INFO)
+        try:
+            logging.basicConfig(filename=oam.path.log_file(),
+                                format='%(asctime)s %(levelname)s %(name)s - %(message)s',
+                                datefmt='%Y%m%d:%H:%M:%S',
+                                level=logging.INFO)
+        except Exception as e:
+            print(ex)
+            logging.basicConfig(format='%(asctime)s %(levelname)s %(name)s - %(message)s',
+                                datefmt='%Y%m%d:%H:%M:%S',
+                                level=logging.INFO)
         OAM_LOGGER = logging.getLogger()
 
     if ident == '':

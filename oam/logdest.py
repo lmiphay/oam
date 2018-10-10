@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-import re
 import io
+import re
+import sys
 from threading import Thread
 from enum import Enum
 from oam.daylog import oamlog_write, get_errstream, timestamp, get_logfile
@@ -74,15 +75,18 @@ class LogSupervisor(object):
         mergelog = 'multi' in dest[3]
         tags = dest[3].split(' ')
 
-        stdout = open(get_logfile(dest[1], mergelog=mergelog), 'a')
-        #stdout = self.wrap(stdout, ','.join(tags[1:]))
-        if dest[2] == '-':
-            stderr = stdout
-        else:
-            stderr = open(get_logfile(dest[2], mergelog=mergelog), 'a')
-            #stderr = self.wrap(stderr, ','.join([tags[0], tags[2]]))
-
-        return stdout, stderr
+        try:
+            stdout = open(get_logfile(dest[1], mergelog=mergelog), 'a')
+            #stdout = self.wrap(stdout, ','.join(tags[1:]))
+            if dest[2] == '-':
+                stderr = stdout
+            else:
+                stderr = open(get_logfile(dest[2], mergelog=mergelog), 'a')
+                #stderr = self.wrap(stderr, ','.join([tags[0], tags[2]]))
+            return stdout, stderr
+        except Exception as e:
+            print(ex)
+            return sys.stdout, sys.stderr
 
     def classify(self, cmd):
         for match in LOGDEST:
