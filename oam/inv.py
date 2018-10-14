@@ -149,7 +149,8 @@ def resume():
     """
     Shorthand to run the 'resume' flow
     """
-    return Inv().run_flow(inv.get_flow('resume'))
+    runner = Inv()
+    return runner.run_flow(runner.get_flow('resume'))
 
 @cli.command()
 def sync():
