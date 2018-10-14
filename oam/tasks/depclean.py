@@ -12,7 +12,7 @@ Can use like this:
 
    2. emerge --noreplace <whatever_want_to_add_to_world>
    3. emerge -aC $(oam task depclean)
-   4. revdep-rebuild --ignore
+   4. oam task depclean.rebuild  # revdep-rebuild --ignore
 """
 from __future__ import print_function
 import os
@@ -58,19 +58,21 @@ def is_filtered(atom):
 @task(default=True, aliases=['list'])
 def removal_list(ctx):
     """list packages that would be removed"""
-    print('### Packages which would be removed:')
+    print('### Packages which would be removed:', file=sys.stderr)
     filtered = []
     for atom in reformat(remove(ctx)):
         if is_filtered(atom):
             filtered.append(atom)
         else:
             print(atom)
-    print('### Filtered from above list: {}'.format(' '.join(filtered if len(filtered)>0 else ['<none>'])))
+    print('### Filtered from above list: {}'.format(' '.join(filtered if len(filtered)>0 else ['<none>'])),
+          file=sys.stderr)
 
 @task
 def rebuild(ctx):
     """Run a revdep rebuild to check system consistency"""
     ctx.run('revdep-rebuild --ignore', echo=True)
+    ctx.emerge('@preserved-rebuild')
 
 @task(pre=[newuse, removal_list], post=[call(remove, opt=''), rebuild])
 def clean(ctx):
