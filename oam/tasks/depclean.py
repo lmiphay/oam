@@ -39,7 +39,7 @@ def newuse(ctx):
 def remove(ctx, opt='--pretend'):
     """run an 'emerge --depclean' (sets --pretend by default)"""
     return ctx.run('emerge {opt} --depclean'.format(opt=opt),
-                   echo=True,
+                   echo=False,
                    capture_buffer_size=10240).stdout
 
 def reformat(raw_output):
