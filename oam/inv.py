@@ -156,14 +156,16 @@ def sync():
     """
     Shorthand to run the 'sync-all' flow
     """
-    return Inv().run_flow(inv.get_flow('sync-all'))
+    runner = Inv()
+    return runner.run_flow(runner.get_flow('sync-all'))
 
 @cli.command()
 def clean():
     """
     Shorthand to run the 'clean-all' flow
     """
-    return Inv().run_flow(inv.get_flow('clean-all'))
+    runner = Inv()
+    return runner.run_flow(runner.get_flow('clean-all'))
 
 # alias to emerge
 @cli.command()
