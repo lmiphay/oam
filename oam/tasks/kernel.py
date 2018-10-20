@@ -126,7 +126,7 @@ def install_efi(ctx, srcdir=LINUX_SRC):
     krel = kernel_version(srcdir)
     with ctx.cd(srcdir):
         ctx.run('cp -p {bzimg} {efidir}/{tag}.efi'.format(bzimg=KERNEL_IMAGE, efidir=EFI_DIR, tag=krel), echo=True)
-        ctx.run("efibootmgr --create --part 1 --label {tag} --loader '{sep}efi{sep}boot{sep}{tag}.efi'".format(krel=krel, sep='\\'), echo=True)
+        ctx.run("efibootmgr --create --part 1 --label {tag} --loader '{sep}efi{sep}boot{sep}{tag}.efi'".format(tag=krel, sep='\\'), echo=True)
 
 def grub_stanza(new_kernel):
     """ yields the first existing stanza from /boot/grub/grub.conf, replacing
