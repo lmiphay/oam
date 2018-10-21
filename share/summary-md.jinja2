@@ -68,6 +68,18 @@ Libraries  |
 
 The gentoo profile in force is: {{ profile }}
 
+#### python Profile
+
+The current python profile in force is: {{ python.current }}
+
+{% if python.available|length > 1 %}
+The available python profiles are:
+
+Version   |
+--------- | {% for py in python.available %}
+{{ py }} | {% endfor %}
+{% endif %}
+
 #### gcc Profile
 
 The current gcc profile in force is: {{ gcc.current }}
