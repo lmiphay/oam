@@ -6,6 +6,10 @@ Running kernel: {{ kernel }}
 Kernel built: {{ kernel_built }}
 Last sync'd on: {{ lastsync }}
 gentoo profile: {{ profile }}
+python profile:
+  current: {{ python.current }}
+  available: {% for py in python.available %}
+    {{ py }} {% endfor %}
 Gcc profile:
   current: {{ gcc.current }}
   available: {% for gcc in gcc.available %}
