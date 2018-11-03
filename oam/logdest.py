@@ -84,7 +84,7 @@ class LogSupervisor(object):
                 stderr = open(get_logfile(dest[2], mergelog=mergelog), 'a')
                 #stderr = self.wrap(stderr, ','.join([tags[0], tags[2]]))
             return stdout, stderr
-        except Exception as e:
+        except Exception as ex:
             print(ex)
             return sys.stdout, sys.stderr
 
