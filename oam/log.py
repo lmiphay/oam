@@ -28,7 +28,7 @@ def getLogger(ident=''):
                                 format='%(asctime)s %(levelname)s %(name)s - %(message)s',
                                 datefmt='%Y%m%d:%H:%M:%S',
                                 level=logging.INFO)
-        except Exception as e:
+        except Exception as ex:
             print(ex)
             logging.basicConfig(format='%(asctime)s %(levelname)s %(name)s - %(message)s',
                                 datefmt='%Y%m%d:%H:%M:%S',
