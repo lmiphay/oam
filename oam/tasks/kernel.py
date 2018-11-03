@@ -191,8 +191,8 @@ def purgebins(ctx, kernel_version):
     if is_efi():
         ctx.run('echo efibootmgr --bootnum {} --delete-bootnum'.format(bootnum(kernel_version)),
                 echo=True)
+        ctx.run('rm -f {}/{}.efi'.format(EFI_DIR, kernel_version), echo=True)
     ctx.run('rm -rf /lib/modules/{}'.format(kernel_version), echo=True)
-    ctx.run('rm -f {}/{}.efi'.format(EFI_DIR, kernel_version), echo=True)
 
 @task
 def unmerge(ctx, kernel_version):
