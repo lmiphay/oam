@@ -29,17 +29,12 @@ FACT = [
     'oam.fact.synchistory',
     'oam.fact.unreadnews'
 ]
-FACTMOD = []
 
-def import_facts():
-    global FACTMOD
-    FACTMOD = map(importlib.import_module, FACT)
+FACTMOD = [importlib.import_module(name) for name in FACT]
 
 def get_facts(day):
-    if len(FACTMOD) == 0:
-        import_facts()
-
     result = {'timestamp': time.strftime('%Y%m%d:%H:%M:%S') }
+
     for mod in FACTMOD:
         result.update(mod.fact(day))
 
