@@ -10,6 +10,7 @@ import yaml
 from oam.cmd import cli
 from oam.daylog import last_day
 
+
 FACT = [
     'oam.fact.binutils',
     'oam.fact.blocks',
@@ -30,15 +31,17 @@ FACT = [
     'oam.fact.unreadnews'
 ]
 
-FACTMOD = [importlib.import_module(name) for name in FACT]
 
 def get_facts(day):
+    factmod = [importlib.import_module(name) for name in FACT]
+    
     result = {'timestamp': time.strftime('%Y%m%d:%H:%M:%S') }
 
-    for mod in FACTMOD:
+    for mod in factmod:
         result.update(mod.fact(day))
 
     return result
+
 
 def write_facts(day, outfile):
     yaml.dump(get_facts(day), open(outfile, 'w'), default_flow_style=False)
