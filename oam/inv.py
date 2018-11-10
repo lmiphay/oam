@@ -161,6 +161,13 @@ def sync():
     return runner.run_flow(runner.get_flow('sync-all'))
 
 @cli.command()
+def fetch():
+    """
+    Shorthand to run the 'fetch' task
+    """
+    return Inv().run(['oam-task', 'fetch'])
+
+@cli.command()
 def clean():
     """
     Shorthand to run the 'clean-all' flow
