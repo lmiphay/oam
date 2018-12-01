@@ -22,6 +22,7 @@ from oam.tasks import perl
 from oam.tasks import profile17
 from oam.tasks import profile171
 from oam.tasks import qcheck
+from oam.tasks import rebuild
 from oam.tasks import report
 from oam.tasks import resume
 from oam.tasks import skel
