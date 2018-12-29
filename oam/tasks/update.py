@@ -66,7 +66,6 @@ def update(ctx, target='world'):
 
 @task(aliases=['emerge'])
 def merge(ctx, target='world'):
-    """
-    """
+    """perform a changed use merge"""
     ctx.emerge('--update --changed-use --keep-going {}'.format(target))
 
