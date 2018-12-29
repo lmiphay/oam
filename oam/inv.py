@@ -114,6 +114,8 @@ class Inv(object):
                 oam.log.info('flow start - {}'.format(flowname))
                 self.run_flow(self.get_flow(flowname))
                 oam.log.info('flow complete - {}'.format(flowname))
+        except Exception as ex:
+            oam.log.error('task returned error condition - {}'.format(ex))
         finally:
             if 'finally' in oam.settings.flows:
                 oam.log.info('running finally flow')
