@@ -20,7 +20,10 @@ setup(name='oam',
                     'share/summary.jinja2',
                     'share/summary-md.jinja2'
                    ]),
-                  ('/etc/oam', ['etc/oam.yaml']),
+                  ('/etc/oam', [
+                      'etc/oam.yaml',
+                      'etc/oam.screenrc',
+                  ]),
                   ('/etc/oam/conf.d', ['etc/conf.d/jdk.yaml',
                                        'etc/conf.d/monthly.yaml',
                                        'etc/conf.d/skel.yaml',

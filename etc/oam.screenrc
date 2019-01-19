@@ -1,0 +1,14 @@
+# to exit all screen sessions
+# ctrl-A:quit
+
+chdir /var/log/oam
+
+screen -t runner oam go
+
+split
+focus
+screen -t watch oam watch
+
+split
+focus
+screen -t shell
