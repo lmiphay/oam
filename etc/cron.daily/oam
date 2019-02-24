@@ -1,7 +1,12 @@
 #!/bin/bash
 
 if [ -z "$LANG" ] ; then
-    export LANG="$(eselect locale show | tail -1| xargs)"
+    LANG="$(eselect locale show | tail -1| xargs)"
+    if [ "${LANG}" = "(none)" ] ; then
+	LANG="C"
+    fi
 fi
+
+export LANG
 
 exec /usr/bin/oam expire >>/var/log/oam/expire.log 2>&1
