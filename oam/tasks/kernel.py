@@ -17,7 +17,7 @@ RUNNING_KERNEL = platform.release() # e.g. '4.9.22-aufs'
 LINUX_SRC = '/usr/src/linux'
 
 CONFIG = '/usr/src/linux/.config'
-REPO = '/usr/src/linux/kernel-config.git'
+REPO = '/usr/src/kernel-config.git'
 
 # look for a kernel config file in these locations
 KERNEL_CONFIG = [
