@@ -26,9 +26,10 @@ def eix(ctx):
 # TODO: add warnings to report
 @task
 def check(ctx):
+    """This tends to return non zero results..."""
     ctx.run('emaint --check all')
 
-@task(default=True, pre=[check], post=[eix])
+@task(default=True, post=[eix])
 def sync(ctx):
     """Sync repos which have their auto-sync setting set to true"""
     ctx.run('emaint --auto sync')
