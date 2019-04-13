@@ -2,8 +2,8 @@
 
 if [ -z "$LANG" ] ; then
     LANG="$(eselect locale show | tail -1| xargs)"
-    if [ "${LANG}" = "(none)" ] ; then
-	LANG="C"
+    if [ "${LANG}" = "(none)" -o "${LANG}" = "C" ] ; then
+	LANG="C.UTF-8"
     fi
 fi
 
