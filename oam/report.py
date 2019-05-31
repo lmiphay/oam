@@ -21,7 +21,7 @@ class Report(object):
         self.context = context
 
     def load(self, filename):
-        self.context.update(yaml.load(open(filename, 'r')))
+        self.context.update(yaml.safe_load(open(filename, 'r')))
         return self
 
     def build(self, factfiles):
