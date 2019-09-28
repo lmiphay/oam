@@ -236,7 +236,7 @@ chromium: 33 times
         }
 
     def show(self):
-        output = run(self.CURRENT)
+        output = ""  # run(self.CURRENT)
         if len(output) > 0:
             output = output.splitlines()
             if len(output) == 3:
