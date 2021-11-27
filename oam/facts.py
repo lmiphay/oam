@@ -23,7 +23,6 @@ FACT = [
     'oam.fact.obsolete',
     'oam.fact.portageinfo',
     'oam.fact.profile',
-    'oam.fact.python',
     'oam.fact.qcheckdiff',
     'oam.fact.runs',
     'oam.fact.server',
@@ -34,7 +33,7 @@ FACT = [
 
 def get_facts(day):
     factmod = [importlib.import_module(name) for name in FACT]
-    
+
     result = {'timestamp': time.strftime('%Y%m%d:%H:%M:%S') }
 
     for mod in factmod:
