@@ -7,8 +7,8 @@ import pprint
 import click
 from oam.facts import facts
 
-CURRENT_COMMAND = 'eselect python show'
-LIST_COMMAND = 'eselect python list'
+CURRENT_COMMAND = "egrep -v '^#' /etc/python-exec/python-exec.conf | head -1"
+LIST_COMMAND = "egrep -v '^#' /etc/python-exec/python-exec.conf"
 
 def fact(day=None):
     """Return python profile information"""
@@ -18,7 +18,7 @@ def fact(day=None):
     return {
         'python': {
             'current': current,
-            'available': [profile.strip().split()[1] for profile in all_profiles]
+            'available': [profile.strip() for profile in all_profiles]
         }
     }
 

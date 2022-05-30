@@ -23,6 +23,7 @@ FACT = [
     'oam.fact.obsolete',
     'oam.fact.portageinfo',
     'oam.fact.profile',
+    'oam.fact.python',
     'oam.fact.qcheckdiff',
     'oam.fact.runs',
     'oam.fact.server',
