@@ -11,7 +11,7 @@ def eix_update(ctx):
 
 @task(name='eix-remote')
 def eix_remote(ctx):
-    """Fetch the layman eix db's and add to eix db"""
+    """Fetch the eix db's and add to eix db"""
     ctx.run('eix-remote -H update1')  # -H = "Suppress status line update"
     # ctx.run('eix-remote add1')
 

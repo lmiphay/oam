@@ -13,7 +13,6 @@ LOGDEST = [
     ('eix-update',          'sync',   'error',   '- dats  -'),
     ('eix-remote',          'sync',   '-',       '- -     dats'),
     ('emaint --auto sync',  'sync',   'error',   '- dats  -'),
-    ('layman',              'sync',   '-',       '- -     -'),
     ('glsa-check'           'glsa',   '-',       '- -     -'),
     ('emerge --fetchonly',  'merge',  'blocks',  '- dedot multi'),
     ('emerge',              'merge',  'blocks',  '- -     multi'),

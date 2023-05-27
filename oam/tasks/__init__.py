@@ -16,7 +16,6 @@ from oam.tasks import glsa
 from oam.tasks import grok
 from oam.tasks import jdk
 from oam.tasks import kernel
-from oam.tasks import layman
 from oam.tasks import newuse
 from oam.tasks import perl
 from oam.tasks import profile17
@@ -46,7 +45,6 @@ ns.add_collection(glsa)
 ns.add_collection(grok)
 ns.add_collection(jdk)
 ns.add_collection(kernel)
-ns.add_collection(layman)
 ns.add_collection(newuse)
 ns.add_collection(perl)
 ns.add_collection(profile17)
